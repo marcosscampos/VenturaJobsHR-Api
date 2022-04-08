@@ -1,0 +1,9 @@
+﻿{
+  "InvalidSalary": "Salário inválido!",
+  "SalaryNotZero": "O Salário não pode ser zero ou menor que zero.",
+  "InvalidFinalDate": "Data final da vaga é inválida.",
+  "InvalidJobName": "O nome não pode ser em branco.",
+  "InvalidJobDescription": "Descrição não pode ser em branco.",
+  "FinalDateLessCreationDate": "Data final é menor que a data de criação da vaga.",
+  "FinalDateLessDateNow": "Data final é menor que a data atual."
+}

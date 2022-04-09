@@ -1,6 +1,6 @@
 ﻿using VenturaJobsHR.Common.Exceptions;
 
-namespace VenturaJobsHR.Api.Common;
+namespace VenturaJobsHR.Api.Common.ErrorsHandler;
 
 public static class ErrorHandlerFactory
 {

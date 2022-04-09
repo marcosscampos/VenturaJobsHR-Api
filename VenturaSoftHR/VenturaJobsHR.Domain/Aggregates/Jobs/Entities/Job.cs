@@ -1,4 +1,5 @@
-﻿using VenturaJobsHR.Domain.SeedWork.Entities;
+﻿using VenturaJobsHR.Common.Extensions;
+using VenturaJobsHR.Domain.SeedWork.Entities;
 
 namespace VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
 
@@ -17,7 +18,7 @@ public class Job : Entity
         Description = description;
         Salary = salary;
         FinalDate = finalDate;
-        CreationDate = DateTime.Now;
+        CreationDate = new DateTimeWithZone(DateTime.Now).LocalTime;
     }
 
     public Job(string id, string name, string description, Salary salary, DateTime finalDate) : this(name, description, salary, finalDate)

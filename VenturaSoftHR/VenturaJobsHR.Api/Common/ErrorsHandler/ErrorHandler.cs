@@ -1,4 +1,6 @@
-﻿namespace VenturaJobsHR.Api.Common;
+﻿using System.Net;
+
+namespace VenturaJobsHR.Api.Common.ErrorsHandler;
 
 public class ErrorHandler
 {

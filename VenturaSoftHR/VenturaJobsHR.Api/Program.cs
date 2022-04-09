@@ -1,6 +1,10 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using VenturaJobsHR.Api.Common;
-using VenturaJobsHR.Api.Docs.Filters;
+using VenturaJobsHR.Api.Common.ErrorsHandler;
+using VenturaJobsHR.Api.Docs;
+using VenturaJobsHR.Common.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,24 +21,58 @@ builder.Services.AddControllers().AddNewtonsoftJson(x =>
     x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
     x.UseMemberCasing();
 });
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(x =>
+
+const string CORS_DEFAULT_POLICY = "Default";
+builder.Services.AddCors(options =>
 {
-    x.OrderActionsBy((s) => $"{s.ActionDescriptor.RouteValues["controller"]}_{s.HttpMethod}");
-    x.DocumentFilter<OperationsOrderingFilter>();
-    x.OperationFilter<SwaggerExcludeFilter>();
-    x.OperationFilter<JsonIgnoreQueryOperationFilter>();
-    x.SchemaFilter<SwaggerIgnoreFilter>();
+    options.AddPolicy(CORS_DEFAULT_POLICY, config =>
+    {
+        config
+        .SetIsOriginAllowed(_ => true)
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials();
+
+    });
+});
+
+builder.Services.AddApiVersioning(p =>
+{
+    p.DefaultApiVersion = new ApiVersion(1, 0);
+    p.ReportApiVersions = true;
+    p.AssumeDefaultVersionWhenUnspecified = true;
+});
+
+builder.Services.AddVersionedApiExplorer(p =>
+{
+    p.GroupNameFormat = "'v'VVV";
+    p.SubstituteApiVersionInUrl = true;
+});
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddOpenApiDocument(x =>
+{
+    OpenApiConfiguration.Configure(x, "v1");
 });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.Use(async (ctx, next) =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    ctx.Response.OnStarting(() =>
+    {
+        ctx.Response.Headers[HeaderNames.Date] = new string[] { DateTimeExtensions.ConvertDateTime(DateTime.UtcNow).ToString() };
+
+        return Task.CompletedTask;
+    });
+
+    await next();
+});
+
+app.UseMiddleware<ApiExceptionMiddleware>();
+app.UseOpenApi();
+app.UseSwaggerUi3();
+app.UseDeveloperExceptionPage();
+
 
 app.UseHttpsRedirection();
 

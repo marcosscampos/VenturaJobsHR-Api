@@ -16,8 +16,6 @@ npm run serve
 
 Você pode usar a URL gerada pelo build para começar as configurações básicas de rota e layout do projeto.
 
-Para ter acesso as variáveis do blue (e gerenciar permissões, chaves, apps) você precisa acessar a URL http://blue-hml.apps.ativainvestimentos.com.br/
-
 ---
 
 ### Estrutura do projeto

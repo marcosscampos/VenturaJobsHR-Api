@@ -5,3 +5,4 @@ Conjunto de microserviços para a matéria de Projeto de Bloco.
    - CRUD e relatórios das vagas - ver o ranking dos candidatos nas vagas publicadas
  - Microserviço de gestão de candidatos
    - relatórios - ver as vagas que foram respondidas/canceladas/recusadas - CRUD
+ - Microserviço de criação de vagas

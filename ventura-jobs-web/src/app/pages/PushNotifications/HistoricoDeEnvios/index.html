@@ -1,0 +1,80 @@
+<div>
+    <div class="card card-custom gutter-b">
+        <div class="card-header border-0 py-5">
+            <div class="card-title">
+                <div class="card-label">
+                    <div class="font-weight-bolder">Lista de Push Notifications</div>
+                    <div class="font-weight-light font-size-base">
+                        <p class="data-consulta">Data da consulta: {{ dataConsulta | moment }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="float-right">
+                <b-button variant="outline-primary" class="btn_filtros" v-b-modal="'novo-push'">
+                    <i class="fas fa-plus"></i>
+                    Novo Push
+                </b-button>
+                <b-modal id="novo-push" hide-footer  ref="modal" hide-header>
+                    <NovoPush :fechar-modal="fechaModal"/>
+                </b-modal>
+            </div>
+        </div>
+        <div class="card-body d-flex flex-column table-head">
+            <b-table responsive :items="mensagens" :fields="fields" :busy.sync="isBusy">
+                <template #table-busy>
+                    <div class="text-center my-2" style="color: royalblue">
+                        <b-spinner class="align-middle"></b-spinner>
+                    </div>
+                </template>
+                <template #cell(dataEnvio)="data">
+                    <div v-for="(i, key) in data" :key="key" style="width: 150px">
+                        {{i.dataEnvio | moment}}
+                    </div>
+                </template>
+                <template #cell(titulo)="data">
+                    <div v-for="(i, key) in data" :key="key">
+                        {{i.titulo}}
+                    </div>
+                </template>
+                <template #cell(resumo)="data">
+                    <div v-for="(i, key) in data" :key="key">
+                        {{i.resumo}}
+                    </div>
+                </template>
+                <template #cell(mensagem)="data">
+                    <div class="modal-mensagens">
+                        <i class="far fa-comment-alt modal_icon" v-b-modal="'modal'+data.index"></i>
+                        <b-modal ref="MensagemModal" :id="'modal'+data.index" hide-footer>
+                            <div class="mensagem_conteudo" v-html="data.item.conteudo"></div>
+                        </b-modal>
+                    </div>
+                </template>
+                <template #cell(segmento)="data">
+                    <div v-for="(i, key) in data" :key="key">
+                        {{i.segmento}}
+                    </div>
+                </template>
+                <template #cell(tipo)="data">
+                    <div v-for="(i, key) in data" :key="key">
+                        {{i.tipo}}
+                    </div>
+                </template>
+                <template #cell(clientes)="data">
+                        <div v-for="(i, key) in data" :key="key">
+                            {{i.clientes}}
+                        </div>
+                </template>
+                <template #cell(enviados)="data">
+                    <div v-for="(i, key) in data" :key="key">
+                        {{i.enviados}}
+                    </div>
+                </template>
+                <template #cell(lidos)="data">
+                    <div v-for="(i, key) in data" :key="key">
+                        {{i.lidos}}
+                    </div>
+                </template>
+            </b-table>
+        </div>
+    </div>
+</div>

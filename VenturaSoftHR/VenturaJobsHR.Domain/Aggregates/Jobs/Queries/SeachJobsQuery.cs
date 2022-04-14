@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
-using VenturaJobsHR.Domain.SeedWork.Commands;
 using VenturaJobsHR.Domain.SeedWork.Specification;
 
 namespace VenturaJobsHR.Domain.Aggregates.Jobs.Queries;

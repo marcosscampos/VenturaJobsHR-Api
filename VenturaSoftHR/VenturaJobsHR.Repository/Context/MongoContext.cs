@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using VenturaJobsHR.Common.Exceptions;
 
 namespace VenturaJobsHR.Repository.Context;

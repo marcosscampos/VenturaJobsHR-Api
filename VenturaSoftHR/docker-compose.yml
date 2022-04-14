@@ -1,0 +1,51 @@
+version: "3.1"
+volumes:
+  postgres_data:
+      driver: local
+
+services:
+    mongo:
+        image: mongo:latest
+        container_name: mongo-container
+        ports:
+            - "27017:27017"
+        expose:
+            - "27017"
+    keycloak:
+        image: jboss/keycloak:latest
+        container_name: keycloak-container
+        # restart: always
+        # volumes:
+        #     - files_volume:/opt/jboss/keycloak/standalone/log
+        ports:
+            - "8080:8080"
+            - "8443:8443"
+        environment:
+            - DB_VENDOR=postgres
+            - DB_ADDR=postgres
+            - DB_DATABASE=keycloak
+            - DB_USER=keycloak
+            - DB_SCHEMA=public
+            - DB_PORT=5432
+            - DB_PASSWORD=password
+            - KEYCLOAK_USER=admin
+            - KEYCLOAK_PASSWORD=admin
+        depends_on:
+            postgres:
+                condition: service_started
+        expose:
+            - "8080"
+            - "8443"
+    postgres:
+        image: postgres:latest
+        container_name: postgres-container
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        environment:
+            - POSTGRES_DB=keycloak
+            - POSTGRES_USER=keycloak
+            - POSTGRES_PASSWORD=password
+        expose:
+            - "5432"

@@ -1,44 +1,69 @@
-# blue-template-vue
+# ventura-jobs-web
 
-### Setup do projeto
+## Build Setup
 
+```bash
+# install dependencies
+$ npm install
+
+# serve with hot reload at localhost:3000
+$ npm run dev
+
+# build for production and launch server
+$ npm run build
+$ npm run start
+
+# generate static project
+$ npm run generate
 ```
-npm install
-```
 
----
+For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
 
-### Compilar e rodar localmente
+## Special Directories
 
-```
-npm run serve
-```
+You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
 
-Você pode usar a URL gerada pelo build para começar as configurações básicas de rota e layout do projeto.
+### `assets`
 
-Para ter acesso as variáveis do blue (e gerenciar permissões, chaves, apps) você precisa acessar a URL http://blue-hml.apps.ativainvestimentos.com.br/
+The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
 
----
+More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
 
-### Estrutura do projeto
+### `components`
 
-- src
-  - app
-    - \_defaultComponents
-    - pages
-  - assets
-  - core
+The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
 
-Não é recomendável alterar nenhum arquivo das pastas `core` e `assets`. Essas pastas serão utilizadas para atualizar o template no futuro. Caso seja necessário alterar algum arquivo dessas pastas para seu projeto, entre em contato com a equipe de arquitetura.
+More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
 
-A pasta `app` é onde seu projeto deve ser desenvolvido. Os arquivos das pastas `_defaultComponents` precisam permanecer no projeto. Caso não seja necessário usar eles no seu projeto, é possível comentar todo o conteúdo desses arquivos.
+### `layouts`
 
-O arquivo `router.js` e `main.js` estão na pasta `src`.
+Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
 
----
+More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
 
-### Compilar para produção
 
-```
-npm run build
-```
+### `pages`
+
+This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
+
+More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
+
+### `plugins`
+
+The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
+
+More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
+
+### `static`
+
+This directory contains your static files. Each file inside this directory is mapped to `/`.
+
+Example: `/static/robots.txt` is mapped as `/robots.txt`.
+
+More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
+
+### `store`
+
+This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
+
+More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).

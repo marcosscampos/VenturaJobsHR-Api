@@ -22,7 +22,7 @@ jobs:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
         aws_secret_key: ${{ secrets.AWS_ACCESS_SECRET }}
         application_name: ventura-jobs
-        environment_name: Venturajobsapi-env
+        environment_name: Venturajobs-env
         version_label: 1
         region: us-east-1
         deployment_package: deploy.zip

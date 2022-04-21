@@ -12,9 +12,27 @@ jobs:
     steps:
     - name: Checkout source code
       uses: actions/checkout@v2
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --no-restore
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    
+    - name: Publish
+      run: dotnet publish -c Release -o '${{github.workspace}}/out'
 
-    - name: Generate deployment package
-      run: zip -r deploy.zip . -x '*.git*'
+    - name: Zip Package
+      run: |
+        cd ${{github.workspace}}/out
+        zip -r ${{github.workspace}}/out.zip *
       
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v20
@@ -23,6 +41,6 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_ACCESS_SECRET }}
         application_name: ventura-jobs
         environment_name: Venturajobs-env
-        version_label: Sample Application
+        version_label: ${{github.run_id}}
         region: us-east-1
-        #deployment_package: deploy.zip
+        deployment_package: ${{github.workspace}}/out.zip

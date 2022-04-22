@@ -6,7 +6,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["VenturaJobsHR.Api/VenturaJobsHR.Api.csproj", "VenturaJobsHR.Api/"]
-RUN dotnet restore "VenturaJobsHR/VenturaJobsHR.Api/VenturaJobsHR.Api.csproj"
+RUN dotnet restore "VenturaJobsHR.Api/VenturaJobsHR.Api.csproj"
 COPY . .
 WORKDIR "/src/VenturaJobsHR.Api"
 RUN dotnet build "VenturaJobsHR.Api.csproj" -c Release -o /app/build

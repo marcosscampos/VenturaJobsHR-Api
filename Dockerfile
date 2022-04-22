@@ -5,8 +5,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Services\Jobs\VenturaJobsHR\VenturaJobsHR.Api\VenturaJobsHR.Api.csproj", "VenturaJobsHR.Api/"]
-RUN dotnet restore "Services\Jobs\VenturaJobsHR\VenturaJobsHR.Api\VenturaJobsHR.Api.csproj"
+COPY ["Services/Jobs/VenturaJobsHR/VenturaJobsHR.Api/VenturaJobsHR.Api.csproj", "VenturaJobsHR.Api/"]
+RUN dotnet restore "Services/Jobs/VenturaJobsHR/VenturaJobsHR.Api/VenturaJobsHR.Api.csproj"
 COPY . .
 WORKDIR "/src/VenturaJobsHR.Api"
 RUN dotnet build "VenturaJobsHR.Api.csproj" -c Release -o /app/build

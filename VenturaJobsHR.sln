@@ -26,6 +26,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04.CrossCutting", "04.Cross
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.CrossCutting", "Services\Jobs\VenturaJobsHR\VenturaJobsHR.CrossCutting\VenturaJobsHR.CrossCutting.csproj", "{585B1454-4E03-4AA5-A3B0-E52BE7D395E4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{35D4BA23-BE4F-454E-8EEC-82F0E5224192}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile.txt = Dockerfile.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

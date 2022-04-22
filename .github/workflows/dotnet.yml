@@ -1,4 +1,4 @@
-name: Push Container to Elastic Beanstalk
+name: Push Container to Heroku
 
 on:
   push:
@@ -25,22 +25,19 @@ jobs:
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
-    
-    - name: Publish
-      run: dotnet publish -c Release -o '${{github.workspace}}/out'
-
-    - name: Zip Package
-      run: |
-        cd ${{github.workspace}}/out
-        zip -r ${{github.workspace}}/out.zip *
       
-    - name: Deploy to EB
-      uses: einaregilsson/beanstalk-deploy@v20
-      with:
-        aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-        aws_secret_key: ${{ secrets.AWS_ACCESS_SECRET }}
-        application_name: ventura-jobs
-        environment_name: Venturajobs-env
-        version_label: ${{github.run_id}}
-        region: us-east-1
-        deployment_package: ${{github.workspace}}/out.zip
+    - name: Login to Heroku Container registry
+      env: 
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      
+      run: heroku container:login 
+    - name: Build and push
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      
+      run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web 
+    - name: Release
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        
+      run: heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web 

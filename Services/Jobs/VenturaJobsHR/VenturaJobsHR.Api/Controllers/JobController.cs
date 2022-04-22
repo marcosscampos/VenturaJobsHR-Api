@@ -44,7 +44,7 @@ public class JobController : BaseController
     }
 
     /// <summary>
-    /// Busca jobs baseado nos filtros
+    /// Busca jobs baseado nos filtros de salário e data final
     /// </summary>
     /// <response code="200">Retorna os jobs filtrados</response>
     /// <response code="500">Se encontrar algum erro no banco de dados ou no servidor</response>

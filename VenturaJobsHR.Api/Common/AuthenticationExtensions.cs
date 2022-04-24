@@ -1,31 +1,28 @@
-﻿//using Microsoft.AspNetCore.Authentication;
-//using Microsoft.AspNetCore.Authentication.JwtBearer;
-//using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
-//namespace VenturaJobsHR.Api.Common;
+namespace VenturaJobsHR.Api.Common;
 
-//public static class AuthenticationExtensions
-//{
-//    public static void ConfigureAuthentication(AuthenticationOptions builder)
-//    {
-//        builder.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//        builder.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//    }
+public static class AuthenticationExtensions
+{
+    public static void ConfigureAuthentication(AuthenticationOptions builder)
+    {
+        builder.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        builder.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    }
 
-//    public static void ConfigureJwtBearer(JwtBearerOptions options, IConfiguration configuration)
-//    {
-//        options.Authority = $"{configuration["Keycloak:Url"]}/realms/{configuration["Keycloak:Realm"]}";
-//        options.Audience = configuration["Keycloak:ClientId"];
-//        options.RequireHttpsMetadata = bool.Parse($"{configuration["Keycloak:RequireHttps"]}");
-//        options.SaveToken = true;
+    public static void ConfigureJwtBearer(JwtBearerOptions options, IConfiguration configuration)
+    {
+        options.Authority = configuration["Firebase:SecureToken"];
 
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//            ValidateIssuerSigningKey = true,
-//            ValidateLifetime = true,
-//            ValidateAudience = true,
-//            ValidateIssuer = true,
-//            NameClaimType = "user_login"
-//        };
-//    }
-//}
+        options.TokenValidationParameters = new()
+        {
+            ValidateIssuer = true,
+            ValidIssuer = configuration["Firebase:SecureToken"],
+            ValidateAudience = true,
+            ValidAudience = configuration["Firebase:ProjectId"],
+            ValidateLifetime = true
+        };
+    }
+}

@@ -2,6 +2,7 @@
 using VenturaJobsHR.Application.Services.Interfaces;
 using VenturaJobsHR.Common.Exceptions;
 using VenturaJobsHR.CrossCutting.Notifications;
+using VenturaJobsHR.CrossCutting.Pagination;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Commands;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Queries;
@@ -39,9 +40,15 @@ public class JobService : ApplicationServiceBase, IJobService
     public async Task DeleteJob(string id)
         => await _jobRepository.DeleteAsync(id);
 
-    public async Task<List<Job>> GetAllJobsByCriteria(SeachJobsQuery query)
+    public async Task<List<Job>> GetAllJobsByCriteria(SearchJobsQuery query)
     {
         var jobs = await _jobRepository.FindAsync(query.BuildFilter());
         return jobs.ToList();
+    }
+
+    public async Task<Pagination<Job>> GetAllJobsByCriteriaAndPaged(SearchJobsQuery query)
+    {
+        var jobs = await _jobRepository.FindByFilterAsync(query.BuildFilter(), query.Pagination);
+        return jobs;
     }
 }

@@ -54,13 +54,19 @@ builder.Services.AddOpenApiDocument(x =>
     OpenApiConfiguration.Configure(x, "v1");
 });
 
-//builder.Services.AddAuthentication(x =>
-//{
-//    AuthenticationExtensions.ConfigureAuthentication(x);
-//}).AddJwtBearer(x =>
-//{
-//    AuthenticationExtensions.ConfigureJwtBearer(x, builder.Configuration);
-//});
+builder.Services.AddAuthentication(x =>
+{
+    AuthenticationExtensions.ConfigureAuthentication(x);
+}).AddJwtBearer(x =>
+{
+    AuthenticationExtensions.ConfigureJwtBearer(x, builder.Configuration);
+});
+
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy("applicant", policy => { policy.RequireClaim("role", "applicant"); });
+    opt.AddPolicy("company", policy => { policy.RequireClaim("role", "company"); });
+});
 
 var app = builder.Build();
 

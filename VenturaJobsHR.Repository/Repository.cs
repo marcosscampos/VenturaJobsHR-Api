@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Linq.Expressions;
+using VenturaJobsHR.CrossCutting.Pagination;
 using VenturaJobsHR.Domain.SeedWork.Repositories;
 using VenturaJobsHR.Repository.Context;
 
@@ -44,5 +45,14 @@ public class Repository<T> : IRepository<T> where T : class
         var filter = Builders<T>.Filter.Eq("_id", ObjectId.Parse(value.ToString()));
 
         await Collection.ReplaceOneAsync(filter, entity);
+    }
+
+    public async Task<Pagination<T>> FindByFilterAsync(Expression<Func<T, bool>> filter, Page pagination)
+    {
+        var dataResponse = await Collection.Find(filter).Skip(pagination.StartIndex).Limit(pagination.Length).ToListAsync();
+
+        var count = await Collection.CountDocumentsAsync(filter);
+
+        return new Pagination<T>(data: dataResponse, currentPage: pagination.CurrentPage, pageSize: pagination.Length, items: count);
     }
 }

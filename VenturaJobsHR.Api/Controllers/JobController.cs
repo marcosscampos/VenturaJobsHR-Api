@@ -52,11 +52,11 @@ public class JobController : BaseController
     [HttpGet("criteria")]
     [ProducesResponseType(typeof(List<Job>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetByCriteria([FromQuery] SeachJobsQuery query)
+    public async Task<IActionResult> GetByCriteria([FromQuery] SearchJobsQuery query)
     {
         try
         {
-            var job = await _jobService.GetAllJobsByCriteria(query);
+            var job = await _jobService.GetAllJobsByCriteriaAndPaged(query);
             return HandleResponse(job);
         }
         catch (Exception ex)

@@ -22,17 +22,21 @@ builder.Services.AddControllers().AddNewtonsoftJson(x =>
     x.UseMemberCasing();
 });
 
-const string CORS_DEFAULT_POLICY = "Default";
+const string CORS_DEFAULT_POLICY = "_corsConfig";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(CORS_DEFAULT_POLICY, config =>
     {
         config
-        .SetIsOriginAllowed(_ => true)
         .AllowAnyMethod()
         .AllowAnyHeader()
-        .AllowCredentials();
-
+        .AllowCredentials()
+        .WithOrigins(
+            "http://localhost:3000",
+            "https://localhost:3000",
+            "https://ventura-jobs-hr-frontend-git-master-marcosvinicius.vercel.app",
+            "https://ventura-jobs-hr-frontend-marcosvinicius.vercel.app",
+            "https://ventura-jobs-hr-frontend.vercel.app");
     });
 });
 

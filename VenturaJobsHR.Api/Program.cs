@@ -31,12 +31,13 @@ builder.Services.AddCors(options =>
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials()
-        .WithOrigins(
-            "http://localhost:3000",
-            "https://localhost:3000",
-            "https://ventura-jobs-hr-frontend-git-master-marcosvinicius.vercel.app",
-            "https://ventura-jobs-hr-frontend-marcosvinicius.vercel.app",
-            "https://ventura-jobs-hr-frontend.vercel.app");
+        .AllowAnyOrigin();
+        //.WithOrigins(
+        //    "http://localhost:3000",
+        //    "https://localhost:3000",
+        //    "https://ventura-jobs-hr-frontend-git-master-marcosvinicius.vercel.app",
+        //    "https://ventura-jobs-hr-frontend-marcosvinicius.vercel.app",
+        //    "https://ventura-jobs-hr-frontend.vercel.app");
     });
 });
 

@@ -92,6 +92,7 @@ app.UseOpenApi();
 app.UseSwaggerUi3();
 app.UseDeveloperExceptionPage();
 
+app.UseCors(CORS_DEFAULT_POLICY);
 
 app.UseHttpsRedirection();
 

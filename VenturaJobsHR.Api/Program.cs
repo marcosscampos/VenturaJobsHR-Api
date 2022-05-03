@@ -34,10 +34,8 @@ builder.Services.AddCors(options =>
         .WithOrigins(
             "http://localhost:3000",
             "https://localhost:3000",
-            "https://ventura-jobs-hr-frontend-git-master-marcosvinicius.vercel.app",
-            "https://ventura-jobs-hr-frontend-marcosvinicius.vercel.app",
-            "https://ventura-jobs-hr-frontend.vercel.app");
-    });
+            "https://ventura-jobs-hr.netlify.app"
+			});
 });
 
 builder.Services.AddApiVersioning(p =>

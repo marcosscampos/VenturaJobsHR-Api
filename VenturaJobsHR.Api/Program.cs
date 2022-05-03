@@ -34,8 +34,9 @@ builder.Services.AddCors(options =>
         .WithOrigins(
             "http://localhost:3000",
             "https://localhost:3000",
-            "https://ventura-jobs-hr.netlify.app"
-			});
+            "https://ventura-jobs-hr.netlify.app");
+
+    });
 });
 
 builder.Services.AddApiVersioning(p =>

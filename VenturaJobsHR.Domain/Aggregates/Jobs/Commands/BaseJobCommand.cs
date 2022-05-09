@@ -6,10 +6,10 @@ namespace VenturaJobsHR.Domain.Aggregates.Jobs.Commands;
 
 public abstract class BaseJobCommand : BaseCommand, IRequest<Unit>
 {
-    public List<CreateOrUpdateJobRequest> Job { get; set; }
+    public List<CreateOrUpdateJobRequest> JobList { get; set; }
 
     public BaseJobCommand()
     {
-        Job = new List<CreateOrUpdateJobRequest>();
+        JobList = new List<CreateOrUpdateJobRequest>();
     }
 }

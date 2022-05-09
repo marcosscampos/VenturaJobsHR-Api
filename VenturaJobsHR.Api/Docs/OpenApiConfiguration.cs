@@ -15,7 +15,7 @@ public static class OpenApiConfiguration
         configure.PostProcess = document =>
         {
             document.Info.Title = "Ventura Jobs HR";
-            document.Info.Description = "Microserviço responsável pela gestão de usuários(Candidato ou empresa) e envio de email de confirmaçao.";
+            document.Info.Description = "Microserviço responsável pela gestão de vagas.";
             document.Info.Version = version;
         };
 

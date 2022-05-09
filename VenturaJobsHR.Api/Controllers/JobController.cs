@@ -21,7 +21,7 @@ public class JobController : BaseController
     public JobController(IJobService jobService, INotificationHandler notification) : base(notification) => _jobService = jobService;
 
     /// <summary>
-    /// Lista todos os jobs
+    /// Lista todas as vagas
     /// </summary>
     /// <response code="200">Retorna todos os jobs</response>
     /// <response code="500">Se encontrar algum erro no banco de dados ou no servidor</response>

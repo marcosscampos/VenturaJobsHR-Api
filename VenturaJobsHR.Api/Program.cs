@@ -1,6 +1,10 @@
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
+using System.IO.Compression;
 using VenturaJobsHR.Api.Common;
 using VenturaJobsHR.Api.Common.ErrorsHandler;
 using VenturaJobsHR.Api.Docs;
@@ -20,6 +24,28 @@ builder.Services.AddControllers().AddNewtonsoftJson(x =>
 {
     x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
     x.UseMemberCasing();
+});
+
+builder.Services.Configure<FormOptions>(x =>
+{
+    x.ValueLengthLimit = int.MaxValue;
+    x.MultipartBodyLengthLimit = long.MaxValue;
+});
+
+builder.Services.AddResponseCompression(opt =>
+{
+    opt.EnableForHttps = true;
+});
+
+builder.Services.Configure<GzipCompressionProviderOptions>(opt =>
+{
+    opt.Level = CompressionLevel.Fastest;
+});
+
+builder.Services.Configure<ForwardedHeadersOptions>(opt =>
+{
+    opt.ForwardedHeaders = ForwardedHeaders.All;
+    opt.ForwardLimit = null;
 });
 
 const string CORS_DEFAULT_POLICY = "_corsConfig";
@@ -63,12 +89,6 @@ builder.Services.AddAuthentication(x =>
 }).AddJwtBearer(x =>
 {
     AuthenticationExtensions.ConfigureJwtBearer(x, builder.Configuration);
-});
-
-builder.Services.AddAuthorization(opt =>
-{
-    opt.AddPolicy("applicant", policy => { policy.RequireClaim("role", "applicant"); });
-    opt.AddPolicy("company", policy => { policy.RequireClaim("role", "company"); });
 });
 
 var app = builder.Build();

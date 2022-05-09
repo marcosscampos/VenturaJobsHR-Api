@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using VenturaJobsHR.Application.Services.Interfaces;
-using VenturaJobsHR.Common.Exceptions;
 using VenturaJobsHR.CrossCutting.Notifications;
 using VenturaJobsHR.CrossCutting.Pagination;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Commands;
@@ -35,7 +34,18 @@ public class JobService : ApplicationServiceBase, IJobService
         => await _jobRepository.GetByIdAsync(id);
 
     public async Task UpdateJob(UpdateJobCommand command)
-        => await _mediator.Send(command);
+    {
+        var entity = await _jobRepository.GetAllJobsByIdAsync(command.JobList.Select(x => x.Id).ToList());
+        var jobsToCreate = command.JobList.Where(x => !entity.Select(x => x.Id).Contains(x.Id)).ToList();
+        command.JobList = command.JobList.Where(x => !jobsToCreate.Contains(x)).ToList();
+        command.EntityList = entity.ToList();
+
+        if (command.EntityList.Any())
+            await _mediator.Send(command);
+
+        if (jobsToCreate.Any())
+            await CreateJob(new CreateJobCommand() { JobList = jobsToCreate});
+    }
 
     public async Task DeleteJob(string id)
         => await _jobRepository.DeleteAsync(id);

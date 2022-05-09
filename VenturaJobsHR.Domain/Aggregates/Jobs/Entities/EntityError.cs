@@ -8,5 +8,10 @@ public enum EntityError
     InvalidJobName,
     InvalidJobDescription,
     FinalDateLessCreationDate,
-    FinalDateLessDateNow
+    FinalDateLessDateNow,
+    InvalidLocation,
+    CompanyInvalidName,
+    JobInvalidLocation,
+    JobInvalidSalary,
+    JobInvalidCompany
 }

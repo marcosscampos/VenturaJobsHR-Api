@@ -19,13 +19,26 @@ public class CreateJobValidator : BaseValidator<CreateJobCommand>
 {
     public CreateJobValidator()
     {
-        RuleForEach(x => x.Job).ChildRules(job =>
+        RuleForEach(x => x.JobList).ChildRules(job =>
         {
-            job.RuleFor(x => x.Salary).NotNull().WithState(x => AddCommandErrorObject(EntityError.InvalidSalary, $"{x.Name}"));
-            job.RuleFor(x => x.Salary.Value).NotEqual(0).WithState(x => AddCommandErrorObject(EntityError.SalaryNotZero, $"{x.Name}"));
-            job.RuleFor(x => x.Name).NotEmpty().WithState(x => AddCommandErrorObject(EntityError.InvalidJobName, ""));
-            job.RuleFor(x => x.Description).NotEmpty().WithState(x => AddCommandErrorObject(EntityError.InvalidJobDescription, $"{x.Name}"));
-            job.RuleFor(x => x.FinalDate).Must(x => x != DateTime.MinValue).WithState(x => AddCommandErrorObject(EntityError.SalaryNotZero, $"{x.Name}"));
+            job.RuleFor(x => x.Salary).SetValidator(x => new SalaryValidator(x.GetReference())).DependentRules(() =>
+            {
+                job.RuleFor(x => x.Salary).NotNull().WithState(x => AddCommandErrorObject(EntityError.JobInvalidSalary, x.GetReference()));
+            });
+
+            job.RuleFor(x => x.Location).SetValidator(x => new LocationValidator(x.GetReference())).DependentRules(() =>
+            {
+                job.RuleFor(x => x.Location).NotNull().WithState(x => AddCommandErrorObject(EntityError.JobInvalidLocation, x.GetReference()));
+            });
+
+            job.RuleFor(x => x.Company).SetValidator(x => new CompanyValidator(x.GetReference())).DependentRules(() =>
+            {
+                job.RuleFor(x => x.Company).NotNull().WithState(x => AddCommandErrorObject(EntityError.JobInvalidCompany, x.GetReference()));
+            });
+
+            job.RuleFor(x => x.Name).NotEmpty().WithState(x => AddCommandErrorObject(EntityError.InvalidJobName, x.GetReference()));
+            job.RuleFor(x => x.Description).NotEmpty().WithState(x => AddCommandErrorObject(EntityError.InvalidJobDescription, x.GetReference()));
+            job.RuleFor(x => x.FinalDate).Must(x => x != DateTime.MinValue).WithState(x => AddCommandErrorObject(EntityError.SalaryNotZero, x.GetReference()));
         });
     }
 }

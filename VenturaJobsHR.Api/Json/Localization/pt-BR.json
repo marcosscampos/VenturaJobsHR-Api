@@ -5,5 +5,10 @@
   "InvalidJobName": "O nome não pode ser em branco.",
   "InvalidJobDescription": "Descrição não pode ser em branco.",
   "FinalDateLessCreationDate": "Data final é menor que a data de criação da vaga.",
-  "FinalDateLessDateNow": "Data final é menor que a data atual."
+  "FinalDateLessDateNow": "Data final é menor que a data atual.",
+  "InvalidLocation": "O local da vaga deve ter todas as informações preenchidas.",
+  "CompanyInvalidName": "Nome da empresa é invalida ou ausente",
+  "JobInvalidLocation": "Localidade da vaga inválida ou ausente.",
+  "JobInvalidSalary": "Salário da vaga inválido ou ausente.",
+  "JobInvalidCompany":  "Empresa da vaga inválida ou ausente"
 }

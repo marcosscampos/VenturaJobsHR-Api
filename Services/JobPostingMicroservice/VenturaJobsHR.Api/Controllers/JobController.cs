@@ -23,7 +23,7 @@ public class JobController : BaseController
     /// <summary>
     /// Lista todas as vagas
     /// </summary>
-    /// <response code="200">Retorna todos os jobs</response>
+    /// <response code="200">Retorna todas as vagas</response>
     /// <response code="500">Se encontrar algum erro no banco de dados ou no servidor</response>
     /// <returns></returns>
     [HttpGet]

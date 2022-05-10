@@ -2,10 +2,11 @@ name: Push Container to Heroku
 
 on:
   push:
-    branches:
-    - master
+    branches: [ master ]
     paths:
       - Services/JobPostingMicroservice/**
+  pull_request:
+    branches: [master]
 
 jobs:
   build:

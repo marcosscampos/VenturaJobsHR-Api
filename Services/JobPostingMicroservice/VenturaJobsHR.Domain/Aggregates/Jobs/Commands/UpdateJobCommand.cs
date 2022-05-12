@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
 using Newtonsoft.Json;
+using VenturaJobsHR.CrossCutting.Enums;
+using VenturaJobsHR.Domain.Aggregates.Jobs.Commands.Requests;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
 using VenturaJobsHR.Domain.SeedWork.Validators;
 

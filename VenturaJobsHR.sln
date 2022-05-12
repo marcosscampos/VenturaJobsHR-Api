@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.Api", "Services/JobPostingMicroservice/VenturaJobsHR.Api\VenturaJobsHR.Api.csproj", "{A33F88CC-57AE-4E4E-B0B7-C08DB55B18B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.Api", "Services\JobPostingMicroservice\VenturaJobsHR.Api\VenturaJobsHR.Api.csproj", "{A33F88CC-57AE-4E4E-B0B7-C08DB55B18B0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.API", "01.API", "{098D9A1E-DE7A-4AA4-9729-FA745AAC817A}"
 EndProject
@@ -11,25 +11,30 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.Core", "02.Core", "{E290
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.Infra", "03.Infra", "{13B40C9D-2CEE-4B6B-AFDA-361F666282E0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.Domain", "Services/JobPostingMicroservice/VenturaJobsHR.Domain\VenturaJobsHR.Domain.csproj", "{ABC318C3-7125-4A6A-A22D-2FBD334EEC1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.Domain", "Services\JobPostingMicroservice\VenturaJobsHR.Domain\VenturaJobsHR.Domain.csproj", "{ABC318C3-7125-4A6A-A22D-2FBD334EEC1E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.Application", "Services/JobPostingMicroservice/VenturaJobsHR.ApplicationService\VenturaJobsHR.Application.csproj", "{6D8334EE-B259-4660-9634-25F500A97F9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.Application", "Services\JobPostingMicroservice\VenturaJobsHR.ApplicationService\VenturaJobsHR.Application.csproj", "{6D8334EE-B259-4660-9634-25F500A97F9E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{ABC318C3-7125-4A6A-A22D-2FBD334EEC1E} = {ABC318C3-7125-4A6A-A22D-2FBD334EEC1E}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.Repository", "Services/JobPostingMicroservice/VenturaJobsHR.Repository\VenturaJobsHR.Repository.csproj", "{31480ED4-3AE2-4924-8761-6ED075D29CB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.Repository", "Services\JobPostingMicroservice\VenturaJobsHR.Repository\VenturaJobsHR.Repository.csproj", "{31480ED4-3AE2-4924-8761-6ED075D29CB1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.Common", "Services/JobPostingMicroservice/VenturaJobsHR.Common\VenturaJobsHR.Common.csproj", "{E2F65BAB-4E19-48AA-9B53-F0739BA521F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.Common", "Services\JobPostingMicroservice\VenturaJobsHR.Common\VenturaJobsHR.Common.csproj", "{E2F65BAB-4E19-48AA-9B53-F0739BA521F7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04.CrossCutting", "04.CrossCutting", "{6B08E102-EC92-45CB-904F-FCE236B45733}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.CrossCutting", "Services/JobPostingMicroservice/VenturaJobsHR.CrossCutting\VenturaJobsHR.CrossCutting.csproj", "{585B1454-4E03-4AA5-A3B0-E52BE7D395E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.CrossCutting", "Services\JobPostingMicroservice\VenturaJobsHR.CrossCutting\VenturaJobsHR.CrossCutting.csproj", "{585B1454-4E03-4AA5-A3B0-E52BE7D395E4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{35D4BA23-BE4F-454E-8EEC-82F0E5224192}"
-	ProjectSection(SolutionItems) = preProject
-		Dockerfile.txt = Dockerfile.txt
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05.Shared", "05.Shared", "{DAE6F705-5020-41B7-8672-9DD93E15DE02}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.Common", "Services\Shared\VenturaJobsHR.Common\VenturaJobsHR.Common.csproj", "{332BE17F-9A0D-454B-BA02-AC43E1CD4D01}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.Message", "Services\Shared\VenturaJobsHR.Message\VenturaJobsHR.Message.csproj", "{2F89DD36-1CF9-4C49-9BF2-372CF0890C4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06.Consumer", "06.Consumer", "{729FBFE2-81AE-42D0-9B61-2B31C5677711}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VenturaJobsHR.Consumer", "Services\JobPostingMicroservice\VenturaJobsHR.Consumer\VenturaJobsHR.Consumer.csproj", "{803B804F-C800-4C42-9E67-DFCE29838F32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +66,18 @@ Global
 		{585B1454-4E03-4AA5-A3B0-E52BE7D395E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{585B1454-4E03-4AA5-A3B0-E52BE7D395E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{585B1454-4E03-4AA5-A3B0-E52BE7D395E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{332BE17F-9A0D-454B-BA02-AC43E1CD4D01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{332BE17F-9A0D-454B-BA02-AC43E1CD4D01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{332BE17F-9A0D-454B-BA02-AC43E1CD4D01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{332BE17F-9A0D-454B-BA02-AC43E1CD4D01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F89DD36-1CF9-4C49-9BF2-372CF0890C4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F89DD36-1CF9-4C49-9BF2-372CF0890C4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F89DD36-1CF9-4C49-9BF2-372CF0890C4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F89DD36-1CF9-4C49-9BF2-372CF0890C4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{803B804F-C800-4C42-9E67-DFCE29838F32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{803B804F-C800-4C42-9E67-DFCE29838F32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{803B804F-C800-4C42-9E67-DFCE29838F32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{803B804F-C800-4C42-9E67-DFCE29838F32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +89,9 @@ Global
 		{31480ED4-3AE2-4924-8761-6ED075D29CB1} = {13B40C9D-2CEE-4B6B-AFDA-361F666282E0}
 		{E2F65BAB-4E19-48AA-9B53-F0739BA521F7} = {13B40C9D-2CEE-4B6B-AFDA-361F666282E0}
 		{585B1454-4E03-4AA5-A3B0-E52BE7D395E4} = {6B08E102-EC92-45CB-904F-FCE236B45733}
+		{332BE17F-9A0D-454B-BA02-AC43E1CD4D01} = {DAE6F705-5020-41B7-8672-9DD93E15DE02}
+		{2F89DD36-1CF9-4C49-9BF2-372CF0890C4A} = {DAE6F705-5020-41B7-8672-9DD93E15DE02}
+		{803B804F-C800-4C42-9E67-DFCE29838F32} = {729FBFE2-81AE-42D0-9B61-2B31C5677711}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D833DD4E-FDD4-45C5-AF9F-DDC949C40439}

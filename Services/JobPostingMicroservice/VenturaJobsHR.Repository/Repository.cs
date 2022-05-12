@@ -55,4 +55,16 @@ public class Repository<T> : IRepository<T> where T : class
 
         return new Pagination<T>(data: dataResponse, currentPage: pagination.CurrentPage, pageSize: pagination.Length, items: count);
     }
+
+    public async Task BulkInsertAsync(List<T> entities)
+    {
+        var inserts = new List<WriteModel<T>>();
+
+        foreach (var entity in entities)
+        {
+            inserts.Add(new InsertOneModel<T>(entity));
+        }
+
+        await Collection.BulkWriteAsync(inserts, new() { IsOrdered = false });
+    }
 }

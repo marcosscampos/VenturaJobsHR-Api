@@ -1,0 +1,80 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VenturaJobsHR.Users", "VenturaJobsHR.Users.csproj", "{DE98B625-C5DE-43CF-B8BB-03DD80E658DA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.API", "01.API", "{88367658-C006-4187-B62E-13C894F1BFC7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.Core", "02.Core", "{FABB8366-EA1B-415A-B1C3-ADA2542C199C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.Infra", "03.Infra", "{18F2F819-BD45-42D1-BAAB-B7AED94FA1E6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04.Consumer", "04.Consumer", "{47FE704A-AECF-4563-A3B8-2C8E6C2381DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05.Shared", "05.Shared", "{06188096-F6F4-4739-970F-3B861302C45F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VenturaJobsHR.Users.Domain", "..\VenturaJobsHR.Users.Domain\VenturaJobsHR.Users.Domain.csproj", "{79C824B1-DFE9-4F5F-B5CE-6DE5520BE8D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VenturaJobsHR.Users.Application", "..\VenturaJobsHR.Users.Application\VenturaJobsHR.Users.Application.csproj", "{774E3369-A6D2-4368-9EB5-9AAB30F7BBAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VenturaJobsHR.Users.Repository", "..\VenturaJobsHR.Users.Repository\VenturaJobsHR.Users.Repository.csproj", "{15C557FC-559E-4346-83A5-BC70A4FC1B40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VenturaJobsHR.Users.Consumer", "..\VenturaJobsHR.Users.Consumer\VenturaJobsHR.Users.Consumer.csproj", "{1632A203-BCC8-4BB4-AEC7-FC364BDC8DF0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.Message", "..\..\Shared\VenturaJobsHR.Message\VenturaJobsHR.Message.csproj", "{D25D5D5C-7C20-4482-AA14-72DC41FC5566}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VenturaJobsHR.Users.Common", "..\VenturaJobsHR.Users.Common\VenturaJobsHR.Users.Common.csproj", "{ABA6B7F7-7078-47AC-9142-995446F6D42B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE98B625-C5DE-43CF-B8BB-03DD80E658DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE98B625-C5DE-43CF-B8BB-03DD80E658DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE98B625-C5DE-43CF-B8BB-03DD80E658DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE98B625-C5DE-43CF-B8BB-03DD80E658DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79C824B1-DFE9-4F5F-B5CE-6DE5520BE8D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79C824B1-DFE9-4F5F-B5CE-6DE5520BE8D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79C824B1-DFE9-4F5F-B5CE-6DE5520BE8D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79C824B1-DFE9-4F5F-B5CE-6DE5520BE8D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{774E3369-A6D2-4368-9EB5-9AAB30F7BBAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{774E3369-A6D2-4368-9EB5-9AAB30F7BBAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{774E3369-A6D2-4368-9EB5-9AAB30F7BBAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{774E3369-A6D2-4368-9EB5-9AAB30F7BBAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15C557FC-559E-4346-83A5-BC70A4FC1B40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15C557FC-559E-4346-83A5-BC70A4FC1B40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15C557FC-559E-4346-83A5-BC70A4FC1B40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15C557FC-559E-4346-83A5-BC70A4FC1B40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1632A203-BCC8-4BB4-AEC7-FC364BDC8DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1632A203-BCC8-4BB4-AEC7-FC364BDC8DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1632A203-BCC8-4BB4-AEC7-FC364BDC8DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1632A203-BCC8-4BB4-AEC7-FC364BDC8DF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D25D5D5C-7C20-4482-AA14-72DC41FC5566}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D25D5D5C-7C20-4482-AA14-72DC41FC5566}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D25D5D5C-7C20-4482-AA14-72DC41FC5566}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D25D5D5C-7C20-4482-AA14-72DC41FC5566}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABA6B7F7-7078-47AC-9142-995446F6D42B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABA6B7F7-7078-47AC-9142-995446F6D42B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABA6B7F7-7078-47AC-9142-995446F6D42B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABA6B7F7-7078-47AC-9142-995446F6D42B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DE98B625-C5DE-43CF-B8BB-03DD80E658DA} = {88367658-C006-4187-B62E-13C894F1BFC7}
+		{79C824B1-DFE9-4F5F-B5CE-6DE5520BE8D0} = {FABB8366-EA1B-415A-B1C3-ADA2542C199C}
+		{774E3369-A6D2-4368-9EB5-9AAB30F7BBAC} = {FABB8366-EA1B-415A-B1C3-ADA2542C199C}
+		{15C557FC-559E-4346-83A5-BC70A4FC1B40} = {18F2F819-BD45-42D1-BAAB-B7AED94FA1E6}
+		{1632A203-BCC8-4BB4-AEC7-FC364BDC8DF0} = {47FE704A-AECF-4563-A3B8-2C8E6C2381DB}
+		{D25D5D5C-7C20-4482-AA14-72DC41FC5566} = {06188096-F6F4-4739-970F-3B861302C45F}
+		{ABA6B7F7-7078-47AC-9142-995446F6D42B} = {18F2F819-BD45-42D1-BAAB-B7AED94FA1E6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C51E8587-4FFC-47B7-A054-31E8E4339627}
+	EndGlobalSection
+EndGlobal

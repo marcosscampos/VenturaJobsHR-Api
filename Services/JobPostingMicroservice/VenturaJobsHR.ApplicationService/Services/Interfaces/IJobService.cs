@@ -1,4 +1,6 @@
-﻿using VenturaJobsHR.CrossCutting.Pagination;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using VenturaJobsHR.CrossCutting.Pagination;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Commands;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Queries;

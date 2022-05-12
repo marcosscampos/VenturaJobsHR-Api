@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Context\euhmzdud.pjt~" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.15.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VenturaJobsHR.Users.Common\VenturaJobsHR.Users.Common.csproj" />
+    <ProjectReference Include="..\VenturaJobsHR.Users.Domain\VenturaJobsHR.Users.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

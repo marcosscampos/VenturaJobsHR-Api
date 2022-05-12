@@ -1,4 +1,4 @@
-﻿namespace VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
+﻿namespace VenturaJobsHR.CrossCutting.Enums;
 
 public enum EntityError
 {

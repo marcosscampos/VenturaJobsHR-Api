@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
-using VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
+using VenturaJobsHR.CrossCutting.Enums;
+using VenturaJobsHR.Domain.Aggregates.Jobs.Commands.Requests;
 using VenturaJobsHR.Domain.SeedWork.Validators;
 
 namespace VenturaJobsHR.Domain.Aggregates.Jobs.Commands;

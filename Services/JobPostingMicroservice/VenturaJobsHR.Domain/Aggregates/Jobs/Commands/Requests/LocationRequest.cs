@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
+using VenturaJobsHR.CrossCutting.Enums;
 using VenturaJobsHR.Domain.SeedWork.Validators;
 
-namespace VenturaJobsHR.Domain.Aggregates.Jobs.Commands;
+namespace VenturaJobsHR.Domain.Aggregates.Jobs.Commands.Requests;
 
 public class LocationRequest
 {

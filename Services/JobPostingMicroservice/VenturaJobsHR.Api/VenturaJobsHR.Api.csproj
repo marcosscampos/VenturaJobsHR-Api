@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+		<PackageReference Include="MassTransit.RabbitMQ" Version="8.0.2" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.3" />
@@ -21,6 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Shared\VenturaJobsHR.Message\VenturaJobsHR.Message.csproj" />
 		<ProjectReference Include="..\VenturaJobsHR.ApplicationService\VenturaJobsHR.Application.csproj" />
 		<ProjectReference Include="..\VenturaJobsHR.Domain\VenturaJobsHR.Domain.csproj" />
 		<ProjectReference Include="..\VenturaJobsHR.Repository\VenturaJobsHR.Repository.csproj" />

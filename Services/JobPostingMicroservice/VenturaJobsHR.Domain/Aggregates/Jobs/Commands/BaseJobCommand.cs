@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using System.Diagnostics.CodeAnalysis;
+using VenturaJobsHR.Domain.Aggregates.Jobs.Commands.Requests;
 using VenturaJobsHR.Domain.SeedWork.Commands;
 
 namespace VenturaJobsHR.Domain.Aggregates.Jobs.Commands;

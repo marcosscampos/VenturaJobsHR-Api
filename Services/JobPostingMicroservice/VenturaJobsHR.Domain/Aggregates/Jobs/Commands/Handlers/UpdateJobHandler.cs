@@ -1,16 +1,24 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Configuration;
+using VenturaJobsHR.Common.Extensions;
 using VenturaJobsHR.CrossCutting.Notifications;
+using VenturaJobsHR.Domain.Aggregates.Jobs.Commands.Requests;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Repositories;
+using VenturaJobsHR.Message.Dto.Job;
+using VenturaJobsHR.Message.Interface;
 
 namespace VenturaJobsHR.Domain.Aggregates.Jobs.Commands.Handlers;
 
 public class UpdateJobHandler : BaseJobHandler, IRequestHandler<UpdateJobCommand, Unit>
 {
     private readonly IJobRepository _jobRepository;
+    private readonly IConfiguration _configuration;
 
-    public UpdateJobHandler(INotificationHandler notification, IJobRepository jobRepository, IMediator mediator) : base(notification, mediator, jobRepository)
+    public UpdateJobHandler(INotificationHandler notification, IJobRepository jobRepository, IMediator mediator, IBusService busService, IConfiguration configuration) 
+        : base(notification, mediator, jobRepository, busService)
     {
+        _configuration = configuration;
         _jobRepository = jobRepository;
     }
 
@@ -18,6 +26,8 @@ public class UpdateJobHandler : BaseJobHandler, IRequestHandler<UpdateJobCommand
     {
         if (!IsValid(request))
             return Unit.Value;
+
+        var jobListDto = new List<JobDto>();
 
         foreach (var item in request.JobList)
         {
@@ -31,8 +41,14 @@ public class UpdateJobHandler : BaseJobHandler, IRequestHandler<UpdateJobCommand
             if (!Notification.HasErrorNotifications(updatedJob.Id))
             {
                 Notification.RaiseSuccess(updatedJob.Id, updatedJob.Description);
-                await UpdateJob(updatedJob);
+                var job = updatedJob.ProjectedAs<JobDto>();
+                jobListDto.Add(job);
             }
+        }
+
+        if(jobListDto.Any())
+        {
+            await PublishToQueue(jobListDto, _configuration["MessagesConfiguration:Queues:Jobs"]);
         }
 
         return Unit.Value;

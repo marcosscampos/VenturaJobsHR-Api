@@ -1,11 +1,11 @@
 ﻿using VenturaJobsHR.CrossCutting.Enums;
 
-namespace VenturaJobsHR.Domain.Aggregates.Jobs.Commands;
+namespace VenturaJobsHR.Domain.Aggregates.Jobs.Commands.Requests;
 
 public class CreateOrUpdateJobRequest
 {
     public CreateOrUpdateJobRequest()
-    { 
+    {
         CriteriaList = new List<CriteriaRequest>();
     }
 

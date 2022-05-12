@@ -8,6 +8,7 @@ using System.IO.Compression;
 using VenturaJobsHR.Api.Common;
 using VenturaJobsHR.Api.Common.ErrorsHandler;
 using VenturaJobsHR.Api.Docs;
+using VenturaJobsHR.Application.DI;
 using VenturaJobsHR.Common.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,7 @@ host.ConfigureAppConfiguration((HostBuilderContext context, IConfigurationBuilde
 });
 // Add services to the container.
 builder.Services.ConfigureApplicationDependencies(builder.Configuration);
+builder.Services.ConfigureMassTransit(builder.Configuration);
 
 builder.Services.AddControllers().AddNewtonsoftJson(x =>
 {

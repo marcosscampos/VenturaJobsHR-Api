@@ -59,6 +59,8 @@ public class Job : Entity
         LastUpdate = new DateTimeWithZone(DateTime.Now).LocalTime;
     }
 
+    public Job() { }
+
     public void AddCriteria(Criteria criteria)
         => CriteriaList.Add(criteria);
 }

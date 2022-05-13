@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Linq.Expressions;
-using VenturaJobsHR.Users.Domain.Seedwork.Pagination;
+using VenturaJobsHR.Users.CrossCutting.Pagination;
 using VenturaJobsHR.Users.Domain.Seedwork.Repositories;
 using VenturaJobsHR.Users.Repository.Context;
 

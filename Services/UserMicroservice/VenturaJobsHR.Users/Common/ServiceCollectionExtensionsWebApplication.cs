@@ -1,5 +1,12 @@
-﻿using Microsoft.AspNetCore.Http.Json;
+﻿using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
+using Newtonsoft.Json;
+using System.IO.Compression;
 using VenturaJobsHR.Users.Application.DI;
+using VenturaJobsHR.Users.Common.Docs;
+using VenturaJobsHR.Users.Common.Middleware;
 
 namespace VenturaJobsHR.Users.Common;
 
@@ -9,9 +16,54 @@ public static class ServiceCollectionExtensionsWebApplication
 
     public static WebApplicationBuilder AddConfiguration(this WebApplicationBuilder builder)
     {
-        builder.Services.AddCarter();
+        builder.Services.AddControllers().AddNewtonsoftJson(x =>
+        {
+            x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+        });
+
+        builder.Services.Configure<FormOptions>(x =>
+        {
+            x.ValueLengthLimit = int.MaxValue;
+            x.MultipartBodyLengthLimit = long.MaxValue;
+        });
+
+        builder.Services.AddResponseCompression(opt =>
+        {
+            opt.EnableForHttps = true;
+        });
+
+        builder.Services.Configure<GzipCompressionProviderOptions>(opt =>
+        {
+            opt.Level = CompressionLevel.Fastest;
+        });
+
+        builder.Services.Configure<ForwardedHeadersOptions>(opt =>
+        {
+            opt.ForwardedHeaders = ForwardedHeaders.All;
+            opt.ForwardLimit = null;
+        });
+
+
+        builder.Services.AddApiVersioning(p =>
+        {
+            p.DefaultApiVersion = new ApiVersion(1, 0);
+            p.ReportApiVersions = true;
+            p.AssumeDefaultVersionWhenUnspecified = true;
+        });
+
+        builder.Services.AddVersionedApiExplorer(p =>
+        {
+            p.GroupNameFormat = "'v'VVV";
+            p.SubstituteApiVersionInUrl = true;
+        });
+
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+
+        builder.Services.AddOpenApiDocument(x =>
+        {
+            OpenApiConfiguration.Configure(x, "v1");
+        });
+
 
         builder.Services.AddCors(options =>
         {
@@ -29,26 +81,38 @@ public static class ServiceCollectionExtensionsWebApplication
             });
         });
 
-        builder.Services.Configure<JsonOptions>(o =>
-        {
-            o.SerializerOptions.WriteIndented = true;
-        });
-
         builder.Services.ConfigureApplicationDependencies(builder.Configuration);
+
+        builder.Services.AddAuthentication(x =>
+        {
+            AuthenticationExtensions.ConfigureAuthentication(x);
+        }).AddJwtBearer(x =>
+        {
+            AuthenticationExtensions.ConfigureJwtBearer(x, builder.Configuration);
+        });
 
         return builder;
     }
 
     public static WebApplication UseConfiguration(this WebApplication app)
     {
-        app.UseCors(CORS_DEFAULT_POLICY);
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+        app.UseMiddleware<ApiExceptionMiddleware>();
+        app.UseOpenApi();
+        app.UseSwaggerUi3();
+        app.UseRouting();
+        app.UseDeveloperExceptionPage();
 
-        app.MapCarter();
+        app.UseCors(CORS_DEFAULT_POLICY);
+
+        app.UseHttpsRedirection();
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.MapControllers();
+
+        app.UseEndpoints(endpoint =>
+        {
+            endpoint.MapControllers();
+        });
 
         return app;
     }

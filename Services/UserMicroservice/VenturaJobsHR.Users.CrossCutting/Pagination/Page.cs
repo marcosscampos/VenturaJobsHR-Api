@@ -1,4 +1,4 @@
-﻿namespace VenturaJobsHR.Users.Domain.Seedwork.Pagination;
+﻿namespace VenturaJobsHR.Users.CrossCutting.Pagination;
 
 public class Page
 {

@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VenturaJobsHR.Users.CrossCutting\VenturaJobsHR.Users.CrossCutting.csproj" />
+    <ProjectReference Include="..\VenturaJobsHR.Users.Domain\VenturaJobsHR.Users.Domain.csproj" />
   </ItemGroup>
 
 </Project>

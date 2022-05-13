@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using VenturaJobsHR.Users.Domain.Seedwork.Pagination;
+using VenturaJobsHR.Users.CrossCutting.Pagination;
 
 namespace VenturaJobsHR.Users.Domain.Seedwork.Repositories;
 

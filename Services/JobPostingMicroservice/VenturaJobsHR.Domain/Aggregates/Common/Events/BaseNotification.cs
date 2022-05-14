@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace VenturaJobsHR.Domain.SeedWork.Events;
+namespace VenturaJobsHR.Domain.Aggregates.Common.Events;
 
 public class BaseNotification<T> : INotification where T : class
 {

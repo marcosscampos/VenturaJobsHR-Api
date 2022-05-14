@@ -1,4 +1,4 @@
-﻿using VenturaJobsHR.Domain.SeedWork.Settings;
+﻿using VenturaJobsHR.Domain.Aggregates.Common.Settings;
 
 namespace VenturaJobsHR.Repository.DatabaseSettings;
 

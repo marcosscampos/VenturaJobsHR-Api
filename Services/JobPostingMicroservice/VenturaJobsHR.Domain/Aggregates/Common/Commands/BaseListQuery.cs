@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using VenturaJobsHR.CrossCutting.Pagination;
 
-namespace VenturaJobsHR.Domain.SeedWork.Commands;
+namespace VenturaJobsHR.Domain.Aggregates.Common.Commands;
 
 public abstract class BaseListQuery<T> : BaseCommand
 {

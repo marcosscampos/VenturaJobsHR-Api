@@ -26,16 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04.CrossCutting", "04.Cross
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.CrossCutting", "Services\JobPostingMicroservice\VenturaJobsHR.CrossCutting\VenturaJobsHR.CrossCutting.csproj", "{585B1454-4E03-4AA5-A3B0-E52BE7D395E4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05.Shared", "05.Shared", "{DAE6F705-5020-41B7-8672-9DD93E15DE02}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.Common", "Services\Shared\VenturaJobsHR.Common\VenturaJobsHR.Common.csproj", "{332BE17F-9A0D-454B-BA02-AC43E1CD4D01}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VenturaJobsHR.Message", "Services\Shared\VenturaJobsHR.Message\VenturaJobsHR.Message.csproj", "{2F89DD36-1CF9-4C49-9BF2-372CF0890C4A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06.Consumer", "06.Consumer", "{729FBFE2-81AE-42D0-9B61-2B31C5677711}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VenturaJobsHR.Consumer", "Services\JobPostingMicroservice\VenturaJobsHR.Consumer\VenturaJobsHR.Consumer.csproj", "{803B804F-C800-4C42-9E67-DFCE29838F32}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,18 +56,6 @@ Global
 		{585B1454-4E03-4AA5-A3B0-E52BE7D395E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{585B1454-4E03-4AA5-A3B0-E52BE7D395E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{585B1454-4E03-4AA5-A3B0-E52BE7D395E4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{332BE17F-9A0D-454B-BA02-AC43E1CD4D01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{332BE17F-9A0D-454B-BA02-AC43E1CD4D01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{332BE17F-9A0D-454B-BA02-AC43E1CD4D01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{332BE17F-9A0D-454B-BA02-AC43E1CD4D01}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2F89DD36-1CF9-4C49-9BF2-372CF0890C4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F89DD36-1CF9-4C49-9BF2-372CF0890C4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F89DD36-1CF9-4C49-9BF2-372CF0890C4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2F89DD36-1CF9-4C49-9BF2-372CF0890C4A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{803B804F-C800-4C42-9E67-DFCE29838F32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{803B804F-C800-4C42-9E67-DFCE29838F32}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{803B804F-C800-4C42-9E67-DFCE29838F32}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{803B804F-C800-4C42-9E67-DFCE29838F32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,9 +67,6 @@ Global
 		{31480ED4-3AE2-4924-8761-6ED075D29CB1} = {13B40C9D-2CEE-4B6B-AFDA-361F666282E0}
 		{E2F65BAB-4E19-48AA-9B53-F0739BA521F7} = {13B40C9D-2CEE-4B6B-AFDA-361F666282E0}
 		{585B1454-4E03-4AA5-A3B0-E52BE7D395E4} = {6B08E102-EC92-45CB-904F-FCE236B45733}
-		{332BE17F-9A0D-454B-BA02-AC43E1CD4D01} = {DAE6F705-5020-41B7-8672-9DD93E15DE02}
-		{2F89DD36-1CF9-4C49-9BF2-372CF0890C4A} = {DAE6F705-5020-41B7-8672-9DD93E15DE02}
-		{803B804F-C800-4C42-9E67-DFCE29838F32} = {729FBFE2-81AE-42D0-9B61-2B31C5677711}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D833DD4E-FDD4-45C5-AF9F-DDC949C40439}

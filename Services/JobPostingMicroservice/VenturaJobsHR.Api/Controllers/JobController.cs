@@ -24,11 +24,11 @@ public class JobController : BaseController
     /// Lista todas as vagas
     /// </summary>
     /// <response code="200">Retorna todas as vagas</response>
-    /// <response code="500">Se encontrar algum erro no banco de dados ou no servidor</response>
+    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
     /// <returns></returns>
     [HttpGet]
     [ProducesResponseType(typeof(List<Job>), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.InternalServerError)]
+    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> GetAll()
     {
         try
@@ -38,8 +38,7 @@ public class JobController : BaseController
         }
         catch (Exception ex)
         {
-            var error = ErrorHandlerFactory.Create(ex);
-            return BadRequest(error);
+            return ErrorResult.ReturnErrorResult(ex);
         }
     }
 
@@ -47,11 +46,11 @@ public class JobController : BaseController
     /// Busca jobs baseado nos filtros de salário e data final
     /// </summary>
     /// <response code="200">Retorna os jobs filtrados</response>
-    /// <response code="500">Se encontrar algum erro no banco de dados ou no servidor</response>
+    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
     /// <returns></returns>
     [HttpGet("criteria")]
     [ProducesResponseType(typeof(List<Job>), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.InternalServerError)]
+    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> GetByCriteria([FromQuery] SearchJobsQuery query)
     {
         try
@@ -61,8 +60,7 @@ public class JobController : BaseController
         }
         catch (Exception ex)
         {
-            var error = ErrorHandlerFactory.Create(ex);
-            return BadRequest(error);
+            return ErrorResult.ReturnErrorResult(ex);
         }
     }
 
@@ -71,12 +69,10 @@ public class JobController : BaseController
     /// </summary>
     /// <response code="201">Cria um ou mais jobs</response>
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
-    /// <response code="500">Se encontrar algum erro no banco de dados ou no servidor</response>
     /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> CreateJob(CreateJobCommand command)
     {
         try
@@ -86,8 +82,7 @@ public class JobController : BaseController
         }
         catch (Exception ex)
         {
-            var error = ErrorHandlerFactory.Create(ex);
-            return BadRequest(error);
+            return ErrorResult.ReturnErrorResult(ex);
         }
     }
 
@@ -96,27 +91,21 @@ public class JobController : BaseController
     /// </summary>
     /// <response code="200">Busca um job pelo id</response>
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
-    /// <response code="500">Se encontrar algum erro no banco de dados ou no servidor</response>
     /// <returns></returns>
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
         try
         {
             var job = await _jobService.GetById(id);
 
-            if (job is null)
-                return NotFound($"Job not found with id #{id}");
-
             return HandleResponse(job);
         }
         catch (Exception ex)
         {
-            var error = ErrorHandlerFactory.Create(ex);
-            return BadRequest(error);
+            return ErrorResult.ReturnErrorResult(ex);
         }
     }
 
@@ -125,12 +114,10 @@ public class JobController : BaseController
     /// </summary>
     /// <response code="200">Atualizado</response>
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
-    /// <response code="500">Se encontrar algum erro no banco de dados ou no servidor</response>
     /// <returns></returns>
     [HttpPut]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> UpdateJob(UpdateJobCommand command)
     {
         try
@@ -141,8 +128,7 @@ public class JobController : BaseController
         }
         catch (Exception ex)
         {
-            var error = ErrorHandlerFactory.Create(ex);
-            return BadRequest(error);
+            return ErrorResult.ReturnErrorResult(ex);
         }
     }
 
@@ -151,12 +137,10 @@ public class JobController : BaseController
     /// </summary>
     /// <response code="200">Deletado</response>
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
-    /// <response code="500">Se encontrar algum erro no banco de dados ou no servidor</response>
     /// <returns></returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> DeleteJob([FromRoute] string id)
     {
         try
@@ -167,8 +151,7 @@ public class JobController : BaseController
         }
         catch (Exception ex)
         {
-            var error = ErrorHandlerFactory.Create(ex);
-            return BadRequest(error);
+            return ErrorResult.ReturnErrorResult(ex);
         }
     }
 }

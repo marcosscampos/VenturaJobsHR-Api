@@ -28,7 +28,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\VenturaJobsHR.ApplicationService\VenturaJobsHR.Application.csproj" />
-		<ProjectReference Include="..\..\Shared\VenturaJobsHR.Message\VenturaJobsHR.Message.csproj" />
 		<ProjectReference Include="..\VenturaJobsHR.Domain\VenturaJobsHR.Domain.csproj" />
 	</ItemGroup>
 

@@ -20,12 +20,10 @@ host.ConfigureAppConfiguration((HostBuilderContext context, IConfigurationBuilde
 });
 // Add services to the container.
 builder.Services.ConfigureApplicationDependencies(builder.Configuration);
-builder.Services.ConfigureMassTransit(builder.Configuration);
 
 builder.Services.AddControllers().AddNewtonsoftJson(x =>
 {
     x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-    x.UseMemberCasing();
 });
 
 builder.Services.Configure<FormOptions>(x =>

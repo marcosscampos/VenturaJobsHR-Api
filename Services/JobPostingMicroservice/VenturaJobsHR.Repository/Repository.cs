@@ -2,7 +2,7 @@
 using MongoDB.Driver;
 using System.Linq.Expressions;
 using VenturaJobsHR.CrossCutting.Pagination;
-using VenturaJobsHR.Domain.SeedWork.Repositories;
+using VenturaJobsHR.Domain.Aggregates.Common.Repositories;
 using VenturaJobsHR.Repository.Context;
 
 namespace VenturaJobsHR.Repository;

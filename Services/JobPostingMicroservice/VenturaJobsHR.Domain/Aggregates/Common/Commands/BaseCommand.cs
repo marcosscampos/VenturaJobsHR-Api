@@ -2,7 +2,7 @@
 using FluentValidation.Results;
 using Newtonsoft.Json;
 
-namespace VenturaJobsHR.Domain.SeedWork.Commands;
+namespace VenturaJobsHR.Domain.Aggregates.Common.Commands;
 
 public abstract class BaseCommand
 {

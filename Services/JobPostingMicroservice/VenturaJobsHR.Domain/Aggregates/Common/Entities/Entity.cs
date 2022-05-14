@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
 
-namespace VenturaJobsHR.Domain.SeedWork.Entities;
+namespace VenturaJobsHR.Domain.Aggregates.Common.Entities;
 
 public abstract class Entity
 {

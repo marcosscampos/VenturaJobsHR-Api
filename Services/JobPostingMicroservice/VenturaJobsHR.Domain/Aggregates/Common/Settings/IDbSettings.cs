@@ -1,4 +1,4 @@
-﻿namespace VenturaJobsHR.Domain.SeedWork.Settings;
+﻿namespace VenturaJobsHR.Domain.Aggregates.Common.Settings;
 
 public interface IDbSettings
 {

@@ -3,7 +3,6 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Serializers;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
-using VenturaJobsHR.Domain.SeedWork.Entities;
 using VenturaJobsHR.Repository.Persistence;
 
 namespace VenturaJobsHR.Repository.Mappings;

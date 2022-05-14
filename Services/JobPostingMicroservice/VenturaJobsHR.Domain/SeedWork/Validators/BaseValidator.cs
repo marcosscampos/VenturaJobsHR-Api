@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using System.Diagnostics.CodeAnalysis;
-using VenturaJobsHR.Domain.SeedWork.Commands;
+using VenturaJobsHR.Domain.Aggregates.Common.Commands;
 
 namespace VenturaJobsHR.Domain.SeedWork.Validators;
 

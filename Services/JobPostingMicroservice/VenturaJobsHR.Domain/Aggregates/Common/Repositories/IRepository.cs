@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using VenturaJobsHR.CrossCutting.Pagination;
 
-namespace VenturaJobsHR.Domain.SeedWork.Repositories;
+namespace VenturaJobsHR.Domain.Aggregates.Common.Repositories;
 
 public interface IRepository<T> where T : class
 {

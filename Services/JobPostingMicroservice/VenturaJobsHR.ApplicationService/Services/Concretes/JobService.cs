@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VenturaJobsHR.Application.Services.Interfaces;
+using VenturaJobsHR.Common.Exceptions;
 using VenturaJobsHR.CrossCutting.Notifications;
 using VenturaJobsHR.CrossCutting.Pagination;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Commands;
@@ -34,7 +35,14 @@ public class JobService : ApplicationServiceBase, IJobService
     }
 
     public async Task<Job> GetById(string id)
-        => await _jobRepository.GetByIdAsync(id);
+    {
+        var job = await _jobRepository.GetByIdAsync(id);
+
+        if (job is null)
+            throw new NotFoundException($"Job not found with id #{id}");
+
+        return job;
+    }
 
     public async Task UpdateJob(UpdateJobCommand command)
     {

@@ -1,4 +1,4 @@
-﻿namespace VenturaJobsHR.Domain.SeedWork.Commands;
+﻿namespace VenturaJobsHR.Domain.Aggregates.Common.Commands;
 
 public class CommandErrorObject
 {

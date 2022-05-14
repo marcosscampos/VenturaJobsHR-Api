@@ -1,5 +1,5 @@
-﻿using VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
-using VenturaJobsHR.Domain.SeedWork.Repositories;
+﻿using VenturaJobsHR.Domain.Aggregates.Common.Repositories;
+using VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
 
 namespace VenturaJobsHR.Domain.Aggregates.Jobs.Repositories;
 

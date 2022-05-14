@@ -2,8 +2,8 @@
 using System.Linq.Expressions;
 using VenturaJobsHR.CrossCutting.Enums;
 using VenturaJobsHR.CrossCutting.Pagination;
+using VenturaJobsHR.Domain.Aggregates.Common.Commands;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
-using VenturaJobsHR.Domain.SeedWork.Commands;
 using VenturaJobsHR.Domain.SeedWork.Specification;
 using VenturaJobsHR.Domain.SeedWork.Validators;
 

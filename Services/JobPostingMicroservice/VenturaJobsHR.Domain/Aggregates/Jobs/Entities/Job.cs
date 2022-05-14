@@ -1,6 +1,6 @@
 ﻿using VenturaJobsHR.Common.Extensions;
 using VenturaJobsHR.CrossCutting.Enums;
-using VenturaJobsHR.Domain.SeedWork.Entities;
+using VenturaJobsHR.Domain.Aggregates.Common.Entities;
 
 namespace VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
 
@@ -63,4 +63,7 @@ public class Job : Entity
 
     public void AddCriteria(Criteria criteria)
         => CriteriaList.Add(criteria);
+
+    public string GetKeyCache()
+        => $"JOB{Name.ToUpper()}#{Description.ToUpper()}#{Company.Name.ToUpper()}";
 }

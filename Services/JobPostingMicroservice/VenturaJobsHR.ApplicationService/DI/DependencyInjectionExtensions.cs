@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 using System;
 using System.Reflection;
 using VenturaJobsHR.Application.Services.Concretes;
@@ -8,11 +9,10 @@ using VenturaJobsHR.Application.Services.Interfaces;
 using VenturaJobsHR.Common.Mapping;
 using VenturaJobsHR.CrossCutting.Localizations;
 using VenturaJobsHR.CrossCutting.Notifications;
+using VenturaJobsHR.Domain.Aggregates.Common.Interfaces;
+using VenturaJobsHR.Domain.Aggregates.Common.Settings;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Commands;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Repositories;
-using VenturaJobsHR.Domain.SeedWork.Settings;
-using VenturaJobsHR.Message.Interface;
-using VenturaJobsHR.Message.Service;
 using VenturaJobsHR.Repository;
 using VenturaJobsHR.Repository.Context;
 using VenturaJobsHR.Repository.DatabaseSettings;
@@ -30,22 +30,23 @@ public static class DependencyInjectionExtensions
             dbSettings.ConnectionStringMongoDb = configuration["ConnectionStrings:MongoDb:Uri"];
             dbSettings.DatabaseName = configuration["ConnectionStrings:MongoDb:DatabaseName"];
         });
-        services.USeServices();
+        services.UseServices();
+        services.ConfigureRedis(configuration);
 
         return services;
     }
 
-    private static void USeServices(this IServiceCollection services)
+    private static void UseServices(this IServiceCollection services)
     {
         services.AddScoped<IJobService, JobService>();
-        services.AddTransient<IBusService, BusService>();
+        services.AddScoped<ICacheService, CacheService>();
 
         services.AddScoped<INotificationHandler, NotificationHandler>();
         services.AddScoped<ILocalizationManager, LocalizationManager>();
+        MapperFactory.Setup();
 
         services.AddMediatR(typeof(CreateJobCommand).GetTypeInfo().Assembly);
         services.AddMediatR(typeof(UpdateJobCommand).GetTypeInfo().Assembly);
-        MapperFactory.Setup();
     }
 
     private static void UseRepositories(this IServiceCollection services, Action<IDbSettings> dbSettings)
@@ -58,5 +59,23 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IMongoContext>(x => new MongoContext(configureDb.ConnectionStringMongoDb, configureDb.DatabaseName));
 
         services.AddScoped<IJobRepository, JobRepository>();
+    }
+
+    private static void ConfigureRedis(this IServiceCollection service, IConfiguration configuration)
+    {
+        service.AddDistributedRedisCache(opt =>
+        {
+            opt.Configuration = configuration.GetConnectionString("Redis:Uri");
+            opt.ConfigurationOptions = new ConfigurationOptions()
+            {
+                Password = configuration["ConnectionStrings:Redis:Auth"],
+                AbortOnConnectFail = true,
+                Ssl = true,
+                EndPoints = { configuration.GetConnectionString("Redis:Uri") },
+                ConnectTimeout = 5000,
+                SyncTimeout = 5000
+            };
+            opt.InstanceName = "VenturaJobsCache";
+        });
     }
 }

@@ -1,31 +1,25 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
-using VenturaJobsHR.Common.Extensions;
 using VenturaJobsHR.CrossCutting.Notifications;
+using VenturaJobsHR.Domain.Aggregates.Common.Interfaces;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Commands.Requests;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Repositories;
-using VenturaJobsHR.Message.Dto.Job;
-using VenturaJobsHR.Message.Interface;
 
 namespace VenturaJobsHR.Domain.Aggregates.Jobs.Commands.Handlers;
 
 public class CreateJobHandler : BaseJobHandler, IRequestHandler<CreateJobCommand, Unit>
 {
-    private readonly IConfiguration _configuration;
-    public CreateJobHandler(IJobRepository jobRepository, INotificationHandler notification, IMediator mediator, IBusService busService, IConfiguration configuration)
-        : base(notification, mediator, jobRepository, busService)
-    {
-        _configuration = configuration;
-    }
+
+    public CreateJobHandler(IJobRepository jobRepository, INotificationHandler notification, IMediator mediator, ICacheService cacheService)
+        : base(notification, jobRepository, cacheService, mediator)
+    { }
 
     public async Task<Unit> Handle(CreateJobCommand request, CancellationToken cancellationToken)
     {
-        if (!IsValid(request))
-            return Unit.Value;
+        if (!await ValidateItems(request)) return Unit.Value;
 
-        var jobListDto = new List<JobDto>();
+        var jobList = new List<Job>();
 
         foreach (var item in request.JobList)
         {
@@ -34,13 +28,14 @@ public class CreateJobHandler : BaseJobHandler, IRequestHandler<CreateJobCommand
             if (!Notification.HasErrorNotifications(item.GetReference()))
             {
                 Notification.RaiseSuccess(item.Id, item.Name);
-                jobListDto.Add(CreatedJob.ProjectedAs<JobDto>());
+                jobList.Add(CreatedJob);
             }
         }
 
-        if(jobListDto.Any())
+        if (jobList.Any())
         {
-            await PublishToQueue(jobListDto, _configuration["MessagesConfiguration:Queues:Jobs"]);
+            await CreateJobAsync(jobList);
+            await SetCache(jobList, request);
         }
 
         return Unit.Value;

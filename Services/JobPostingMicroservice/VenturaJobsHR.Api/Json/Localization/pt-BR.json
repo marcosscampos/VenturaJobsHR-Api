@@ -10,5 +10,8 @@
   "CompanyInvalidName": "Nome da empresa é invalida ou ausente",
   "JobInvalidLocation": "Localidade da vaga inválida ou ausente.",
   "JobInvalidSalary": "Salário da vaga inválido ou ausente.",
-  "JobInvalidCompany":  "Empresa da vaga inválida ou ausente"
+  "JobInvalidCompany": "Empresa da vaga inválida ou ausente",
+  "MaxItemsExceeded": "Você ultrapassou o limite de itens máximo que pode ser enviado",
+  "DuplicatedItems": "Há items duplicados no envio",
+  "DuplicatedRequest": "Requisição duplicada"
 }

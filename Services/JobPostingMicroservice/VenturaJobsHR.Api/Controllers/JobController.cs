@@ -93,7 +93,7 @@ public class JobController : BaseController
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
     /// <returns></returns>
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(Job), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {

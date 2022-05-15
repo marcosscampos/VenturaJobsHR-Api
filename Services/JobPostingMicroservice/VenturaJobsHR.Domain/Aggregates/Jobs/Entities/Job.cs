@@ -65,5 +65,5 @@ public class Job : Entity
         => CriteriaList.Add(criteria);
 
     public string GetKeyCache()
-        => $"JOB{Name.ToUpper()}#{Description.ToUpper()}#{Company.Name.ToUpper()}";
+        => $"JOB{Name.ToUpper()}#{Description.ToUpper()}#{Company.Name.ToUpper()}#{FinalDate:dd/MM/yyyy}";
 }

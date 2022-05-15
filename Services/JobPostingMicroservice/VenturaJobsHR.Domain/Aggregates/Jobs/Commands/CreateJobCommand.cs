@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using VenturaJobsHR.CrossCutting.Enums;
+using VenturaJobsHR.Domain.Aggregates.Common.Commands;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Commands.Requests;
 using VenturaJobsHR.Domain.SeedWork.Validators;
 
@@ -20,6 +21,10 @@ public class CreateJobValidator : BaseValidator<CreateJobCommand>
 {
     public CreateJobValidator()
     {
+        RuleFor(x => x.JobList.Select(p => new { Name = p.Name, Description = p.Description, FinalDate = p.FinalDate }).ToList())
+            .Cascade(CascadeMode.Stop)
+            .Must(list => !list.GroupBy(x => x).Any(y => y.Count() > 1)).WithState(x => AddCommandErrorObject(EntityError.DuplicatedItems));
+
         RuleForEach(x => x.JobList).ChildRules(job =>
         {
             job.RuleFor(x => x.Salary).SetValidator(x => new SalaryValidator(x.GetReference())).DependentRules(() =>

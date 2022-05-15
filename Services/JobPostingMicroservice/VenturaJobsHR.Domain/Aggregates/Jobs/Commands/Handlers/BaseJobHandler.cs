@@ -23,12 +23,10 @@ public abstract class BaseJobHandler : BaseRequestHandler
         _mediator = mediator;
     }
 
-
     protected async Task CreateJobAsync(List<Job> jobList)
     {
-        //await _jobRepository.BulkInsertAsync(jobList);
-        var jobNotification = jobList.ProjectedAsCollection<JobsCreatedEvent>();
-        await _mediator.Publish(jobNotification, new CancellationToken());
+        await _jobRepository.BulkInsertAsync(jobList);
+        await _mediator.Publish(jobList[0].ProjectedAs<JobsCreatedEvent>());
     }
 
     protected async Task UpdateJobAsync(List<Job> jobList)
@@ -38,7 +36,7 @@ public abstract class BaseJobHandler : BaseRequestHandler
             await _jobRepository.UpdateAsync(item);
         }
 
-        await _mediator.Send(jobList.ProjectedAsCollection<JobsUpdatedEvent>());
+        await _mediator.Send(jobList[0].ProjectedAs<JobsUpdatedEvent>());
     }
 
     protected async Task<bool> ValidateItems(BaseJobCommand command)

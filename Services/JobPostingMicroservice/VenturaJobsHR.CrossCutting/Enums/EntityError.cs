@@ -13,5 +13,6 @@ public enum EntityError
     CompanyInvalidName,
     JobInvalidLocation,
     JobInvalidSalary,
-    JobInvalidCompany
+    JobInvalidCompany,
+    DuplicatedItems
 }

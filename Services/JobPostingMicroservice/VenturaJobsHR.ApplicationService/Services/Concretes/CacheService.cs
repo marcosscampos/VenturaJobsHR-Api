@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VenturaJobsHR.Common.Extensions;
 using VenturaJobsHR.Domain.Aggregates.Common.Interfaces;
 using VenturaJobsHR.Domain.Aggregates.Common.ValueObjects;
 
@@ -47,7 +48,10 @@ public class CacheService : ICacheService
 
     public async Task InsertOrUpdateAsync(string key, object value, DateTime expiration)
     {
-        var options = new DistributedCacheEntryOptions { SlidingExpiration = TimeSpan.Parse(expiration.ToString()) };
+        var date = new DateTimeWithZone(DateTime.Now).LocalTime;
+        TimeSpan result = expiration - date;
+
+        var options = new DistributedCacheEntryOptions { SlidingExpiration = TimeSpan.FromSeconds(result.TotalSeconds) };
 
         await _cache.SetStringAsync($"{key}", JsonConvert.SerializeObject(value), options);
     }

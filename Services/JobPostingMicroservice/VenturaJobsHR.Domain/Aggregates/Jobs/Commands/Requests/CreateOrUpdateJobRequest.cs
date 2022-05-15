@@ -20,8 +20,5 @@ public class CreateOrUpdateJobRequest
     public DateTime FinalDate { get; set; }
 
     public string GetReference()
-        => $"#{Name}" +
-           $"#{Description}" +
-           $"#{Company.Name}" +
-           $"#{FinalDate}";
+        => $"JOB{Name.ToUpper()}#{Description.ToUpper()}#{Company.Name.ToUpper()}#{FinalDate:dd/MM/yyyy}";
 }

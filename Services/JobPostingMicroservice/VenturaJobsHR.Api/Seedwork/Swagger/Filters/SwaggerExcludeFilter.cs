@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
-namespace VenturaJobsHR.Api.Seedwork.Swagger
+namespace VenturaJobsHR.Api.Seedwork.Swagger.Filters
 {
     public class SwaggerExcludeFilter : IOperationFilter
     {
@@ -16,8 +16,8 @@ namespace VenturaJobsHR.Api.Seedwork.Swagger
             {
                 foreach (var property in ignoredProperties)
                 {
-                    operation.Parameters = operation.Parameters.Where(p => (!p.Name.Equals(property.Name, StringComparison.InvariantCulture) && 
-                    !p.In.Value.ToString().Equals("route", StringComparison.InvariantCultureIgnoreCase))).ToList();
+                    operation.Parameters = operation.Parameters.Where(p => !p.Name.Equals(property.Name, StringComparison.InvariantCulture) &&
+                    !p.In.Value.ToString().Equals("route", StringComparison.InvariantCultureIgnoreCase)).ToList();
                 }
             }
         }

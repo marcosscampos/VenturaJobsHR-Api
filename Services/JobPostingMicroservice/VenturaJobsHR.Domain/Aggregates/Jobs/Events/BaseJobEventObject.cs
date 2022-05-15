@@ -15,6 +15,7 @@ public class BaseJobEventObject
     public IList<CriteriaEvent> CriteriaList { get; set; }
     public JobStatusEnum Status { get; set; }
     public DateTime FinalDate { get; set; }
+    public bool Active { get; set; }
 }
 
 public class JobsCreatedEvent : BaseNotification<BaseJobEventObject>

@@ -4,10 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Swashbuckle.AspNetCore.Filters;
 using System.IO.Compression;
+using System.Reflection;
 using VenturaJobsHR.Api.Common;
 using VenturaJobsHR.Api.Common.ErrorsHandler;
-using VenturaJobsHR.Api.Docs;
+using VenturaJobsHR.Api.Seedwork.Swagger;
 using VenturaJobsHR.Application.DI;
 using VenturaJobsHR.Common.Extensions;
 
@@ -24,6 +27,8 @@ builder.Services.ConfigureApplicationDependencies(builder.Configuration);
 builder.Services.AddControllers().AddNewtonsoftJson(x =>
 {
     x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+    x.SerializerSettings.Formatting = Formatting.Indented;
+    x.SerializerSettings.ContractResolver = new DefaultContractResolver();
 });
 
 builder.Services.Configure<FormOptions>(x =>
@@ -78,10 +83,13 @@ builder.Services.AddVersionedApiExplorer(p =>
     p.SubstituteApiVersionInUrl = true;
 });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApiDocument(x =>
+
+builder.Services.AddSwaggerGen(x =>
 {
-    OpenApiConfiguration.Configure(x, "v1");
+    SwaggerConfiguration.Configure(x, "v1");
 });
+builder.Services.AddSwaggerExamplesFromAssemblies(Assembly.GetExecutingAssembly());
+builder.Services.AddSwaggerGenNewtonsoftSupport();
 
 builder.Services.AddAuthentication(x =>
 {
@@ -106,8 +114,10 @@ app.Use(async (ctx, next) =>
 });
 
 app.UseMiddleware<ApiExceptionMiddleware>();
-app.UseOpenApi();
-app.UseSwaggerUi3();
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.UseDeveloperExceptionPage();
 
 app.UseCors(CORS_DEFAULT_POLICY);

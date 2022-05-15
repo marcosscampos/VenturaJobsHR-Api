@@ -36,7 +36,7 @@ public abstract class BaseJobHandler : BaseRequestHandler
             await _jobRepository.UpdateAsync(item);
         }
 
-        await _mediator.Send(jobList[0].ProjectedAs<JobsUpdatedEvent>());
+        await _mediator.Publish(jobList[0].ProjectedAs<JobsUpdatedEvent>());
     }
 
     protected async Task<bool> ValidateItems(BaseJobCommand command)

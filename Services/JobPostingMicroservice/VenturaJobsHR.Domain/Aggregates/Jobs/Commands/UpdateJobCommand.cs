@@ -11,7 +11,7 @@ namespace VenturaJobsHR.Domain.Aggregates.Jobs.Commands;
 public class UpdateJobCommand : BaseJobCommand, IRequest<Unit>
 {
     [JsonIgnore]
-    public List<Job> EntityList { get; set; }
+    public List<Job> EntityList { get; set; } = new List<Job>();
 
     public override bool IsValid()
     {

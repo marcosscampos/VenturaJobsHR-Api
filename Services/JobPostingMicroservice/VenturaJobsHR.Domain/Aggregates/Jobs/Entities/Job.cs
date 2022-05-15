@@ -15,7 +15,7 @@ public class Job : Entity
     public IList<Criteria> CriteriaList { get; set; }
     public JobStatusEnum Status { get; set; }
     public DateTime FinalDate { get; set; }
-
+    public bool Active { get; set; }
 
     public Job(string name, string description, Salary salary, Location location, Company company, JobStatusEnum status, DateTime finalDate)
     {
@@ -28,6 +28,7 @@ public class Job : Entity
         Status = status;
         FinalDate = finalDate;
         CreationDate = new DateTimeWithZone(DateTime.Now).LocalTime;
+        Active = true;
     }
 
     public Job(string id, string name, string description, Salary salary, Location location, Company company, JobStatusEnum status, DateTime finalDate)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VenturaJobsHR.Application.Records.Jobs;
 using VenturaJobsHR.Application.Services.Interfaces;
 using VenturaJobsHR.Common.Exceptions;
 using VenturaJobsHR.CrossCutting.Notifications;
@@ -71,5 +72,17 @@ public class JobService : ApplicationServiceBase, IJobService
     {
         var jobs = await _jobRepository.FindByFilterAsync(query.BuildFilter(), query.Pagination);
         return jobs;
+    }
+
+    public async Task LogicalDeleteJob(ActiveJobRecord job)
+    {
+        var jobToDelete = await _jobRepository.GetByIdAsync(job.Id);
+
+        if (jobToDelete is null)
+            throw new NotFoundException($"Job not found with id #{job.Id}");
+
+        jobToDelete.Active = job.Active;
+
+        await _jobRepository.UpdateAsync(jobToDelete);
     }
 }

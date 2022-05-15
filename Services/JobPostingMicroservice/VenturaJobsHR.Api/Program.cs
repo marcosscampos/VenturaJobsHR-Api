@@ -29,6 +29,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(x =>
     x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
     x.SerializerSettings.Formatting = Formatting.Indented;
     x.SerializerSettings.ContractResolver = new DefaultContractResolver();
+    x.UseCamelCasing(true);
 });
 
 builder.Services.Configure<FormOptions>(x =>

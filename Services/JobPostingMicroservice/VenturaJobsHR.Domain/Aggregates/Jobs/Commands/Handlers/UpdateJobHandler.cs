@@ -64,6 +64,7 @@ public class UpdateJobHandler : BaseJobHandler, IRequestHandler<UpdateJobCommand
             location,
             company,
             request.Status,
+            request.FormOfHiring,
             request.FinalDate
             );
 

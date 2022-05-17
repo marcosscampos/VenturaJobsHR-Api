@@ -13,6 +13,7 @@ public class BaseJobEventObject
     public LocationEvent Location { get; set; }
     public CompanyEvent Company { get; set; }
     public IList<CriteriaEvent> CriteriaList { get; set; }
+    public FormOfHiringEnum FormOfHiring { get; set; }
     public JobStatusEnum Status { get; set; }
     public DateTime FinalDate { get; set; }
     public bool Active { get; set; }

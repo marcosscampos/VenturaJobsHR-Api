@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using MongoDB.Bson;
+using VenturaJobsHR.CrossCutting.Enums;
 using VenturaJobsHR.CrossCutting.Notifications;
 using VenturaJobsHR.Domain.Aggregates.Common.Interfaces;
 using VenturaJobsHR.Domain.Aggregates.Jobs.Commands.Requests;
@@ -49,7 +50,6 @@ public class CreateJobHandler : BaseJobHandler, IRequestHandler<CreateJobCommand
         var location = new Location(request.Location.City, request.Location.State, request.Location.Country);
         var company = new Company(request.Company.Id, request.Company.Uid, request.Company.Name);
 
-
         var job = new Job(
             id,
             request.Name,
@@ -57,7 +57,8 @@ public class CreateJobHandler : BaseJobHandler, IRequestHandler<CreateJobCommand
             salary,
             location,
             company,
-            request.Status,
+            request.FormOfHiring,
+            JobStatusEnum.Published,
             request.FinalDate
             );
 

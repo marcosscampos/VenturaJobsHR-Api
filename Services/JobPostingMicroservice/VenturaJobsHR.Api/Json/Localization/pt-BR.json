@@ -13,5 +13,6 @@
   "JobInvalidCompany": "Empresa da vaga inválida ou ausente",
   "MaxItemsExceeded": "Você ultrapassou o limite de itens máximo que pode ser enviado",
   "DuplicatedItems": "Há items duplicados no envio",
-  "DuplicatedRequest": "Requisição duplicada"
+  "DuplicatedRequest": "Requisição duplicada",
+  "InvalidJobObject": "Objeto inválido ou ausente."
 }

@@ -21,6 +21,8 @@ public class CreateJobValidator : BaseValidator<CreateJobCommand>
 {
     public CreateJobValidator()
     {
+        RuleFor(x => x.JobList).Cascade(CascadeMode.Stop).Must(x => x.Count > 0).WithState(x => AddCommandErrorObject(EntityError.InvalidJobObject));
+
         RuleFor(x => x.JobList.Select(p => new { Name = p.Name, Description = p.Description, FinalDate = p.FinalDate }).ToList())
             .Cascade(CascadeMode.Stop)
             .Must(list => !list.GroupBy(x => x).Any(y => y.Count() > 1)).WithState(x => AddCommandErrorObject(EntityError.DuplicatedItems));

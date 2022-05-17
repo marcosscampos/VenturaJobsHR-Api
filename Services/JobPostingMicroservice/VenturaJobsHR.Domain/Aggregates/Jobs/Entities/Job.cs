@@ -12,18 +12,20 @@ public class Job : Entity
     public Salary Salary { get; set; }
     public Location Location { get; set; }
     public Company Company { get; set; }
+    public FormOfHiringEnum FormOfHiring { get; set; }
     public IList<Criteria> CriteriaList { get; set; }
     public JobStatusEnum Status { get; set; }
     public DateTime FinalDate { get; set; }
     public bool Active { get; set; }
 
-    public Job(string name, string description, Salary salary, Location location, Company company, JobStatusEnum status, DateTime finalDate)
+    public Job(string name, string description, Salary salary, Location location, Company company, FormOfHiringEnum formOfHiring, JobStatusEnum status, DateTime finalDate)
     {
         Name = name;
         Description = description;
         Salary = salary;
         Location = location;
         Company = company;
+        FormOfHiring = formOfHiring;
         CriteriaList = new List<Criteria>();
         Status = status;
         FinalDate = finalDate;
@@ -31,8 +33,8 @@ public class Job : Entity
         Active = true;
     }
 
-    public Job(string id, string name, string description, Salary salary, Location location, Company company, JobStatusEnum status, DateTime finalDate)
-        : this(name, description, salary, location, company, status, finalDate)
+    public Job(string id, string name, string description, Salary salary, Location location, Company company, FormOfHiringEnum formOfHiring, JobStatusEnum status, DateTime finalDate)
+        : this(name, description, salary, location, company, formOfHiring, status, finalDate)
     {
         Id = id;
     }
@@ -46,6 +48,7 @@ public class Job : Entity
             Location location,
             Company company,
             JobStatusEnum status,
+            FormOfHiringEnum formOfHiring,
             DateTime finalDate
         )
     {
@@ -55,6 +58,7 @@ public class Job : Entity
         Salary = salary;
         Location = location;
         Company = company;
+        FormOfHiring = FormOfHiring;
         Status = status;
         FinalDate = finalDate;
         LastUpdate = new DateTimeWithZone(DateTime.Now).LocalTime;

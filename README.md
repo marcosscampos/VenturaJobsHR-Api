@@ -8,3 +8,4 @@ Conjunto de microserviços para a matéria de Projeto de Bloco.
 
 [![Push Container to Heroku](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/jobs-posting.yml/badge.svg)](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/jobs-posting.yml)
 [![Push Container to Heroku - Users](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/users.yml/badge.svg)](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/users.yml)
+[![ApiGatewayDeploy](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/api-gateway.yml/badge.svg)](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/api-gateway.yml)

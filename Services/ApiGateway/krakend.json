@@ -35,7 +35,7 @@
                     "url_pattern": "/v1/jobs",
                     "encoding": "json",
                     "sd": "static",
-                    "method": "POST",
+                    "method": "GET",
                     "is_collection": true,
                     "target": "",
                     "host": [

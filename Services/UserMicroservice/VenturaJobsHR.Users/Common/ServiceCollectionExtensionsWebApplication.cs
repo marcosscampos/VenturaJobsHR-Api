@@ -1,14 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.ResponseCompression;
-using Newtonsoft.Json;
-using System.IO.Compression;
-using VenturaJobsHR.Users.Application.DI;
-using VenturaJobsHR.Users.Common.Docs;
-using VenturaJobsHR.Users.Common.Middleware;
-
-namespace VenturaJobsHR.Users.Common;
+﻿namespace VenturaJobsHR.Users.Common;
 
 public static class ServiceCollectionExtensionsWebApplication
 {

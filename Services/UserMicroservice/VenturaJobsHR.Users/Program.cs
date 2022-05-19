@@ -1,5 +1,3 @@
-using VenturaJobsHR.Users.Common;
-
 var builder = WebApplication.CreateBuilder(args);
 builder.AddConfiguration();
 

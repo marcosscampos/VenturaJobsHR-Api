@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace VenturaJobsHR.Users.Common.Handler.Errors;
+﻿namespace VenturaJobsHR.Users.Common.Handler.Errors;
 
 public static class ErrorResult
 {

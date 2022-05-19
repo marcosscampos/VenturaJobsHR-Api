@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using VenturaJobsHR.Message.Interface;
-using VenturaJobsHR.Message.Service;
 using VenturaJobsHR.Users.Application.Services.Concrete;
 using VenturaJobsHR.Users.Application.Services.Interface;
 using VenturaJobsHR.Users.Common.Mappings;

@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using VenturaJobsHR.Users.Common.Handler.Errors;
+﻿using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace VenturaJobsHR.Users.Common.Middleware;
 

@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-
-namespace VenturaJobsHR.Users.Common;
+﻿namespace VenturaJobsHR.Users.Common;
 
 public static class AuthenticationExtensions
 {

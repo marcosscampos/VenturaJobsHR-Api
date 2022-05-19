@@ -1,6 +1,4 @@
-﻿using VenturaJobsHR.Users.Common.Exceptions;
-
-namespace VenturaJobsHR.Users.Common.Handler.Errors;
+﻿namespace VenturaJobsHR.Users.Common.Handler.Errors;
 
 public class ErrorHandlerFactory
 {

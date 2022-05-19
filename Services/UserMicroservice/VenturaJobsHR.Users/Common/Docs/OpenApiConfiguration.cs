@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using NSwag;
-using NSwag.Generation.AspNetCore;
-using NSwag.Generation.Processors.Security;
-
-namespace VenturaJobsHR.Users.Common.Docs;
+﻿namespace VenturaJobsHR.Users.Common.Docs;
 
 public static class OpenApiConfiguration
 {

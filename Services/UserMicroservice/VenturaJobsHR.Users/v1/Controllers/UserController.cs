@@ -1,12 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using NSwag.Annotations;
-using System.Net;
-using VenturaJobsHR.Users.Application.Records.User;
-using VenturaJobsHR.Users.Application.Services.Interface;
-using VenturaJobsHR.Users.Common.Handler.Errors;
-using VenturaJobsHR.Users.Domain.Models;
-
-namespace VenturaJobsHR.Users.v1.Controllers;
+﻿namespace VenturaJobsHR.Users.v1.Controllers;
 
 [ApiVersion("1.0")]
 [Route("/v{version:apiVersion}/users")]

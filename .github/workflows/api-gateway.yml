@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - ApiGateway/**
+      - Services/ApiGateway/**
   pull_request:
     branches: [ master ]
 
@@ -15,7 +15,7 @@ env:
 
 defaults:
   run:
-    working-directory: ApiGateway
+    working-directory: Services/ApiGateway
 
 jobs:
   build:

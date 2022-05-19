@@ -1,0 +1,31 @@
+name: ApiGatewayDeploy
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - ApiGateway/**
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+env:
+  HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+defaults:
+  run:
+    working-directory: ApiGateway
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login to Heroku Container registry
+        run: heroku container:login
+      - name: Build and push
+        run: heroku container:push -a ${{ secrets.HEROKU_APP_API_GATEWAY_NAME }} web
+      - name: Release
+        run:  heroku container:release -a ${{ secrets.HEROKU_APP_API_GATEWAY_NAME }} web

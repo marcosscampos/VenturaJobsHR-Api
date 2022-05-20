@@ -7,6 +7,7 @@ Conjunto de microserviços para a matéria de Projeto de Bloco.
    - relatórios - ver as vagas que foram respondidas/canceladas/recusadas - CRUD
 
 | Service | Status | Link |
+|---------|--------|------|
 | Microserviço de gestão de vagas | [![Push Container to Heroku](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/jobs-posting.yml/badge.svg)](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/jobs-posting.yml) | https://ventura-jobs.herokuapp.com |
 | Microserviço de gestão de usuários | 
 [![Push Container to Heroku - Users](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/users.yml/badge.svg)](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/users.yml) | https://ventura-jobs-users.herokuapp.com |

@@ -36,7 +36,7 @@
                     "encoding": "json",
                     "sd": "static",
                     "method": "GET",
-                    "is_collection": true,
+                    "is_collection": false,
                     "target": "",
                     "host": [
                         "https://ventura-jobs.herokuapp.com/"

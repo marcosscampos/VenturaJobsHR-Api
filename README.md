@@ -6,6 +6,8 @@ Conjunto de microserviços para a matéria de Projeto de Bloco.
  - Microserviço de gestão de candidatos
    - relatórios - ver as vagas que foram respondidas/canceladas/recusadas - CRUD
 
-[![Push Container to Heroku](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/jobs-posting.yml/badge.svg)](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/jobs-posting.yml)
-[![Push Container to Heroku - Users](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/users.yml/badge.svg)](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/users.yml)
-[![ApiGatewayDeploy](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/api-gateway.yml/badge.svg)](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/api-gateway.yml)
+| Service | Status | Link |
+| Microserviço de gestão de vagas | [![Push Container to Heroku](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/jobs-posting.yml/badge.svg)](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/jobs-posting.yml) | https://ventura-jobs.herokuapp.com |
+| Microserviço de gestão de usuários | 
+[![Push Container to Heroku - Users](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/users.yml/badge.svg)](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/users.yml) | https://ventura-jobs-users.herokuapp.com |
+| BFF | [![ApiGatewayDeploy](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/api-gateway.yml/badge.svg)](https://github.com/marcosscampos/VenturaJobsHR-Api/actions/workflows/api-gateway.yml) | https://ventura-jobs-api-gateway.herokuapp.com |

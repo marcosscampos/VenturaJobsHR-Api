@@ -4,28 +4,51 @@ on:
   push:
     branches: [ master ]
     paths:
-      - Services/ApiGateway/**
+      - Services/Bff/**
   pull_request:
-    branches: [ master ]
-
-  workflow_dispatch:
+    branches: [master]
 
 env:
-  HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-  DIR_PATH: Services/ApiGateway
+  DIR_PATH: Services/Bff
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Login to Heroku Container registry
-        run: heroku container:login
-        working-directory: ${{ env.DIR_PATH }}
-      - name: Build and push
-        run: heroku container:push -a ${{ secrets.HEROKU_APP_API_GATEWAY_NAME }} web
-        working-directory: ${{ env.DIR_PATH }}
-      - name: Release
-        run:  heroku container:release -a ${{ secrets.HEROKU_APP_API_GATEWAY_NAME }} web
-        working-directory: ${{ env.DIR_PATH }}
+    - name: Checkout source code
+      uses: actions/checkout@v2
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --no-restore
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      
+    - name: Login to Heroku Container registry
+      env: 
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        
+      run: heroku container:login 
+      working-directory: ${{ env.DIR_PATH }}
+      
+    - name: Build and push
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      
+      run: heroku container:push -a ventura-jobs-bff web 
+      working-directory: ${{ env.DIR_PATH }}
+
+    - name: Release
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        
+      run: heroku container:release -a ventura-jobs-bff web 
+      working-directory: ${{ env.DIR_PATH }}

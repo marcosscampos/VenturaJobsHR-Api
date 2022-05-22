@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,6 +38,9 @@ public class JobService : ApplicationServiceBase, IJobService
 
     public async Task<Job> GetById(string id)
     {
+        if (!ObjectId.TryParse(id, out _))
+            throw new InvalidEntityIdProvidedException("Try with a valid ID.");
+
         var job = await _jobRepository.GetByIdAsync(id);
 
         if (job is null)
@@ -60,7 +64,12 @@ public class JobService : ApplicationServiceBase, IJobService
     }
 
     public async Task DeleteJob(string id)
-        => await _jobRepository.DeleteAsync(id);
+    {
+        if (!ObjectId.TryParse(id, out _))
+            throw new InvalidEntityIdProvidedException("Try with a valid ID.");
+
+        await _jobRepository.DeleteAsync(id);
+    }
 
     public async Task<List<Job>> GetAllJobsByCriteria(SearchJobsQuery query)
     {
@@ -76,6 +85,9 @@ public class JobService : ApplicationServiceBase, IJobService
 
     public async Task LogicalDeleteJob(ActiveJobRecord job)
     {
+        if (!ObjectId.TryParse(job.Id, out _))
+            throw new InvalidEntityIdProvidedException("Try with a valid ID.");
+
         var jobToDelete = await _jobRepository.GetByIdAsync(job.Id);
 
         if (jobToDelete is null)

@@ -8,8 +8,8 @@ using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Filters;
 using System.IO.Compression;
 using System.Reflection;
-using VenturaJobsHR.Api.Common;
-using VenturaJobsHR.Api.Common.ErrorsHandler;
+using VenturaJobsHR.Api.Common.Extensions;
+using VenturaJobsHR.Api.Common.Middlewares;
 using VenturaJobsHR.Api.Seedwork.Swagger;
 using VenturaJobsHR.Application.DI;
 using VenturaJobsHR.Common.Extensions;
@@ -101,7 +101,6 @@ builder.Services.AddAuthentication(x =>
 });
 
 var app = builder.Build();
-
 app.Use(async (ctx, next) =>
 {
     ctx.Response.OnStarting(() =>
@@ -113,21 +112,22 @@ app.Use(async (ctx, next) =>
 
     await next();
 });
-
 app.UseMiddleware<ApiExceptionMiddleware>();
-
 app.UseSwagger();
 app.UseSwaggerUI();
-
-app.UseDeveloperExceptionPage();
+app.UseRouting();
 
 app.UseCors(CORS_DEFAULT_POLICY);
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
+
+app.UseEndpoints(endpoint =>
+{
+    endpoint.MapControllers();
+});
 
 app.Run();
 

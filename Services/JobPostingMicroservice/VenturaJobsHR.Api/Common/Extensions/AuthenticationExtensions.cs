@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace VenturaJobsHR.Api.Common;
+namespace VenturaJobsHR.Api.Common.Extensions;
 
 public static class AuthenticationExtensions
 {

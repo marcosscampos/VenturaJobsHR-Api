@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using VenturaJobsHR.Api.Common.ErrorsHandler;
+using VenturaJobsHR.Api.Common.Responses;
 using VenturaJobsHR.Application.Records.Jobs;
 using VenturaJobsHR.Application.Services.Interfaces;
 using VenturaJobsHR.CrossCutting.Notifications;
@@ -28,18 +28,11 @@ public class JobController : BaseController
     /// <returns></returns>
     [HttpGet]
     [ProducesResponseType(typeof(Pagination<Job>), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> GetByCriteria([FromQuery] SearchJobsQuery query)
     {
-        try
-        {
-            var job = await _jobService.GetAllJobsByCriteriaAndPaged(query);
-            return HandleResponse(job);
-        }
-        catch (Exception ex)
-        {
-            return ErrorResult.ReturnErrorResult(ex);
-        }
+        var job = await _jobService.GetAllJobsByCriteriaAndPaged(query);
+        return HandleResponse(job);
     }
 
     /// <summary>
@@ -50,18 +43,11 @@ public class JobController : BaseController
     /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.Created)]
-    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> CreateJob(CreateJobCommand command)
     {
-        try
-        {
-            await _jobService.CreateJob(command);
-            return HandleResponse();
-        }
-        catch (Exception ex)
-        {
-            return ErrorResult.ReturnErrorResult(ex);
-        }
+        await _jobService.CreateJob(command);
+        return HandleResponse();
     }
 
     /// <summary>
@@ -73,20 +59,13 @@ public class JobController : BaseController
     /// <returns></returns>
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(Job), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
-        try
-        {
-            var job = await _jobService.GetById(id);
+        var job = await _jobService.GetById(id);
 
-            return HandleResponse(job);
-        }
-        catch (Exception ex)
-        {
-            return ErrorResult.ReturnErrorResult(ex);
-        }
+        return HandleResponse(job);
     }
 
     /// <summary>
@@ -98,20 +77,14 @@ public class JobController : BaseController
     /// <returns></returns>
     [HttpPut]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.NotFound)]
-    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> UpdateJob(UpdateJobCommand command)
     {
-        try
-        {
-            await _jobService.UpdateJob(command);
 
-            return HandleResponse();
-        }
-        catch (Exception ex)
-        {
-            return ErrorResult.ReturnErrorResult(ex);
-        }
+        await _jobService.UpdateJob(command);
+
+        return HandleResponse();
     }
 
     /// <summary>
@@ -123,20 +96,13 @@ public class JobController : BaseController
     /// <returns></returns>
     [HttpPut("active")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.NotFound)]
-    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> LogicalJobRemove(ActiveJobRecord job)
     {
-        try
-        {
-            await _jobService.LogicalDeleteJob(job);
+        await _jobService.LogicalDeleteJob(job);
 
-            return HandleResponse();
-        }
-        catch (Exception ex)
-        {
-            return ErrorResult.ReturnErrorResult(ex);
-        }
+        return HandleResponse();
     }
 
     /// <summary>
@@ -147,18 +113,11 @@ public class JobController : BaseController
     /// <returns></returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(ErrorHandler), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> DeleteJob([FromRoute] string id)
     {
-        try
-        {
-            await _jobService.DeleteJob(id);
+        await _jobService.DeleteJob(id);
 
-            return HandleResponse();
-        }
-        catch (Exception ex)
-        {
-            return ErrorResult.ReturnErrorResult(ex);
-        }
+        return HandleResponse();
     }
 }

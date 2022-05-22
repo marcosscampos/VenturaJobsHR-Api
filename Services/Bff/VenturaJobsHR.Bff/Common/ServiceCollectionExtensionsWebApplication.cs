@@ -1,4 +1,16 @@
-﻿namespace VenturaJobsHR.Users.Common;
+﻿using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
+using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.Filters;
+using System.IO.Compression;
+using System.Reflection;
+using VenturaJobsHR.Bff.Common.DI;
+using VenturaJobsHR.Bff.Common.Middlewares;
+using VenturaJobsHR.Bff.Seedwork.Swagger;
+
+namespace VenturaJobsHR.Bff.Common;
 
 public static class ServiceCollectionExtensionsWebApplication
 {
@@ -56,6 +68,12 @@ public static class ServiceCollectionExtensionsWebApplication
         builder.Services.AddSwaggerExamplesFromAssemblies(Assembly.GetExecutingAssembly());
         builder.Services.AddSwaggerGenNewtonsoftSupport();
 
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddHeaderPropagation(configure =>
+         {
+             configure.Headers.Add("Authorization");
+         });
+
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(CORS_DEFAULT_POLICY, config =>
@@ -91,10 +109,12 @@ public static class ServiceCollectionExtensionsWebApplication
         app.UseSwagger();
         app.UseSwaggerUI();
         app.UseRouting();
+        app.UseDeveloperExceptionPage();
 
         app.UseCors(CORS_DEFAULT_POLICY);
 
         app.UseHttpsRedirection();
+        app.UseHeaderPropagation();
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
@@ -103,6 +123,7 @@ public static class ServiceCollectionExtensionsWebApplication
         {
             endpoint.MapControllers();
         });
+
         return app;
     }
 }

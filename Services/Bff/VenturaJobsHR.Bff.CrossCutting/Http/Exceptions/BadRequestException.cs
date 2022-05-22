@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace VenturaJobsHR.Users.Common.Exceptions;
+namespace VenturaJobsHR.Bff.CrossCutting.Http.Exceptions;
 
 [Serializable]
 public class BadRequestException : Exception

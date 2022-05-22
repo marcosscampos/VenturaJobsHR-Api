@@ -17,13 +17,14 @@
 		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.3.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+		<PackageReference Include="Microsoft.AspNetCore.HeaderPropagation" Version="6.0.5" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.5" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\VenturaJobsHR.Users.Application\VenturaJobsHR.Users.Application.csproj" />
-		<ProjectReference Include="..\VenturaJobsHR.Users.Domain\VenturaJobsHR.Users.Domain.csproj" />
+		<ProjectReference Include="..\VenturaJobsHR.Bff.Application\VenturaJobsHR.Bff.Application.csproj" />
+		<ProjectReference Include="..\VenturaJobsHR.Bff.CrossCutting\VenturaJobsHR.Bff.CrossCutting.csproj" />
 	</ItemGroup>
 
 </Project>

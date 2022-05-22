@@ -15,6 +15,9 @@ public class UserService : IUserService
 
     public async Task ActivateUserAsync(ActiveUserRecord userRecord)
     {
+        if (!ObjectId.TryParse(userRecord.Id, out _))
+            throw new InvalidEntityIdProvidedException("Try with a valid ID.");
+
         var user = await _userRepository.GetByIdAsync(userRecord.Id);
         if (user is null)
             throw new NotFoundException($"User not found with ID #{userRecord.Id}");
@@ -33,7 +36,7 @@ public class UserService : IUserService
     public async Task<User> GetUserBy(string id)
     {
         if (!ObjectId.TryParse(id, out _))
-            throw new GenericErrorException("Invalid ID. Try another valid ID.");
+            throw new InvalidEntityIdProvidedException("Try with a valid ID.");
 
         var user = await _userRepository.GetByIdAsync(id);
 
@@ -51,7 +54,11 @@ public class UserService : IUserService
 
     public async Task UpdateUserAsync(UpdateUserRecord user)
     {
+        if (!ObjectId.TryParse(user.Id, out _))
+            throw new InvalidEntityIdProvidedException("Try with a valid ID.");
+
         var userToUpdate = await _userRepository.GetByIdAsync(user.Id);
+
         if (user is null)
             throw new NotFoundException($"User not found with ID #{user.Id}");
 

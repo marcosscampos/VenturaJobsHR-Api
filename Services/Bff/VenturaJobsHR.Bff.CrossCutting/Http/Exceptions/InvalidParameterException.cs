@@ -1,4 +1,4 @@
-﻿namespace VenturaJobsHR.Users.Common.Exceptions;
+﻿namespace VenturaJobsHR.Bff.CrossCutting.Http.Exceptions;
 
 [Serializable]
 public class InvalidParameterException : Exception

@@ -1,4 +1,9 @@
-﻿namespace VenturaJobsHR.Users.Common.Middleware;
+﻿using System.Net;
+using System.Text.Json;
+using VenturaJobsHR.Bff.CrossCutting.Http.Exceptions;
+using VenturaJobsHR.Bff.CrossCutting.Http.Responses;
+
+namespace VenturaJobsHR.Bff.Common.Middlewares;
 
 public class ApiExceptionMiddleware
 {

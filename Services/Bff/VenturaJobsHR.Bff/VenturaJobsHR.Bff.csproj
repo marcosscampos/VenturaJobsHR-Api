@@ -27,4 +27,8 @@
 		<ProjectReference Include="..\VenturaJobsHR.Bff.CrossCutting\VenturaJobsHR.Bff.CrossCutting.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Common\Handlers\" />
+	</ItemGroup>
+
 </Project>

@@ -7,17 +7,7 @@ namespace VenturaJobsHR.Bff.CrossCutting.Http.Extensions;
 
 public static class HttpClientExtensions
 {
-    public static async Task<TResponse> GetAsync<TResponse>(this HttpClient httpClient, string endpoint)
-    {
-        var response = await httpClient.GetAsync(endpoint);
-
-        if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == HttpStatusCode.NotFound)
-            return default;
-
-        return await response.Content.ToResponseTypeAsync<TResponse>();
-    }
-
-    public static async Task<CreatedResponse<object>> GetSingleAsync<TResponse>(this HttpClient httpClient, string endpoint)
+    public static async Task<CreatedResponse<object>> GetAsync<TResponse>(this HttpClient httpClient, string endpoint)
     {
         var response = await httpClient.GetAsync(endpoint);
 
@@ -51,12 +41,12 @@ public static class HttpClientExtensions
         return new CreatedResponse<object>(response.Content.ReadAsStringAsync().Result);
     }
 
-    public static async Task<CreatedResponse<object>> RemoveAsync<TPayload>(this HttpClient httpClient, string endpoint, TPayload payload)
+    public static async Task<CreatedResponse<object>> RemoveAsync<TPayload>(this HttpClient httpClient, string endpoint)
     {
         var response = await httpClient.DeleteAsync(endpoint);
 
         if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == HttpStatusCode.NotFound)
-            return new CreatedResponse<object>(payload, (await response.Content.ToResponseTypeAsync<BadRequestResponse>()).Errors);
+            return new CreatedResponse<object>("", (await response.Content.ToResponseTypeAsync<BadRequestResponse>()).Errors);
 
         response.EnsureSuccessStatusCode();
 

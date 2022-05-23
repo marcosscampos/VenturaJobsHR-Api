@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using VenturaJobsHR.Bff.Application.Records.User;
+using VenturaJobsHR.Bff.Common;
 using VenturaJobsHR.Bff.CrossCutting.Enums;
 using VenturaJobsHR.Bff.CrossCutting.Http.Extensions;
 using VenturaJobsHR.Bff.CrossCutting.Http.Responses;
@@ -27,7 +28,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(List<User>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> GetAllAsync() 
-        => Ok(await _httpClient.GetAsync<List<User>>("v1/users"));
+        => Ok(await _httpClient.GetAsync<List<User>>(Endpoints.UserEndpoint));
 
     /// <summary>
     /// Retorna um usuário pelo id do mesmo
@@ -42,7 +43,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> GetByIdAsync([FromRoute] string id) 
-        => Ok(await _httpClient.GetSingleAsync<User>($"v1/users/{id}"));
+        => Ok(await _httpClient.GetAsync<User>(string.Concat(Endpoints.UserEndpoint, $"/{id}")));
 
     /// <summary>
     /// Cria um usuário
@@ -55,7 +56,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserRecord user)
-        => Ok(await _httpClient.PostAsync("v1/users", user));
+        => Ok(await _httpClient.PostAsync(Endpoints.UserEndpoint, user));
 
     /// <summary>
     /// Atualiza um usuário
@@ -68,7 +69,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> UpdateUserAsync([FromBody] UpdateUserRecord user)
-        => Ok(await _httpClient.PutAsync("v1/users", user));
+        => Ok(await _httpClient.PutAsync(Endpoints.UserEndpoint, user));
 
     /// <summary>
     /// Ativa ou desativa o usuário da base (Soft delete)
@@ -81,5 +82,5 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> ActiveUserAsync([FromBody] ActiveUserRecord user)
-        => Ok(await _httpClient.PutAsync("v1/users/active", user));
+        => Ok(await _httpClient.PutAsync(string.Concat(Endpoints.UserEndpoint, "/active"), user));
 }

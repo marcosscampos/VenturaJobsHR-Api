@@ -5,4 +5,5 @@ namespace VenturaJobsHR.Users.Domain.Abstractions.Repositories;
 
 public interface IUserRepository : IRepository<User>
 {
+    Task<User> GetUserByFireBaseToken(string firebaseId);
 }

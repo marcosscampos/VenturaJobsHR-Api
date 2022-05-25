@@ -2,13 +2,13 @@
 
 public class Address
 {
-    public Address(string completeAddress, string district, string complement, string postalCode, string number)
+    public Address(string completeAddress, string complement, string postalCode, string city, string state)
     {
         CompleteAddress = completeAddress;
-        District = district;
         Complement = complement;
         PostalCode = postalCode;
-        Number = number;
+        City = city;
+        State = state;
     }
 
     public Address()
@@ -17,8 +17,8 @@ public class Address
     }
 
     public string CompleteAddress { get; set; }
-    public string District { get; set; }
+    public string City { get; set; }
+    public string State { get; set; }
     public string Complement { get; set; }
     public string PostalCode { get; set; }
-    public string Number { get; set; }
 }

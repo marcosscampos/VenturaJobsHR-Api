@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using Microsoft.AspNetCore.Http;
+using MongoDB.Bson;
 using VenturaJobsHR.Users.Application.Factories;
 using VenturaJobsHR.Users.Application.Records.User;
 using VenturaJobsHR.Users.Application.Services.Interface;
@@ -10,8 +11,13 @@ namespace VenturaJobsHR.Users.Application.Services.Concrete;
 
 public class UserService : IUserService
 {
+    private readonly IHttpContextAccessor _httpContext;
     private readonly IUserRepository _userRepository;
-    public UserService(IUserRepository userRepository) => _userRepository = userRepository;
+    public UserService(IUserRepository userRepository, IHttpContextAccessor httpContext)
+    {
+        _userRepository = userRepository;
+        _httpContext = httpContext;
+    }
 
     public async Task ActivateUserAsync(ActiveUserRecord userRecord)
     {
@@ -42,6 +48,25 @@ public class UserService : IUserService
 
         if (user is null)
             throw new NotFoundException($"User not found with ID #{id}");
+
+        return user;
+    }
+
+    public async Task<User> GetUserByToken()
+    {
+        var userId = _httpContext.HttpContext.User.FindFirst("user_id");
+
+        if (userId is null)
+            throw new ForbiddenException("Token has expired or is invalid.");
+
+        if (string.IsNullOrWhiteSpace(userId.Value))
+            throw new UnauthorizedException("Invalid user_id");
+
+        var user = await _userRepository.GetUserByFireBaseToken(userId.Value);
+
+        if (user is null)
+            return null;
+            //throw new NotFoundException($"User not found with ID #{userId.Value} in Token.");
 
         return user;
     }

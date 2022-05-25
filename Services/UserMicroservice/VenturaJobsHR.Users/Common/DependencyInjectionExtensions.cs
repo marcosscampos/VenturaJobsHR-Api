@@ -17,8 +17,6 @@ public static class DependencyInjectionExtensions
     private static void UseServices(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
-        //services.AddTransient<IBusService, BusService>();
-
         MapperFactory.Setup();
     }
 

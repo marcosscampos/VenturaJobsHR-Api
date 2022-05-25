@@ -9,10 +9,10 @@ public static class UserFactory
     {
         var address = new Address(
             user.Address.CompleteAddress,
-            user.Address.District,
             user.Address.Complement,
             user.Address.PostalCode,
-            user.Address.Number
+            user.Address.City,
+            user.Address.State
             );
 
         var legalRecord = new LegalRecord(
@@ -38,10 +38,10 @@ public static class UserFactory
     {
         var address = record.Address != null ? new Address(
                 record.Address.CompleteAddress,
-                record.Address.District,
                 record.Address.Complement,
                 record.Address.PostalCode,
-                record.Address.Number
+                record.Address.City,
+                record.Address.State
             ) : null;
 
         var legalRecord = record.LegalRecord != null ? new LegalRecord(

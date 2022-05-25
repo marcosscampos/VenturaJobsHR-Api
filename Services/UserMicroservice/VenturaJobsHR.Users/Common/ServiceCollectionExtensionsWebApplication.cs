@@ -48,6 +48,7 @@ public static class ServiceCollectionExtensionsWebApplication
         });
 
         builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddHttpContextAccessor();
 
         builder.Services.AddSwaggerGen(x =>
         {

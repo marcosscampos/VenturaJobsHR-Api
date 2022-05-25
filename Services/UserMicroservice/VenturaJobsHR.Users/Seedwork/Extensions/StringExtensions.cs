@@ -7,5 +7,4 @@ public static class StringExtensions
         if (string.IsNullOrEmpty(value)) return value;
         return char.ToLowerInvariant(value[0]) + value.Substring(1);
     }
-
 }

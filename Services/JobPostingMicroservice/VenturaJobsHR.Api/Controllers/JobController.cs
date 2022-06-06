@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using VenturaJobsHR.Api.Common.Responses;
 using VenturaJobsHR.Application.Records.Jobs;
@@ -26,6 +28,7 @@ public class JobController : BaseController
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
     /// <returns></returns>
     [HttpGet]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company")]
     [ProducesResponseType(typeof(Pagination<GetJobsRecord>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> GetByCriteria([FromQuery] SearchJobsQuery query)
@@ -41,6 +44,7 @@ public class JobController : BaseController
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
     /// <returns></returns>
     [HttpGet("company")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company")]
     [ProducesResponseType(typeof(Pagination<GetJobsRecord>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> GetJobsByCompany()
@@ -57,6 +61,7 @@ public class JobController : BaseController
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
     /// <returns></returns>
     [HttpGet("{id}/applications")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company")]
     [ProducesResponseType(typeof(Pagination<GetJobsRecord>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> GetJobApplications([FromRoute] string id)
@@ -72,6 +77,7 @@ public class JobController : BaseController
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
     /// <returns></returns>
     [HttpPost]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> CreateJob(CreateJobCommand command)
@@ -88,6 +94,7 @@ public class JobController : BaseController
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
     /// <returns></returns>
     [HttpGet("{id}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company, applicant")]
     [ProducesResponseType(typeof(GetJobsRecord), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
@@ -106,6 +113,7 @@ public class JobController : BaseController
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
     /// <returns></returns>
     [HttpPut]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
@@ -124,6 +132,7 @@ public class JobController : BaseController
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
     /// <returns></returns>
     [HttpPut("active")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
@@ -141,6 +150,7 @@ public class JobController : BaseController
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
     /// <returns></returns>
     [HttpDelete("{id}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> DeleteJob([FromRoute] string id)

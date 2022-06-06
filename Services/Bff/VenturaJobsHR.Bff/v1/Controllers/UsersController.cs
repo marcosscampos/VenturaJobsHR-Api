@@ -23,10 +23,16 @@ public class UsersController : ControllerBase
     /// </summary>
     /// <response code="200">Retorna todos os usuários da base de dados</response>
     /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
     [HttpGet]
     [ProducesResponseType(typeof(List<User>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetAllAsync() 
         => Ok(await _httpClient.GetAsync<List<User>>(Endpoints.UserEndpoint));
 
@@ -35,13 +41,17 @@ public class UsersController : ControllerBase
     /// </summary>
     /// <param name="id">Id do usuário</param>
     /// <response code="200">Retorna o usuário</response>
-    /// <response code="404">Não foi encontrado nenhum registro com esse ID</response>
     /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(User), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetByIdAsync([FromRoute] string id) 
         => Ok(await _httpClient.GetAsync<User>(string.Concat(Endpoints.UserEndpoint, $"/{id}")));
 
@@ -57,6 +67,8 @@ public class UsersController : ControllerBase
     [HttpGet("user-token")]
     [ProducesResponseType(typeof(User), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetUserByToken()
         => Ok(await _httpClient.GetAsync<User>(Endpoints.UserEndpoint));
@@ -67,10 +79,14 @@ public class UsersController : ControllerBase
     /// <param name="user">Todos os registros do usuário</param>
     /// <response code="201">Registro adicionado com sucesso</response>
     /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
     /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserRecord user)
         => Ok(await _httpClient.PostAsync(Endpoints.UserEndpoint, user));
 
@@ -80,10 +96,16 @@ public class UsersController : ControllerBase
     /// <param name="user">Todos os registros do usuário</param>
     /// <response code="200">Requisição concluída com sucesso</response>
     /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
     [HttpPut]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> UpdateUserAsync([FromBody] UpdateUserRecord user)
         => Ok(await _httpClient.PutAsync(Endpoints.UserEndpoint, user));
 
@@ -93,10 +115,16 @@ public class UsersController : ControllerBase
     /// <param name="user">ID do usuário e um booleano indicando se o mesmo vai ser ativo ou não</param>
     /// <response code="200">Requisição concluída com sucesso</response>
     /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
     [HttpPut("active")]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> ActiveUserAsync([FromBody] ActiveUserRecord user)
         => Ok(await _httpClient.PutAsync(string.Concat(Endpoints.UserEndpoint, "/active"), user));
 }

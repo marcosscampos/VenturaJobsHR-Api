@@ -6,9 +6,8 @@ using VenturaJobsHR.Application.Services.Interfaces;
 using VenturaJobsHR.CrossCutting.Notifications;
 using VenturaJobsHR.CrossCutting.Pagination;
 using VenturaJobsHR.CrossCutting.Responses;
-using VenturaJobsHR.Domain.Aggregates.Jobs.Commands;
-using VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
-using VenturaJobsHR.Domain.Aggregates.Jobs.Queries;
+using VenturaJobsHR.Domain.Aggregates.JobsAgg.Commands;
+using VenturaJobsHR.Domain.Aggregates.JobsAgg.Queries;
 
 namespace VenturaJobsHR.Api.Controllers;
 
@@ -27,12 +26,43 @@ public class JobController : BaseController
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
     /// <returns></returns>
     [HttpGet]
-    [ProducesResponseType(typeof(Pagination<Job>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(Pagination<GetJobsRecord>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> GetByCriteria([FromQuery] SearchJobsQuery query)
     {
         var job = await _jobService.GetAllJobsByCriteriaAndPaged(query);
         return HandleResponse(job);
+    }
+
+    /// <summary>
+    /// Retorna as vagas que a empresa cadastrou
+    /// </summary>
+    /// <response code="200">Retorna as vagas</response>
+    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
+    /// <returns></returns>
+    [HttpGet("company")]
+    [ProducesResponseType(typeof(Pagination<GetJobsRecord>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> GetJobsByCompany()
+    {
+        var jobs = await _jobService.GetJobsByToken();
+        return HandleResponse(jobs);
+    }
+
+    /// <summary>
+    /// Retorna os candidatos que aplicaram a vaga e a média
+    /// </summary>
+    /// <param name="id">id da vaga</param>
+    /// <response code="200">Retorna os candidatos</response>
+    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
+    /// <returns></returns>
+    [HttpGet("{id}/applications")]
+    [ProducesResponseType(typeof(Pagination<GetJobsRecord>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> GetJobApplications([FromRoute] string id)
+    {
+        var jobs = await _jobService.GetApplicationsByToken(id);
+        return HandleResponse(jobs);
     }
 
     /// <summary>
@@ -58,7 +88,7 @@ public class JobController : BaseController
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
     /// <returns></returns>
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(Job), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(GetJobsRecord), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> GetById([FromRoute] string id)
@@ -69,7 +99,7 @@ public class JobController : BaseController
     }
 
     /// <summary>
-    /// Atuliza uma ou mais vagas
+    /// Atualiza uma ou mais vagas
     /// </summary>
     /// <response code="200">Vaga atualizada com sucesso</response>
     /// <response code="404">Não foi encontrada nenhuma informação com essa identificação no banco de dados</response>
@@ -81,7 +111,6 @@ public class JobController : BaseController
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> UpdateJob(UpdateJobCommand command)
     {
-
         await _jobService.UpdateJob(command);
 
         return HandleResponse();

@@ -1,21 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using VenturaJobsHR.Application.Records.Applications;
 using VenturaJobsHR.Application.Records.Jobs;
 using VenturaJobsHR.CrossCutting.Pagination;
-using VenturaJobsHR.Domain.Aggregates.Jobs.Commands;
-using VenturaJobsHR.Domain.Aggregates.Jobs.Entities;
-using VenturaJobsHR.Domain.Aggregates.Jobs.Queries;
+using VenturaJobsHR.Domain.Aggregates.JobsAgg.Commands;
+using VenturaJobsHR.Domain.Aggregates.JobsAgg.Queries;
 
 namespace VenturaJobsHR.Application.Services.Interfaces;
 
 public interface IJobService
 {
-    Task<IList<Job>> GetAll();
+    Task<IList<GetJobsRecord>> GetAll();
     Task CreateJob(CreateJobCommand command);
-    Task<Job> GetById(string id);
+    Task<GetJobsRecord> GetById(string id);
+    Task<IList<GetJobsRecord>> GetJobsByToken();
+    Task<IList<ApplicationResponse>> GetApplicationsByToken(string id);
     Task UpdateJob(UpdateJobCommand command);
     Task LogicalDeleteJob(ActiveJobRecord job);
     Task DeleteJob(string id);
-    Task<List<Job>> GetAllJobsByCriteria(SearchJobsQuery query);
-    Task<Pagination<Job>> GetAllJobsByCriteriaAndPaged(SearchJobsQuery query);
+    Task<List<GetJobsRecord>> GetAllJobsByCriteria(SearchJobsQuery query);
+    Task<Pagination<GetJobsRecord>> GetAllJobsByCriteriaAndPaged(SearchJobsQuery query);
 }

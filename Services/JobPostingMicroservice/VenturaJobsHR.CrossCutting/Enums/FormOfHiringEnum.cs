@@ -4,5 +4,6 @@ public enum FormOfHiringEnum
 {
     CLT = 1, 
     PJ = 2, 
-    Autonomous = 3
+    Autonomous = 3,
+    Internship = 4
 }

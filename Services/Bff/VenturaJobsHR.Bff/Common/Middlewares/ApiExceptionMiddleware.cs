@@ -74,6 +74,26 @@ public class ApiExceptionMiddleware
 
                 await response.WriteAsync(JsonSerializer.Serialize(badRequest));
                 break;
+            case ForbiddenException ex:
+                var forbidden = new ForbiddenResponse(ex.Errors)
+                {
+                    StatusCode = (int)HttpStatusCode.Forbidden,
+                    Message = "Forbidden access"
+                };
+
+                response.StatusCode = (int)HttpStatusCode.Forbidden;
+                await response.WriteAsync(JsonSerializer.Serialize(forbidden));
+                break;
+            case UnauthorizedException ex:
+                var unauthorized = new UnauthorizedResponse(ex.Errors)
+                {
+                    StatusCode = (int)HttpStatusCode.Unauthorized,
+                    Message = "Unauthorized access"
+                };
+
+                response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                await response.WriteAsync(JsonSerializer.Serialize(unauthorized));
+                break;
             default:
                 var nonSuccess = new NonSuccessResponse()
                 {

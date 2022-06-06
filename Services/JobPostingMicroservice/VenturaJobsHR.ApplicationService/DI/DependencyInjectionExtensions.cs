@@ -11,8 +11,10 @@ using VenturaJobsHR.CrossCutting.Localizations;
 using VenturaJobsHR.CrossCutting.Notifications;
 using VenturaJobsHR.Domain.Aggregates.Common.Interfaces;
 using VenturaJobsHR.Domain.Aggregates.Common.Settings;
-using VenturaJobsHR.Domain.Aggregates.Jobs.Commands;
-using VenturaJobsHR.Domain.Aggregates.Jobs.Repositories;
+using VenturaJobsHR.Domain.Aggregates.JobApplicationAgg.Repositories;
+using VenturaJobsHR.Domain.Aggregates.JobsAgg.Commands;
+using VenturaJobsHR.Domain.Aggregates.JobsAgg.Repositories;
+using VenturaJobsHR.Domain.Aggregates.UserAgg.Repositories;
 using VenturaJobsHR.Repository;
 using VenturaJobsHR.Repository.Context;
 using VenturaJobsHR.Repository.DatabaseSettings;
@@ -40,6 +42,7 @@ public static class DependencyInjectionExtensions
     {
         services.AddScoped<IJobService, JobService>();
         services.AddScoped<ICacheService, CacheService>();
+        services.AddScoped<IJobApplicationService, JobApplicationService>();
 
         services.AddScoped<INotificationHandler, NotificationHandler>();
         services.AddScoped<ILocalizationManager, LocalizationManager>();
@@ -59,6 +62,8 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IMongoContext>(x => new MongoContext(configureDb.ConnectionStringMongoDb, configureDb.DatabaseName));
 
         services.AddScoped<IJobRepository, JobRepository>();
+        services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
     }
 
     private static void ConfigureRedis(this IServiceCollection service, IConfiguration configuration)

@@ -28,6 +28,7 @@ global using Microsoft.AspNetCore.ResponseCompression;
 global using Microsoft.AspNetCore.Authentication;
 global using Microsoft.AspNetCore.Http.Features;
 global using Microsoft.AspNetCore.HttpOverrides;
+global using Microsoft.AspNetCore.Authorization;
 global using Swashbuckle.AspNetCore.SwaggerGen;
 global using Microsoft.AspNetCore.Mvc.Filters;
 global using Swashbuckle.AspNetCore.Filters;

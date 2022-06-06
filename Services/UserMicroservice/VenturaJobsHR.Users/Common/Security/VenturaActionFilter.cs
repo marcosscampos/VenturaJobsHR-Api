@@ -3,27 +3,35 @@
 public class VenturaActionFilter : IAsyncAuthorizationFilter
 {
     private readonly string _role;
-    public VenturaActionFilter(string role)
+    private readonly IUserRepository _userRepository;
+    public VenturaActionFilter(string role, IUserRepository userRepository)
     {
         _role = role;
+        _userRepository = userRepository;
     }
 
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
-        string authHeader = context.HttpContext.Request.Headers["Authorization"];
+        var authHeader = context.HttpContext.Request.Headers["Authorization"];
+
+        if (string.IsNullOrWhiteSpace(authHeader))
+            throw new ForbiddenException("Missing token");
+
         var roles = _role.Split(",", StringSplitOptions.TrimEntries);
+        var uid = context.HttpContext.User.FindFirst("user_id");
 
-        if (authHeader is null)
-        {
-            throw new ForbiddenException("Authorization Header is missing");
-        }
+        if (uid is null)
+            throw new NotFoundException("UID not found.");
 
-        if (!Contains(roles, "company") || !Contains(roles, "applicant"))
-        {
-            throw new UnauthorizedException("Invalid or missing role");
-        }
+        var user = await _userRepository.GetUserByFireBaseToken(uid.Value);
+
+        if (user != null)
+            foreach (var role in roles)
+            {
+                if (!User.GetUserTypeBy(user.UserType).Equals(role) || !role.Equals("allowAnonymous"))
+                {
+                    throw new ForbiddenException("Role is not match with this endpoint or is invalid.");
+                }
+            }
     }
-
-
-    private bool Contains(string[] values, string value) => values.Contains(value);
 }

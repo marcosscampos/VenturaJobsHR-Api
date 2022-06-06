@@ -27,7 +27,7 @@ public class CacheService : ICacheService
 
         var newValueJToken = JObject.Parse(JsonConvert.SerializeObject(value));
         var cacheJToken = JObject.Parse(cache);
-
+        
         return JToken.DeepEquals(cacheJToken, newValueJToken);
     }
 

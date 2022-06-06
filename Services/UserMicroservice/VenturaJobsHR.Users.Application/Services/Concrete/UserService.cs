@@ -66,7 +66,6 @@ public class UserService : IUserService
 
         if (user is null)
             return null;
-            //throw new NotFoundException($"User not found with ID #{userId.Value} in Token.");
 
         return user;
     }

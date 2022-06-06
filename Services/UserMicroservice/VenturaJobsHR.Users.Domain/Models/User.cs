@@ -37,6 +37,15 @@ public class User
         LegalRecord = legalRecord;
     }
 
+    public static string GetUserTypeBy(UserTypeEnum user) => user switch
+    {
+        UserTypeEnum.Company => "company",
+        UserTypeEnum.Applicant => "applicant",
+        UserTypeEnum.Admin => "admin",
+        _ => string.Empty
+    };
+
+
     public string Id { get; set; }
     public string FirebaseId { get; set; }
     public string Name { get; set; }

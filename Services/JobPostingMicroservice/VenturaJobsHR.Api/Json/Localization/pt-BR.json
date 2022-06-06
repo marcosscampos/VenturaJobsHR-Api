@@ -1,11 +1,11 @@
 ﻿{
   "InvalidSalary": "Salário inválido!",
   "SalaryNotZero": "O Salário não pode ser zero ou menor que zero.",
-  "InvalidFinalDate": "Data final da vaga é inválida.",
+  "InvalidDeadLine": "Data Limite da vaga é inválida.",
   "InvalidJobName": "O nome não pode ser em branco.",
   "InvalidJobDescription": "Descrição não pode ser em branco.",
-  "FinalDateLessCreationDate": "Data final é menor que a data de criação da vaga.",
-  "FinalDateLessDateNow": "Data final é menor que a data atual.",
+  "DeadLineLessCreationDate": "Data Limite é menor que a data de criação da vaga.",
+  "DeadLineLessDateNow": "Data Limite é menor que a data atual.",
   "InvalidLocation": "O local da vaga deve ter todas as informações preenchidas.",
   "CompanyInvalidName": "Nome da empresa é invalida ou ausente",
   "JobInvalidLocation": "Localidade da vaga inválida ou ausente.",
@@ -14,5 +14,15 @@
   "MaxItemsExceeded": "Você ultrapassou o limite de itens máximo que pode ser enviado",
   "DuplicatedItems": "Há items duplicados no envio",
   "DuplicatedRequest": "Requisição duplicada",
-  "InvalidJobObject": "Objeto inválido ou ausente."
+  "InvalidJobObject": "Objeto inválido ou ausente.",
+  "InvalidCriteriaName": "Nome do critério deve ser preenchido.",
+  "InvalidCriteriaDescription": "Descrição do critério deve ser preenchido.",
+  "InvalidCriteriaWeight": "O peso do critério só é permitido entre 1 a 5.",
+  "InvalidCriteria": "Critérios da vaga é obrigatório.",
+  "JobDeadLineGreaterThan30Days": "A data limite da vaga não pode ultrapassar 30 dias.",
+  "InvalidOccupationArea": "Área de ocupação inválida.",
+  "JobApplicationUserIdInvalid": "Id do usuário não pode estar em branco.",
+  "JobApplicationJobIdInvalid": "Id da vaga não pode estar em branco.",
+  "JobApplicationDuplicated": "Você já se candidatou para essa vaga!",
+  "JobDuplicated":  "Você já cadastrou essa vaga!"
 }

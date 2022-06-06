@@ -31,6 +31,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(x =>
     x.SerializerSettings.ContractResolver = new DefaultContractResolver();
     x.UseCamelCasing(true);
 });
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.Configure<FormOptions>(x =>
 {

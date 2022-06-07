@@ -17,6 +17,8 @@ public class CreateJobHandler : BaseJobHandler, IRequestHandler<CreateJobCommand
 
     public async Task<Unit> Handle(CreateJobCommand request, CancellationToken cancellationToken)
     {
+        if (!IsValid(request)) return Unit.Value;
+
         if (await IsDuplicated(request))
         {
             Job.JobDuplicated(Notification, request.JobList[0].GetReference());

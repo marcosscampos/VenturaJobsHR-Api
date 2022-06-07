@@ -25,5 +25,9 @@ public enum EntityError
     JobApplicationUserIdInvalid,
     JobApplicationJobIdInvalid,
     JobApplicationDuplicated,
-    JobDuplicated
+    JobDuplicated,
+    JobApplicationCriteriaNotNull,
+    CompanyInvalidId,
+    CompanyInvalidFirebaseId,
+    InvalidCriteriaId
 }

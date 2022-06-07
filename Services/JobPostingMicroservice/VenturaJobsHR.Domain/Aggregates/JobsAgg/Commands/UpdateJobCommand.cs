@@ -37,11 +37,12 @@ public class UpdateJobValidator : BaseValidator<UpdateJobCommand>
                 job.RuleFor(x => x.Location).NotNull().WithState(x => AddCommandErrorObject(EntityError.JobInvalidLocation, x.GetReference()));
             });
 
-            job.RuleFor(x => x.Name).NotEmpty().WithState(x => AddCommandErrorObject(EntityError.InvalidJobName, ""));
-            job.RuleFor(x => x.Description).NotEmpty().WithState(x => AddCommandErrorObject(EntityError.InvalidJobDescription, $"{x.Name}"));
-            job.RuleFor(x => x.DeadLine).Must(x => x != DateTime.MinValue).WithState(x => AddCommandErrorObject(EntityError.InvalidDeadLine, $"{x.Name}"));
-            job.RuleFor(x => x).Must(x => x.DeadLine >= DateTime.Now.Date).WithState(x => AddCommandErrorObject(EntityError.DeadLineLessCreationDate, $"{x.Name}"));
-            job.RuleFor(x => x.DeadLine).Must(x => x.Date >= DateTime.Now.Date).WithState(x => AddCommandErrorObject(EntityError.DeadLineLessDateNow, $"{x.Name}"));
+            job.RuleFor(x => x.CriteriaList).NotNull().NotEmpty().WithState(x => AddCommandErrorObject(EntityError.InvalidCriteria, x.GetReference()));
+            job.RuleFor(x => x.Name).NotEmpty().WithState(x => AddCommandErrorObject(EntityError.InvalidJobName, x.GetReference()));
+            job.RuleFor(x => x.Description).NotEmpty().WithState(x => AddCommandErrorObject(EntityError.InvalidJobDescription, x.GetReference()));
+            job.RuleFor(x => x.DeadLine).Must(x => x != DateTime.MinValue).WithState(x => AddCommandErrorObject(EntityError.InvalidDeadLine, x.GetReference()));
+            job.RuleFor(x => x).Must(x => x.DeadLine >= DateTime.Now.Date).WithState(x => AddCommandErrorObject(EntityError.DeadLineLessCreationDate, x.GetReference()));
+            job.RuleFor(x => x.DeadLine).Must(x => x.Date >= DateTime.Now.Date).WithState(x => AddCommandErrorObject(EntityError.DeadLineLessDateNow, x.GetReference()));
         });
     }
 }

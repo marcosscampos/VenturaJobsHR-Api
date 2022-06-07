@@ -17,7 +17,7 @@ public class CreateOrUpdateJobRequest
     public CompanyRequest Company { get; set; }
     public FormOfHiringEnum FormOfHiring { get; set; }
     public OccupationAreaEnum OccupationArea { get; set; }
-    public IList<CriteriaRequest> CriteriaList { get; set; }
+    public List<CriteriaRequest> CriteriaList { get; set; }
     public JobStatusEnum Status { get; set; }
     public DateTime DeadLine { get; set; }
 

@@ -15,7 +15,7 @@ public class Job : Entity
     public Company Company { get; set; }
     public FormOfHiringEnum FormOfHiring { get; set; }
     public OccupationAreaEnum OccupationArea { get; set; }
-    public IList<Criteria> CriteriaList { get; set; }
+    public List<Criteria> CriteriaList { get; set; }
     public JobStatusEnum Status { get; set; }
     public DateTime DeadLine { get; set; }
     public bool Active { get; set; }

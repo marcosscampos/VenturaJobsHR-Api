@@ -24,5 +24,8 @@
   "JobApplicationUserIdInvalid": "Id do usuário não pode estar em branco.",
   "JobApplicationJobIdInvalid": "Id da vaga não pode estar em branco.",
   "JobApplicationDuplicated": "Você já se candidatou para essa vaga!",
-  "JobDuplicated":  "Você já cadastrou essa vaga!"
+  "JobDuplicated": "Você já cadastrou essa vaga!",
+  "JobApplicationCriteriaNotNull": "Resposta aos critérios é obrigatório.",
+  "CompanyInvalidId": "Id da empresa deve ser preenchido",
+  "CompanyInvalidFirebaseId": "FirebaseId(UID) da empresa deve ser preenchido",
 }

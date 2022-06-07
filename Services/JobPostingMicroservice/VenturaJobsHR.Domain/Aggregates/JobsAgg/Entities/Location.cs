@@ -13,6 +13,18 @@ public class Location
     {
 
     }
+    
+    public void Update(string city, string state, string country)
+    {
+        if (!City.Equals(city))
+            City = city;
+
+        if (!State.Equals(state))
+            State = state;
+
+        if (!Country.Equals(country))
+            Country = country;
+    }
 
     public string City { get; set; }
     public string State { get; set; }

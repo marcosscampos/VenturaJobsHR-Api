@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using VenturaJobsHR.Api.Common.Responses;
+using VenturaJobsHR.Api.Common.Security;
 using VenturaJobsHR.Application.Services.Interfaces;
 using VenturaJobsHR.CrossCutting.Notifications;
 using VenturaJobsHR.CrossCutting.Responses;
@@ -22,21 +21,42 @@ public class JobApplicationController : BaseController
         _service = service;
     }
 
+    /// <summary>
+    /// O candidato se aplica a vaga
+    /// </summary>
+    /// <response code="201">Aplicação a vaga criada com sucesso</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <returns></returns>
     [HttpPost]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "applicant")]
+    [VenturaAuthorize(role: "applicant")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> CreateJobApplication([FromBody] CreateJobApplicationCommand application)
     {
         await _service.ApplyToJob(application);
         return HandleResponse();
     }
 
+    /// <summary>
+    /// Retorna as vagas que o candidato se candidatou
+    /// </summary>
+    /// <response code="200">Retorna as vagas</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
+    /// <returns></returns>
     [HttpGet]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "applicant")]
+    [VenturaAuthorize(role: "applicant")]
     [ProducesResponseType(typeof(JobApplication), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetApplications()
     {
         var job = await _service.GetApplicationsFromApplicant();

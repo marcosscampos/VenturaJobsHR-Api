@@ -10,4 +10,12 @@ public class User
     public string Phone { get; set; }
     public string Email { get; set; }
     public UserTypeEnum UserType { get; set; }
+    
+    public static string GetUserTypeBy(UserTypeEnum user) => user switch
+    {
+        UserTypeEnum.Company => "company",
+        UserTypeEnum.Applicant => "applicant",
+        UserTypeEnum.Admin => "admin",
+        _ => string.Empty
+    };
 }

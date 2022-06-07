@@ -3,5 +3,6 @@
 public enum UserTypeEnum
 {
     Company,
-    Applicant
+    Applicant,
+    Admin
 }

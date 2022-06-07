@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using VenturaJobsHR.Api.Common.Responses;
+using VenturaJobsHR.Api.Common.Security;
 using VenturaJobsHR.Application.Records.Jobs;
 using VenturaJobsHR.Application.Services.Interfaces;
 using VenturaJobsHR.CrossCutting.Notifications;
@@ -25,12 +24,16 @@ public class JobController : BaseController
     /// Busca vagas baseadas no filtro utilizado
     /// </summary>
     /// <response code="200">Retorna as vagas</response>
-    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
     /// <returns></returns>
     [HttpGet]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company")]
+    [VenturaAuthorize(role: "company, applicant")]
     [ProducesResponseType(typeof(Pagination<GetJobsRecord>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> GetByCriteria([FromQuery] SearchJobsQuery query)
     {
         var job = await _jobService.GetAllJobsByCriteriaAndPaged(query);
@@ -41,12 +44,16 @@ public class JobController : BaseController
     /// Retorna as vagas que a empresa cadastrou
     /// </summary>
     /// <response code="200">Retorna as vagas</response>
-    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
     /// <returns></returns>
     [HttpGet("company")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company")]
+    [VenturaAuthorize(role: "company")]
     [ProducesResponseType(typeof(Pagination<GetJobsRecord>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> GetJobsByCompany()
     {
         var jobs = await _jobService.GetJobsByToken();
@@ -58,12 +65,18 @@ public class JobController : BaseController
     /// </summary>
     /// <param name="id">id da vaga</param>
     /// <response code="200">Retorna os candidatos</response>
-    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
     [HttpGet("{id}/applications")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company")]
+    [VenturaAuthorize(role: "company")]
     [ProducesResponseType(typeof(Pagination<GetJobsRecord>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetJobApplications([FromRoute] string id)
     {
         var jobs = await _jobService.GetApplicationsByToken(id);
@@ -74,12 +87,16 @@ public class JobController : BaseController
     /// Cria uma vaga
     /// </summary>
     /// <response code="201">Vaga criada com sucesso</response>
-    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
     /// <returns></returns>
     [HttpPost]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company")]
+    [VenturaAuthorize(role: "company")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> CreateJob(CreateJobCommand command)
     {
         await _jobService.CreateJob(command);
@@ -90,14 +107,18 @@ public class JobController : BaseController
     /// Busca uma vaga pelo id
     /// </summary>
     /// <response code="200">Retorna a vaga</response>
-    /// <response code="404">Não foi encontrada nenhuma informação com essa identificação no banco de dados</response>
-    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
     [HttpGet("{id}")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company, applicant")]
+    [VenturaAuthorize(role: "company, applicant")]
     [ProducesResponseType(typeof(GetJobsRecord), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
         var job = await _jobService.GetById(id);
@@ -109,14 +130,18 @@ public class JobController : BaseController
     /// Atualiza uma ou mais vagas
     /// </summary>
     /// <response code="200">Vaga atualizada com sucesso</response>
-    /// <response code="404">Não foi encontrada nenhuma informação com essa identificação no banco de dados</response>
-    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
     [HttpPut]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company")]
+    [VenturaAuthorize(role: "company")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> UpdateJob(UpdateJobCommand command)
     {
         await _jobService.UpdateJob(command);
@@ -128,14 +153,16 @@ public class JobController : BaseController
     /// Desativa/arquiva uma vaga (deleção lógica)
     /// </summary>
     /// <response code="200">Vaga arquivada com sucesso</response>
-    /// <response code="404">Não foi encontrada nenhuma informação com essa identificação no banco de dados</response>
-    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
     /// <returns></returns>
     [HttpPut("active")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company")]
+    [VenturaAuthorize(role: "company")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> LogicalJobRemove(ActiveJobRecord job)
     {
         await _jobService.LogicalDeleteJob(job);
@@ -147,12 +174,18 @@ public class JobController : BaseController
     /// Remove uma vaga (Deleção física)
     /// </summary>
     /// <response code="200">Vaga deletada com sucesso</response>
-    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
     [HttpDelete("{id}")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company")]
+    [VenturaAuthorize(role: "company")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> DeleteJob([FromRoute] string id)
     {
         await _jobService.DeleteJob(id);

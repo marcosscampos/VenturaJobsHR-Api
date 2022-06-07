@@ -13,7 +13,7 @@ public class SalaryValidator : BaseValidator<SalaryRequest>
 {
     public SalaryValidator(string reference)
     {
-        RuleFor(x => x.Value).Must(x => x >= 0)
+        RuleFor(x => x.Value).Must(x => x > 0)
             .WithState(x => AddCommandErrorObject(EntityError.SalaryNotZero, reference));
     }
 }

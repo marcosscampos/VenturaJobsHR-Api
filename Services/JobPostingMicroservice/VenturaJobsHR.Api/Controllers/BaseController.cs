@@ -44,6 +44,7 @@ public class BaseController : ControllerBase
         return response;
     }
 
+#pragma warning disable CS8601
     private void SetNotifications(HandleResponse response)
     {
         if (!_notificationHandler.HasNotifications()) return;
@@ -87,4 +88,5 @@ public class BaseController : ControllerBase
         }
 
     }
+#pragma warning restore CS8601
 }

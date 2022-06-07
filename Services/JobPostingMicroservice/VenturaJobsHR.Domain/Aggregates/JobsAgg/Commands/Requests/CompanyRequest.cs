@@ -16,5 +16,7 @@ public class CompanyValidator : BaseValidator<CompanyRequest>
     public CompanyValidator(string reference)
     {
         RuleFor(x => x.Name).NotEmpty().WithState(x => AddCommandErrorObject(EntityError.CompanyInvalidName, reference));
+        RuleFor(x => x.Uid).NotEmpty().WithState(x => AddCommandErrorObject(EntityError.CompanyInvalidFirebaseId, reference));
+        RuleFor(x => x.Id).NotEmpty().WithState(x => AddCommandErrorObject(EntityError.CompanyInvalidId, reference));
     }
 }

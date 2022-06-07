@@ -6,5 +6,11 @@
 
         public Salary(decimal salary) => Value = salary;
         public Salary() { }
+
+        public void Update(decimal value)
+        {
+            if(!Value.Equals(value))
+                Value = value;
+        }
     }
 }

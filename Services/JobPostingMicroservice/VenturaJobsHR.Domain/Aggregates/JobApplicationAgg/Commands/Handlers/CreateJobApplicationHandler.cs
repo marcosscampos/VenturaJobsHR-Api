@@ -20,6 +20,8 @@ public class CreateJobApplicationHandler : BaseJobApplicationHandler, IRequestHa
 
     public async Task<Unit> Handle(CreateJobApplicationCommand request, CancellationToken cancellationToken)
     {
+        if (!IsValid(request)) return Unit.Value;
+
         if(await IsDuplicated(request))
         {
             JobApplication.JobApplicationDuplicated(Notification, request.Application.GetReference());

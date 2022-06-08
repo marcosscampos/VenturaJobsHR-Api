@@ -36,19 +36,21 @@ public static class UserFactory
 
     public static void UpdateUser(UpdateUserRecord record, User user)
     {
-        var address = record.Address != null ? new Address(
-                record.Address.CompleteAddress,
-                record.Address.Complement,
-                record.Address.PostalCode,
-                record.Address.City,
-                record.Address.State
-            ) : null;
+        var address = user.Address;
+        var legalRecord = user.LegalRecord;
+        
+        address.Update(
+            record.Address.CompleteAddress,
+            record.Address.Complement,
+            record.Address.PostalCode,
+            record.Address.City,
+            record.Address.State
+            );
 
-        var legalRecord = record.LegalRecord != null ? new LegalRecord(
-                user.LegalRecord.CorporateName,
-                user.LegalRecord.CPF,
-                user.LegalRecord.CNPJ
-            ) : null;
+        legalRecord.Update(
+            record.LegalRecord.CorporateName,
+            record.LegalRecord.CPF,
+            record.LegalRecord.CNPJ);
 
         user.Update(record.Id, record.Name, record.Phone, record.Email, address, legalRecord);
     }

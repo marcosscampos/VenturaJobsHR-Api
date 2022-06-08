@@ -24,6 +24,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\VenturaJobsHR.Users.Application\VenturaJobsHR.Users.Application.csproj" />
 		<ProjectReference Include="..\VenturaJobsHR.Users.Domain\VenturaJobsHR.Users.Domain.csproj" />
+		<ProjectReference Include="..\VenturaJobsHR.Users.Validation\VenturaJobsHR.Users.Validation.csproj" />
 	</ItemGroup>
 
 </Project>

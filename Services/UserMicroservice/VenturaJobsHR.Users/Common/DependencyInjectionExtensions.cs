@@ -1,4 +1,7 @@
-﻿namespace VenturaJobsHR.Users.Common;
+﻿using VenturaJobsHR.Users.Domain.Abstractions.Validations;
+using VenturaJobsHR.Users.Validation;
+
+namespace VenturaJobsHR.Users.Common;
 
 public static class DependencyInjectionExtensions
 {
@@ -11,6 +14,7 @@ public static class DependencyInjectionExtensions
         });
 
         services.UseServices();
+        services.UseValidators();
         return services;
     }
 
@@ -30,5 +34,10 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IMongoContext>(x => new MongoContext(configureDb.ConnectionStringMongoDb, configureDb.DatabaseName));
 
         services.AddScoped<IUserRepository, UserRepository>();
+    }
+
+    private static void UseValidators(this IServiceCollection services)
+    {
+        services.AddScoped<IUserValidation, UserValidation>();
     }
 }

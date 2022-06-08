@@ -4,7 +4,9 @@ using VenturaJobsHR.Users.Application.Factories;
 using VenturaJobsHR.Users.Application.Records.User;
 using VenturaJobsHR.Users.Application.Services.Interface;
 using VenturaJobsHR.Users.Common.Exceptions;
+using VenturaJobsHR.Users.Common.Extensions;
 using VenturaJobsHR.Users.Domain.Abstractions.Repositories;
+using VenturaJobsHR.Users.Domain.Abstractions.Validations;
 using VenturaJobsHR.Users.Domain.Models;
 
 namespace VenturaJobsHR.Users.Application.Services.Concrete;
@@ -13,10 +15,12 @@ public class UserService : IUserService
 {
     private readonly IHttpContextAccessor _httpContext;
     private readonly IUserRepository _userRepository;
-    public UserService(IUserRepository userRepository, IHttpContextAccessor httpContext)
+    private readonly IUserValidation _userValidator;
+    public UserService(IUserRepository userRepository, IHttpContextAccessor httpContext, IUserValidation userValidator)
     {
         _userRepository = userRepository;
         _httpContext = httpContext;
+        _userValidator = userValidator;
     }
 
     public async Task ActivateUserAsync(ActiveUserRecord userRecord)
@@ -36,6 +40,8 @@ public class UserService : IUserService
     public async Task CreateUserAsync(CreateUserRecord user)
     {
         var userCreated = UserFactory.CreateUser(user);
+        (await _userValidator.ValidateAsync(userCreated)).HandleResult();
+
         await _userRepository.CreateAsync(userCreated);
     }
 
@@ -52,7 +58,7 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<User> GetUserByToken()
+    public async Task<User?> GetUserByToken()
     {
         var userId = _httpContext.HttpContext.User.FindFirst("user_id");
 
@@ -64,10 +70,7 @@ public class UserService : IUserService
 
         var user = await _userRepository.GetUserByFireBaseToken(userId.Value);
 
-        if (user is null)
-            return null;
-
-        return user;
+        return user ?? null;
     }
 
     public async Task<IList<User>> GetUsersAsync()
@@ -85,8 +88,9 @@ public class UserService : IUserService
 
         if (user is null)
             throw new NotFoundException($"User not found with ID #{user.Id}");
-
+        
         UserFactory.UpdateUser(user, userToUpdate);
+        (await _userValidator.ValidateAsync(userToUpdate)).HandleResult();
 
         await _userRepository.UpdateAsync(userToUpdate);
     }

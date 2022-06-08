@@ -8,7 +8,8 @@ public class User
     {
     }
 
-    public User(string firebaseId, string name, string phone, string email, Address address, UserTypeEnum userType, LegalRecord legalRecord, bool active = true)
+    public User(string firebaseId, string name, string phone, string email, Address address, UserTypeEnum userType,
+        LegalRecord legalRecord, bool active = true)
     {
         Id = string.Empty;
         FirebaseId = firebaseId;
@@ -22,17 +23,24 @@ public class User
     }
 
     public void Update(
-        string id, 
-        string name, 
-        string phone, 
-        string email, 
-        Address address, 
+        string id,
+        string name,
+        string phone,
+        string email,
+        Address address,
         LegalRecord legalRecord)
     {
         Id = id;
-        Name = name;
-        Phone = phone;
-        Email = email;
+
+        if (!Name.Equals(name))
+            Name = name;
+
+        if (!Phone.Equals(phone))
+            Phone = phone;
+
+        if (!Email.Equals(email))
+            Email = email;
+
         Address = address;
         LegalRecord = legalRecord;
     }

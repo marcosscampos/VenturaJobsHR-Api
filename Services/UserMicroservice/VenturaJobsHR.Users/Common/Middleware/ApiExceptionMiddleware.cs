@@ -64,7 +64,7 @@ public class ApiExceptionMiddleware
                 var badRequest = new BadRequestResponse(ex.Errors)
                 {
                     StatusCode = (int)HttpStatusCode.BadRequest,
-                    Message = "Failed to validate parameters."
+                    Message = "Falha ao validar os parâmetros!"
                 };
 
                 await response.WriteAsync(JsonSerializer.Serialize(badRequest));

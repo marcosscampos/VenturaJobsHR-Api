@@ -5,7 +5,7 @@ namespace VenturaJobsHR.Users.Application.Services.Interface;
 
 public interface IUserService
 {
-    Task<IList<User>> GetUsersAsync();
+    Task<IList<User>> GetUsersByTypeCompany();
     Task<User?> GetUserByToken();
     Task<User> GetUserBy(string id);
     Task UpdateUserAsync(UpdateUserRecord user);

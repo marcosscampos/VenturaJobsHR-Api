@@ -9,6 +9,8 @@ using VenturaJobsHR.Application.Records.Applications;
 using VenturaJobsHR.Application.Records.Jobs;
 using VenturaJobsHR.Application.Services.Interfaces;
 using VenturaJobsHR.Common.Exceptions;
+using VenturaJobsHR.Common.Extensions;
+using VenturaJobsHR.CrossCutting.Enums;
 using VenturaJobsHR.CrossCutting.Notifications;
 using VenturaJobsHR.CrossCutting.Pagination;
 using VenturaJobsHR.Domain.Aggregates.JobApplicationAgg.Repositories;
@@ -44,15 +46,6 @@ public class JobService : ApplicationServiceBase, IJobService
 
     public async Task CreateJob(CreateJobCommand command)
         => await _mediator.Send(command);
-
-
-    public async Task<IList<GetJobsRecord>> GetAll()
-    {
-        var jobs = await _jobRepository.GetAllAsync();
-
-        var recordList = CreateList(jobs.ToList());
-        return recordList;
-    }
 
     public async Task<GetJobsRecord> GetById(string id)
     {
@@ -97,7 +90,7 @@ public class JobService : ApplicationServiceBase, IJobService
             let average = averageSum.Sum()
             let profileAverage = Math.Round(average / 11, 2)
             select new UserValueRecord(user.Name, profileAverage)).ToList();
-        
+
         var jobConsolidated = new JobReportRecord(jobProfileAverage, userValueList);
         return jobConsolidated;
     }
@@ -116,26 +109,34 @@ public class JobService : ApplicationServiceBase, IJobService
             await CreateJob(new CreateJobCommand() { JobList = jobsToCreate });
     }
 
-    public async Task DeleteJob(string id)
+    public async Task CancelJobPosting(string id)
     {
-        if (!ObjectId.TryParse(id, out _))
-            throw new InvalidEntityIdProvidedException("Try with a valid ID.");
+        var jobToCancel = await _jobRepository.GetByIdAsync(id);
+        if (jobToCancel is null)
+            throw new NotFoundException($"Job not found with id #{id}");
 
-        await _jobRepository.DeleteAsync(id);
-    }
+        jobToCancel.Status = JobStatusEnum.Canceled;
 
-    public async Task<List<GetJobsRecord>> GetAllJobsByCriteria(SearchJobsQuery query)
-    {
-        var jobs = await _jobRepository.FindAsync(query.BuildFilter());
-        var recordList = CreateList(jobs.ToList());
-
-        return recordList;
+        await _jobRepository.UpdateAsync(jobToCancel);
     }
 
     public async Task<Pagination<GetJobsRecord>> GetAllJobsByCriteriaAndPaged(SearchJobsQuery query)
     {
+        var jobsToExpire = new List<Job>();
         var jobs = await _jobRepository.FindByFilterAsync(query.BuildFilter(), query.Pagination);
-        var recordList = CreateList(jobs.Data);
+        foreach (var item in jobs.Data.Where(item =>
+                     item.DeadLine < new DateTimeWithZone(DateTime.Now).LocalTime &&
+                     item.Status == JobStatusEnum.Published))
+        {
+            item.Status = JobStatusEnum.Expired;
+            jobsToExpire.Add(item);
+        }
+
+        if (jobsToExpire.Any())
+            await _jobRepository.UpdateRangeAsync(jobsToExpire);
+
+        var recordList = CreateList(jobs.Data)
+            .Where(x => x.Status != JobStatusEnum.Expired && x.Status != JobStatusEnum.Canceled).ToList();
 
         var newJobList = new Pagination<GetJobsRecord>
         {

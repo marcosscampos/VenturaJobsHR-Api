@@ -32,11 +32,7 @@ public abstract class BaseJobHandler : BaseRequestHandler
 
     protected async Task UpdateJobAsync(List<Job> jobList)
     {
-        foreach (var item in jobList)
-        {
-            await _jobRepository.UpdateAsync(item);
-        }
-
+        await _jobRepository.UpdateRangeAsync(jobList);
         await _mediator.Publish(jobList[0].ProjectedAs<JobsUpdatedEvent>());
     }
     

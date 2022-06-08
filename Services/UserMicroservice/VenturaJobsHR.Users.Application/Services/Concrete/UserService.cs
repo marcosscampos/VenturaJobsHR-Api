@@ -16,6 +16,7 @@ public class UserService : IUserService
     private readonly IHttpContextAccessor _httpContext;
     private readonly IUserRepository _userRepository;
     private readonly IUserValidation _userValidator;
+
     public UserService(IUserRepository userRepository, IHttpContextAccessor httpContext, IUserValidation userValidator)
     {
         _userRepository = userRepository;
@@ -58,6 +59,9 @@ public class UserService : IUserService
         return user;
     }
 
+    public async Task<IList<User>> GetUsersByTypeCompany()
+        => await _userRepository.GetUsersByTypeCompany();
+
     public async Task<User?> GetUserByToken()
     {
         var userId = _httpContext.HttpContext.User.FindFirst("user_id");
@@ -73,12 +77,6 @@ public class UserService : IUserService
         return user ?? null;
     }
 
-    public async Task<IList<User>> GetUsersAsync()
-    {
-        var users = await _userRepository.GetAllAsync();
-        return users.ToList();
-    }
-
     public async Task UpdateUserAsync(UpdateUserRecord user)
     {
         if (!ObjectId.TryParse(user.Id, out _))
@@ -88,7 +86,7 @@ public class UserService : IUserService
 
         if (user is null)
             throw new NotFoundException($"User not found with ID #{user.Id}");
-        
+
         UserFactory.UpdateUser(user, userToUpdate);
         (await _userValidator.ValidateAsync(userToUpdate)).HandleResult();
 

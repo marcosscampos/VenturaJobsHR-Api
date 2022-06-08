@@ -40,7 +40,7 @@ public class JobApplicationService : ApplicationServiceBase, IJobApplicationServ
     public async Task ApplyToJob(CreateJobApplicationCommand job)
         => await _mediator.Send(job);
 
-    public async Task<IList<GetJobsRecord>> GetApplicationsFromApplicant()
+    public async Task<IList<GetApplicationJobsRecord>> GetApplicationsFromApplicant()
     {
         var userId = _httpContext.HttpContext.User.FindFirst("user_id");
 
@@ -54,7 +54,7 @@ public class JobApplicationService : ApplicationServiceBase, IJobApplicationServ
         var application = await _applicationRepository.GetApplicationsByUserId(user.Id);
         var jobs = await _jobRepository.GetAllJobsByIdAsync(application.Select(x => x.JobId).ToList());
 
-        var jobsList = CreateList(jobs.ToList());
+        var jobsList = CreateApplicationJobsList(jobs.ToList());
 
         return jobsList;
     }

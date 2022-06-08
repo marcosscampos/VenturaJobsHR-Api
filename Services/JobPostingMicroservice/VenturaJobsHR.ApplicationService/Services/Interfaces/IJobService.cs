@@ -10,7 +10,6 @@ namespace VenturaJobsHR.Application.Services.Interfaces;
 
 public interface IJobService
 {
-    Task<IList<GetJobsRecord>> GetAll();
     Task CreateJob(CreateJobCommand command);
     Task<GetJobsRecord> GetById(string id);
     Task<IList<GetJobsRecord>> GetJobsByToken();
@@ -18,7 +17,6 @@ public interface IJobService
     Task<JobReportRecord> GetJobReport(string id);
     Task UpdateJob(UpdateJobCommand command);
     Task LogicalDeleteJob(ActiveJobRecord job);
-    Task DeleteJob(string id);
-    Task<List<GetJobsRecord>> GetAllJobsByCriteria(SearchJobsQuery query);
+    Task CancelJobPosting(string id);
     Task<Pagination<GetJobsRecord>> GetAllJobsByCriteriaAndPaged(SearchJobsQuery query);
 }

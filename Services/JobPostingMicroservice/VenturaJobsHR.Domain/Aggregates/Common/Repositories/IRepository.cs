@@ -7,6 +7,7 @@ public interface IRepository<T> where T : class
 {
     Task CreateAsync(T entity);
     Task UpdateAsync(T entity);
+    Task UpdateRangeAsync(List<T> entities);
     Task DeleteAsync(string id);
     Task BulkInsertAsync(List<T> entities);
     Task<T> GetByIdAsync(string id);

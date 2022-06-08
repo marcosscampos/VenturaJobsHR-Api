@@ -52,7 +52,7 @@ public class JobApplicationController : BaseController
     /// <returns></returns>
     [HttpGet]
     [VenturaAuthorize(role: "applicant")]
-    [ProducesResponseType(typeof(List<GetJobsRecord>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(List<GetApplicationJobsRecord>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]

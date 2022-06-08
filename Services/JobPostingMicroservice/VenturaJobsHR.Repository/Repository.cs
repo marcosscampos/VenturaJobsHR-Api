@@ -20,6 +20,17 @@ public class Repository<T> : IRepository<T> where T : class
 
     public async Task CreateAsync(T entity) => await Collection.InsertOneAsync(entity);
 
+    public async Task UpdateRangeAsync(List<T> entities)
+    {
+        var updates = (from entity in entities
+            let propertyInfo = entity.GetType().GetProperty("Id")
+            let value = propertyInfo.GetValue(entity, null)
+            let filter = Builders<T>.Filter.Eq("_id", ObjectId.Parse(value.ToString()))
+            select new ReplaceOneModel<T>(filter, entity)).Cast<WriteModel<T>>().ToList();
+
+        await Collection.BulkWriteAsync(updates, new BulkWriteOptions() { IsOrdered = false });
+    }
+
     public async Task DeleteAsync(string id)
     {
         var filter = Builders<T>.Filter.Eq("_id", ObjectId.Parse(id));
@@ -49,11 +60,13 @@ public class Repository<T> : IRepository<T> where T : class
 
     public async Task<Pagination<T>> FindByFilterAsync(Expression<Func<T, bool>> filter, Page pagination)
     {
-        var dataResponse = await Collection.Find(filter).Skip(pagination.StartIndex).Limit(pagination.Length).ToListAsync();
+        var dataResponse = await Collection.Find(filter).Skip(pagination.StartIndex).Limit(pagination.Length)
+            .ToListAsync();
 
         var count = await Collection.CountDocumentsAsync(filter);
 
-        return new Pagination<T>(data: dataResponse, currentPage: pagination.CurrentPage, pageSize: pagination.Length, items: count);
+        return new Pagination<T>(data: dataResponse, currentPage: pagination.CurrentPage, pageSize: pagination.Length,
+            items: count);
     }
 
     public async Task BulkInsertAsync(List<T> entities)

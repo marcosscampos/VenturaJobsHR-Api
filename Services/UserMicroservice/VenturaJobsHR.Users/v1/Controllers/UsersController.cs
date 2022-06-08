@@ -9,9 +9,9 @@ public class UsersController : ControllerBase
     public UsersController(IUserService userService) => _userService = userService;
 
     /// <summary>
-    /// Retorna todos os usuários da base
+    /// Retorna os usuários do tipo empresa
     /// </summary>
-    /// <response code="200">Retorna todos os usuários da base de dados</response>
+    /// <response code="200">Retorna todos os usuários do tipo empresa que consta na base de dados</response>
     /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
     /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
     /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
@@ -26,7 +26,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetAllAsync()
     {
-        var users = await _userService.GetUsersAsync();
+        var users = await _userService.GetUsersByTypeCompany();
         return Ok(users);
     }
 

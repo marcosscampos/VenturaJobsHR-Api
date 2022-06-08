@@ -7,7 +7,7 @@ namespace VenturaJobsHR.Application.Services.Interfaces;
 
 public interface IJobApplicationService
 {
-    Task<IList<GetJobsRecord>> GetApplicationsFromApplicant();
+    Task<IList<GetApplicationJobsRecord>> GetApplicationsFromApplicant();
 
     Task ApplyToJob(CreateJobApplicationCommand job);
 }

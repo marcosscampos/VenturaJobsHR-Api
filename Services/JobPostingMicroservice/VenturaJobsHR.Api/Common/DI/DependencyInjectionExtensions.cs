@@ -1,9 +1,8 @@
-﻿using MediatR;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using System.Reflection;
+using Coravel;
+using MediatR;
 using StackExchange.Redis;
-using System;
-using System.Reflection;
+using VenturaJobsHR.Api.Common.Jobs;
 using VenturaJobsHR.Application.Services.Concretes;
 using VenturaJobsHR.Application.Services.Interfaces;
 using VenturaJobsHR.Common.Mapping;
@@ -21,7 +20,7 @@ using VenturaJobsHR.Repository.DatabaseSettings;
 using VenturaJobsHR.Repository.Mappings;
 using VenturaJobsHR.Repository.Persistence;
 
-namespace VenturaJobsHR.Application.DI;
+namespace VenturaJobsHR.Api.Common.DI;
 
 public static class DependencyInjectionExtensions
 {
@@ -50,6 +49,9 @@ public static class DependencyInjectionExtensions
 
         services.AddMediatR(typeof(CreateJobCommand).GetTypeInfo().Assembly);
         services.AddMediatR(typeof(UpdateJobCommand).GetTypeInfo().Assembly);
+        services.AddScheduler();
+
+        services.AddTransient<Worker>();
     }
 
     private static void UseRepositories(this IServiceCollection services, Action<IDbSettings> dbSettings)
@@ -83,4 +85,6 @@ public static class DependencyInjectionExtensions
             opt.InstanceName = "VenturaJobsCache";
         });
     }
+    
+    
 }

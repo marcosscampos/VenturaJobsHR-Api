@@ -11,8 +11,13 @@ using System.Reflection;
 using VenturaJobsHR.Api.Common.Extensions;
 using VenturaJobsHR.Api.Common.Middlewares;
 using VenturaJobsHR.Api.Seedwork.Swagger;
-using VenturaJobsHR.Application.DI;
 using VenturaJobsHR.Common.Extensions;
+using Coravel;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
+using VenturaJobsHR.Api.Common.DI;
+using VenturaJobsHR.Api.Common.Jobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,9 +25,20 @@ var host = new HostBuilder();
 host.ConfigureAppConfiguration((HostBuilderContext context, IConfigurationBuilder _builder) =>
 {
     _builder.AddEnvironmentVariables().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+}).ConfigureLogging((hostingContext, logging) =>
+{
+    var logger = new LoggerConfiguration().MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Information)
+        .Enrich.FromLogContext()
+        .WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Verbose,
+            outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}",
+            theme: SystemConsoleTheme.Literate).CreateLogger();
+
+    logging.ClearProviders();
+    logging.AddSerilog(logger);
 });
 // Add services to the container.
 builder.Services.ConfigureApplicationDependencies(builder.Configuration);
+
 
 builder.Services.AddControllers().AddNewtonsoftJson(x =>
 {
@@ -37,6 +53,15 @@ builder.Services.Configure<FormOptions>(x =>
 {
     x.ValueLengthLimit = int.MaxValue;
     x.MultipartBodyLengthLimit = long.MaxValue;
+});
+
+builder.Services.Configure<Email>(email =>
+{
+    email.Host = builder.Configuration["Host"];
+    email.Login = builder.Configuration["Login"];
+    email.Port = int.Parse(builder.Configuration["Port"]);
+    email.Password = builder.Configuration["Password"];
+    email.SSL = bool.Parse(builder.Configuration["SSL"]);
 });
 
 builder.Services.AddResponseCompression(opt =>
@@ -102,6 +127,11 @@ builder.Services.AddAuthentication(x =>
 });
 
 var app = builder.Build();
+// app.Services.UseScheduler(scheduler =>
+// {
+//     scheduler.Schedule<Worker>().DailyAt(00, 30);
+// });
+
 app.Use(async (ctx, next) =>
 {
     ctx.Response.OnStarting(() =>
@@ -113,6 +143,7 @@ app.Use(async (ctx, next) =>
 
     await next();
 });
+
 app.UseMiddleware<ApiExceptionMiddleware>();
 app.UseSwagger();
 app.UseSwaggerUI();

@@ -10,6 +10,7 @@ public class User
     public string Phone { get; set; }
     public string Email { get; set; }
     public UserTypeEnum UserType { get; set; }
+    public bool Active { get; set; }
     
     public static string GetUserTypeBy(UserTypeEnum user) => user switch
     {

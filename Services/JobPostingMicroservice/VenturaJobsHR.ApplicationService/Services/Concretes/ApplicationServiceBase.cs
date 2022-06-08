@@ -24,7 +24,7 @@ public class ApplicationServiceBase
         User user)
     {
         var app = new List<ApplicationResponse>();
-        var userRecord = new UserRecord(user.Name, user.Phone, user.Email, user.UserType);
+        var userRecord = new UserRecord(user.Name, user.Phone, user.Email, user.UserType, user.Active);
         foreach (var item in jobApplications)
         {
             var criteriaList = new List<JobApplicationCriteriaRecord>();

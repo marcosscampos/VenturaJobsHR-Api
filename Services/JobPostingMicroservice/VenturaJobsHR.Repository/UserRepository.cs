@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using VenturaJobsHR.Common.Extensions;
 using VenturaJobsHR.Domain.Aggregates.UserAgg.Entities;
 using VenturaJobsHR.Domain.Aggregates.UserAgg.Repositories;
 using VenturaJobsHR.Repository.Context;
@@ -14,4 +15,7 @@ public class UserRepository : Repository<User>, IUserRepository
 
     public async Task<List<User>> GetUsersByIdList(List<string> ids)
         => await Collection.Find(x => ids.Contains(x.Id)).ToListAsync();
+
+    public async Task<string> ReturnTemplateEmailAsync()
+        => await GetType().GetContentAsync("Templates.Email.html");
 }

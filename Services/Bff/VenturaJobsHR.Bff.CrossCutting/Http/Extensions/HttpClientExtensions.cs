@@ -47,32 +47,39 @@ public static class HttpClientExtensions
 
     public static async Task<TResponse> ToResponseTypeAsync<TResponse>(this HttpContent httpContent)
         => JsonConvert.DeserializeObject<TResponse>(await httpContent.ReadAsStringAsync());
-
-    public static TResponse ToResponseType<TResponse>(this HttpContent httpContent)
-        => JsonConvert.DeserializeObject<TResponse>(httpContent.ReadAsStringAsync().Result);
-
+    
     private static async Task<object> ToResponse<TResponse>(HttpResponseMessage response)
     {
         switch (response.StatusCode)
         {
             case HttpStatusCode.BadRequest:
+                response.StatusCode = HttpStatusCode.BadRequest;
                 return await response.Content.ToResponseTypeAsync<BadRequestResponse>();
 
             case HttpStatusCode.NotFound:
+                response.StatusCode = HttpStatusCode.NotFound;
                 return await response.Content.ToResponseTypeAsync<NotFoundResponse>();
 
             case HttpStatusCode.Forbidden:
+                response.StatusCode = HttpStatusCode.Forbidden;
                 return await response.Content.ToResponseTypeAsync<ForbiddenResponse>();
 
             case HttpStatusCode.Unauthorized:
+                response.StatusCode = HttpStatusCode.Unauthorized;
                 return await response.Content.ToResponseTypeAsync<UnauthorizedResponse>();
 
             case HttpStatusCode.OK:
-            case HttpStatusCode.Created:
+                response.StatusCode = HttpStatusCode.OK;
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ToResponseTypeAsync<object>();
 
+            case HttpStatusCode.Created:
+                response.StatusCode = HttpStatusCode.Created;
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ToResponseTypeAsync<CreatedResponse<object>>();
+
             default:
+                response.StatusCode = HttpStatusCode.BadRequest;
                 return await response.Content.ToResponseTypeAsync<BadRequestResponse>();
         }
     }

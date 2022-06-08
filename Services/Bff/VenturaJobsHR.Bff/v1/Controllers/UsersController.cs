@@ -13,7 +13,7 @@ namespace VenturaJobsHR.Bff.v1.Controllers;
 [ApiVersion("1.0")]
 [Route("/v{version:apiVersion}/users")]
 [ApiController]
-public class UsersController : ControllerBase
+public class UsersController : BaseController
 {
     private readonly HttpClient _httpClient;
     public UsersController(IHttpClientFactory httpClientFactory) => _httpClient = httpClientFactory.GetClient(HttpClientKeysEnum.Users);
@@ -34,7 +34,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetAllAsync() 
-        => Ok(await _httpClient.GetAsync<List<User>>(Endpoints.UserEndpoint));
+        => ReturnObjectResult(await _httpClient.GetAsync<List<User>>(Endpoints.UserEndpoint));
 
     /// <summary>
     /// Retorna um usuário pelo id do mesmo
@@ -53,7 +53,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetByIdAsync([FromRoute] string id) 
-        => Ok(await _httpClient.GetAsync<User>(string.Concat(Endpoints.UserEndpoint, $"/{id}")));
+        => ReturnObjectResult(await _httpClient.GetAsync<User>(string.Concat(Endpoints.UserEndpoint, $"/{id}")));
 
     /// <summary>
     /// Retorna o usuário baseado no user_id que contém no token retornado no frontend
@@ -71,7 +71,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetUserByToken()
-        => Ok(await _httpClient.GetAsync<User>(Endpoints.UserEndpoint));
+        => ReturnObjectResult(await _httpClient.GetAsync<User>(Endpoints.UserEndpoint));
 
     /// <summary>
     /// Cria um usuário
@@ -88,7 +88,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserRecord user)
-        => Ok(await _httpClient.PostAsync(Endpoints.UserEndpoint, user));
+        => ReturnObjectResult(await _httpClient.PostAsync(Endpoints.UserEndpoint, user));
 
     /// <summary>
     /// Atualiza um usuário
@@ -107,7 +107,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> UpdateUserAsync([FromBody] UpdateUserRecord user)
-        => Ok(await _httpClient.PutAsync(Endpoints.UserEndpoint, user));
+        => ReturnObjectResult(await _httpClient.PutAsync(Endpoints.UserEndpoint, user));
 
     /// <summary>
     /// Ativa ou desativa o usuário da base (Soft delete)
@@ -126,5 +126,5 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> ActiveUserAsync([FromBody] ActiveUserRecord user)
-        => Ok(await _httpClient.PutAsync(string.Concat(Endpoints.UserEndpoint, "/active"), user));
+        => ReturnObjectResult(await _httpClient.PutAsync(string.Concat(Endpoints.UserEndpoint, "/active"), user));
 }

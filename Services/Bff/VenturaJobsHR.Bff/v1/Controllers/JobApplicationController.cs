@@ -14,12 +14,13 @@ namespace VenturaJobsHR.Bff.v1.Controllers;
 [ApiVersion("1.0")]
 [Route("/v{version:apiVersion}/jobApplications")]
 [ApiController]
-
-public class JobApplicationController : ControllerBase
+public class JobApplicationController : BaseController
 {
     private readonly HttpClient _httpClient;
-    public JobApplicationController(IHttpClientFactory httpClientFactory) => _httpClient = httpClientFactory.GetClient(HttpClientKeysEnum.Jobs);
-    
+
+    public JobApplicationController(IHttpClientFactory httpClientFactory) =>
+        _httpClient = httpClientFactory.GetClient(HttpClientKeysEnum.Jobs);
+
     /// <summary>
     /// O candidato se aplica a vaga
     /// </summary>
@@ -34,7 +35,7 @@ public class JobApplicationController : ControllerBase
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> CreateJobApplication([FromBody] CreateJobApplicationRecord application)
-        => Ok(await _httpClient.PostAsync(Endpoints.ApplicationEndpoint, application));
+        => ReturnObjectResult(await _httpClient.PostAsync(Endpoints.ApplicationEndpoint, application));
 
     /// <summary>
     /// Retorna as vagas que o candidato se candidatou
@@ -52,5 +53,5 @@ public class JobApplicationController : ControllerBase
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetApplications()
-        => Ok(await _httpClient.GetAsync(Endpoints.ApplicationEndpoint));
+        => ReturnObjectResult(await _httpClient.GetAsync<List<GetApplicationJobsRecord>>(Endpoints.ApplicationEndpoint));
 }

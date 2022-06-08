@@ -18,7 +18,7 @@ namespace VenturaJobsHR.Bff.v1.Controllers;
 [ApiVersion("1.0")]
 [Route("/v{version:apiVersion}/jobs")]
 [ApiController]
-public class JobsController : ControllerBase
+public class JobsController : BaseController
 {
     private readonly HttpClient _httpClient;
     public JobsController(IHttpClientFactory httpClientFactory) => _httpClient = httpClientFactory.GetClient(HttpClientKeysEnum.Jobs);
@@ -33,7 +33,7 @@ public class JobsController : ControllerBase
     [ProducesResponseType(typeof(Pagination<GetJobsRecord>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> GetByCriteria([FromQuery] SearchJobsQuery query)
-        => Ok(await _httpClient.GetAsync<object>(Endpoints.JobEndpointWithQuery(query)));
+        => ReturnObjectResult(await _httpClient.GetAsync<object>(Endpoints.JobEndpointWithQuery(query)));
 
     /// <summary>
     /// Retorna as vagas que a empresa cadastrou
@@ -49,7 +49,7 @@ public class JobsController : ControllerBase
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> GetJobsByCompany()
-        => Ok(await _httpClient.GetAsync<object>(string.Concat(Endpoints.JobEndpoint, "/company")));
+        => ReturnObjectResult(await _httpClient.GetAsync<object>(string.Concat(Endpoints.JobEndpoint, "/company")));
 
     /// <summary>
     /// Cria uma vaga
@@ -65,7 +65,7 @@ public class JobsController : ControllerBase
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> CreateJob(CreateJobRecord command)
-        => Ok(await _httpClient.PostAsync(Endpoints.JobEndpoint, command));
+        => ReturnObjectResult(await _httpClient.PostAsync(Endpoints.JobEndpoint, command));
 
     /// <summary>
     /// Retorna os candidatos que aplicaram a vaga e a média
@@ -84,7 +84,7 @@ public class JobsController : ControllerBase
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetJobApplications([FromRoute] string id)
-        => Ok(await _httpClient.GetAsync<object>(string.Concat(Endpoints.JobEndpoint, $"/{id}/job-applications")));
+        => ReturnObjectResult(await _httpClient.GetAsync<object>(string.Concat(Endpoints.JobEndpoint, $"/{id}/job-applications")));
 
     /// <summary>
     /// Retorna o relatório da vaga 
@@ -103,9 +103,9 @@ public class JobsController : ControllerBase
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetJobApplicationReports([FromRoute] string id)
-        => Ok(await _httpClient.GetAsync<object>(string.Concat(Endpoints.JobEndpoint, $"/{id}/job-report")));
-    
-    
+        => ReturnObjectResult(await _httpClient.GetAsync<object>(string.Concat(Endpoints.JobEndpoint, $"/{id}/job-report")));
+
+
     /// <summary>
     /// Busca uma vaga pelo id
     /// </summary>
@@ -122,7 +122,7 @@ public class JobsController : ControllerBase
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetById([FromRoute] string id)
-        => Ok(await _httpClient.GetAsync<Job>(string.Concat(Endpoints.JobEndpoint, $"/{id}")));
+        => ReturnObjectResult(await _httpClient.GetAsync<GetJobsRecord>(string.Concat(Endpoints.JobEndpoint, $"/{id}")));
 
     /// <summary>
     /// Atuliza uma ou mais vagas
@@ -140,7 +140,7 @@ public class JobsController : ControllerBase
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> UpdateJob(UpdateJobRecord command)
-        => Ok(await _httpClient.PutAsync(Endpoints.JobEndpoint, command));
+        => ReturnObjectResult(await _httpClient.PutAsync(Endpoints.JobEndpoint, command));
 
     /// <summary>
     /// Desativa/arquiva uma vaga (deleção lógica)
@@ -156,7 +156,7 @@ public class JobsController : ControllerBase
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> LogicalJobRemove(ActiveJobRecord job)
-        => Ok(await _httpClient.PutAsync(string.Concat(Endpoints.JobEndpoint, "/active"), job));
+        => ReturnObjectResult(await _httpClient.PutAsync(string.Concat(Endpoints.JobEndpoint, "/active"), job));
 
     /// <summary>
     /// Cancelar a publicação de uma vaga
@@ -174,6 +174,6 @@ public class JobsController : ControllerBase
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
-    public async Task<IActionResult> CancelJobPosting([FromRoute] string id)
-        => Ok(await _httpClient.PutAsync(string.Concat(Endpoints.JobEndpoint), id));
+    public async Task<IActionResult> CancelJobPosting(string id)
+        => ReturnObjectResult(await _httpClient.PutAsync(string.Concat(Endpoints.JobEndpoint), id));
 }

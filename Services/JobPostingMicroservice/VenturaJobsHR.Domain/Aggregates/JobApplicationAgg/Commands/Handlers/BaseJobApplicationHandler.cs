@@ -46,18 +46,18 @@ public abstract class BaseJobApplicationHandler : BaseRequestHandler
             command.Application = null;
     }
 
-    protected async Task<bool> IsDuplicated(BaseJobApplicationCommand command)
+    protected async Task<bool> IsDuplicated(object command, string reference)
     {
-        if (command.Application is null) return false;
+        if (command is null) return false;
 
-        return await _cacheService.ExistsAsync(command.Application.GetReference(), command.Application);
+        return await _cacheService.ExistsAsync(reference, command);
     }
 
     protected async Task SetCache(JobApplication application)
     {
         var job = await _jobRepository.GetByIdAsync(application.JobId);
 
-        object app = new { UserId = application.UserId, JobId = application.JobId, CriteriaList = application.CriteriaList };
+        object app = new { UserId = application.UserId, JobId = application.JobId };
 
         await _cacheService.InsertOrUpdateAsync(application.GetKeyCache(), app, job.DeadLine);
     }

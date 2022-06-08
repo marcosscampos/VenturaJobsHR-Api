@@ -16,7 +16,8 @@ public abstract class BaseJobHandler : BaseRequestHandler
     private readonly ICacheService _cacheService;
     private readonly IMediator _mediator;
 
-    protected BaseJobHandler(INotificationHandler notification, IJobRepository jobRepository, ICacheService cacheService, IMediator mediator) : base(notification)
+    protected BaseJobHandler(INotificationHandler notification, IJobRepository jobRepository,
+        ICacheService cacheService, IMediator mediator) : base(notification)
     {
         _jobRepository = jobRepository;
         _cacheService = cacheService;
@@ -38,46 +39,19 @@ public abstract class BaseJobHandler : BaseRequestHandler
 
         await _mediator.Publish(jobList[0].ProjectedAs<JobsUpdatedEvent>());
     }
-
-    protected async Task<bool> ValidateItems(BaseJobCommand command)
+    
+    protected async Task<bool> IsDuplicated(object command, string reference)
     {
-        var codes = command.JobList.Select(x => x.Company.Uid);
-        var validateCodes = GetValidatedCodes(command, codes);
-        if (validateCodes == null || !validateCodes.Any()) return false;
+        if (command is null) return false;
 
-        command.JobList = command.JobList.Where(x => validateCodes.Contains(x.Company.Uid)).ToList();
-
-        await RemoveDuplicatesFromCache(command);
-        return true;
-    }
-
-    protected async Task<bool> IsDuplicated(BaseJobCommand command)
-    {
-        if (command.JobList is null || !command.JobList.Any()) return false;
-
-        return await _cacheService.ExistsAsync(command.JobList[0].GetReference(), command.JobList);
-    }
-
-    protected async Task RemoveDuplicatesFromCache(BaseJobCommand command)
-    {
-        if (!command.JobList.Any()) return;
-
-        var jobsToRemove = new List<CreateOrUpdateJobRequest>();
-        foreach (var jobRequest in command.JobList)
-        {
-            if (await _cacheService.ExistsAsync($"{jobRequest.GetReference()}", jobRequest))
-                jobsToRemove.Add(jobRequest);
-        }
-
-        if (jobsToRemove.Any())
-            command.JobList.RemoveAll(x => jobsToRemove.Contains(x));
+        return await _cacheService.ExistsAsync(reference, command);
     }
 
     protected async Task SetCache(List<Job> jobList, BaseJobCommand request)
     {
         foreach (var item in jobList)
         {
-            var itemCache = request.JobList.Where(x => x.Name == item.Name && x.DeadLine == item.DeadLine).FirstOrDefault();
+            var itemCache = request.JobList.FirstOrDefault(x => x.Name == item.Name && x.DeadLine == item.DeadLine);
 
             object app = new
             {

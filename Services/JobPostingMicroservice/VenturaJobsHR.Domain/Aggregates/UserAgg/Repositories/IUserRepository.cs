@@ -6,4 +6,5 @@ namespace VenturaJobsHR.Domain.Aggregates.UserAgg.Repositories;
 public interface IUserRepository : IRepository<User>
 {
     Task<User> GetUserByFirebaseId(string firebaseId);
+    Task<List<User>> GetUsersByIdList(List<string> ids);
 }

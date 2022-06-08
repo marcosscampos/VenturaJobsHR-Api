@@ -13,6 +13,7 @@ using VenturaJobsHR.CrossCutting.Notifications;
 using VenturaJobsHR.CrossCutting.Pagination;
 using VenturaJobsHR.Domain.Aggregates.JobApplicationAgg.Repositories;
 using VenturaJobsHR.Domain.Aggregates.JobsAgg.Commands;
+using VenturaJobsHR.Domain.Aggregates.JobsAgg.Entities;
 using VenturaJobsHR.Domain.Aggregates.JobsAgg.Queries;
 using VenturaJobsHR.Domain.Aggregates.JobsAgg.Repositories;
 using VenturaJobsHR.Domain.Aggregates.UserAgg.Repositories;
@@ -27,11 +28,11 @@ public class JobService : ApplicationServiceBase, IJobService
     private readonly IJobRepository _jobRepository;
     private readonly IMediator _mediator;
 
-    public JobService(IJobRepository jobRepository, 
-        IMediator mediator, 
-        INotificationHandler notification, 
-        IHttpContextAccessor httpContext, 
-        IJobApplicationRepository jobApplicationRepository, 
+    public JobService(IJobRepository jobRepository,
+        IMediator mediator,
+        INotificationHandler notification,
+        IHttpContextAccessor httpContext,
+        IJobApplicationRepository jobApplicationRepository,
         IUserRepository userRepository) : base(notification)
     {
         _jobRepository = jobRepository;
@@ -42,7 +43,7 @@ public class JobService : ApplicationServiceBase, IJobService
     }
 
     public async Task CreateJob(CreateJobCommand command)
-    => await _mediator.Send(command);
+        => await _mediator.Send(command);
 
 
     public async Task<IList<GetJobsRecord>> GetAll()
@@ -65,6 +66,40 @@ public class JobService : ApplicationServiceBase, IJobService
 
         var jobRecord = CreateObject(job);
         return jobRecord;
+    }
+
+    public async Task<JobReportRecord> GetJobReport(string id)
+    {
+        if (!ObjectId.TryParse(id, out _))
+            throw new InvalidEntityIdProvidedException("Try with a valid ID.");
+
+        var job = await _jobRepository.GetByIdAsync(id);
+        if (job is null)
+            throw new NotFoundException($"Job not found with id #{id}");
+
+        var applications = await _jobApplicationRepository.GetApplicationsByJobId(job.Id);
+
+        var jobAverage = job.CriteriaList
+            .Select(criteria => Job.GetProfileTypeBy(criteria.Profiletype) * criteria.Weight)
+            .Select(averageMultiply => (double)averageMultiply).ToList().Sum();
+
+        var jobProfileAverage = Math.Round(jobAverage / 11, 2);
+
+        var users = await _userRepository.GetUsersByIdList(applications.Select(x => x.UserId).ToList());
+
+        var userValueList = (from app in applications
+            let user = users.FirstOrDefault(x => x.Id == app.UserId)
+            let averageSum =
+                (from criteria in app.CriteriaList
+                    let jobCriteria = job.CriteriaList.FirstOrDefault(x => x.Id == criteria.CriteriaId)
+                    select Job.GetProfileTypeBy(criteria.ProfileType) * jobCriteria.Weight)
+                .Select(averageMultiply => (double)averageMultiply).ToList()
+            let average = averageSum.Sum()
+            let profileAverage = Math.Round(average / 11, 2)
+            select new UserValueRecord(user.Name, profileAverage)).ToList();
+        
+        var jobConsolidated = new JobReportRecord(jobProfileAverage, userValueList);
+        return jobConsolidated;
     }
 
     public async Task UpdateJob(UpdateJobCommand command)

@@ -22,7 +22,8 @@ public class CreateJobApplicationHandler : BaseJobApplicationHandler, IRequestHa
     {
         if (!IsValid(request)) return Unit.Value;
 
-        if(await IsDuplicated(request))
+        var verifyDuplicate = new { UserId = request.Application.UserId, JobId = request.Application.JobId };
+        if(await IsDuplicated(verifyDuplicate, request.Application.GetReference()))
         {
             JobApplication.JobApplicationDuplicated(Notification, request.Application.GetReference());
             return Unit.Value;

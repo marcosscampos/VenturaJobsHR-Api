@@ -11,4 +11,7 @@ public class UserRepository : Repository<User>, IUserRepository
 
     public async Task<User> GetUserByFirebaseId(string firebaseId)
         => await Collection.Find(x => x.FirebaseId == firebaseId).SingleOrDefaultAsync();
+
+    public async Task<List<User>> GetUsersByIdList(List<string> ids)
+        => await Collection.Find(x => ids.Contains(x.Id)).ToListAsync();
 }

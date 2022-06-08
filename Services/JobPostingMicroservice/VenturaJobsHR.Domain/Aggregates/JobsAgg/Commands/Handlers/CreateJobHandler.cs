@@ -19,7 +19,17 @@ public class CreateJobHandler : BaseJobHandler, IRequestHandler<CreateJobCommand
     {
         if (!IsValid(request)) return Unit.Value;
 
-        if (await IsDuplicated(request))
+        var verifyDuplicate = new
+        {
+            Name = request.JobList[0].Name,
+            Description = request.JobList[0].Description,
+            CriteriaList = request.JobList[0].CriteriaList,
+            DeadLine = request.JobList[0].DeadLine,
+            Salary = request.JobList[0].Salary,
+            Status = request.JobList[0].Status
+        };
+        
+        if (await IsDuplicated(verifyDuplicate, request.JobList[0].GetReference()))
         {
             Job.JobDuplicated(Notification, request.JobList[0].GetReference());
             return Unit.Value;
@@ -29,12 +39,12 @@ public class CreateJobHandler : BaseJobHandler, IRequestHandler<CreateJobCommand
 
         foreach (var item in request.JobList)
         {
-            var CreatedJob = CreateJob(item);
+            var createdJob = CreateJob(item);
 
             if (!Notification.HasErrorNotifications(item.GetReference()))
             {
                 Notification.RaiseSuccess(item.Id, item.Name);
-                jobList.Add(CreatedJob);
+                jobList.Add(createdJob);
             }
         }
 

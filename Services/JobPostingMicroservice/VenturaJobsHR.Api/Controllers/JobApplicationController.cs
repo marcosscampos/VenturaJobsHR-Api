@@ -2,11 +2,11 @@
 using System.Net;
 using VenturaJobsHR.Api.Common.Responses;
 using VenturaJobsHR.Api.Common.Security;
+using VenturaJobsHR.Application.Records.Jobs;
 using VenturaJobsHR.Application.Services.Interfaces;
 using VenturaJobsHR.CrossCutting.Notifications;
 using VenturaJobsHR.CrossCutting.Responses;
 using VenturaJobsHR.Domain.Aggregates.JobApplicationAgg.Commands;
-using VenturaJobsHR.Domain.Aggregates.JobApplicationAgg.Entities;
 
 namespace VenturaJobsHR.Api.Controllers;
 
@@ -52,7 +52,7 @@ public class JobApplicationController : BaseController
     /// <returns></returns>
     [HttpGet]
     [VenturaAuthorize(role: "applicant")]
-    [ProducesResponseType(typeof(JobApplication), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(List<GetJobsRecord>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]

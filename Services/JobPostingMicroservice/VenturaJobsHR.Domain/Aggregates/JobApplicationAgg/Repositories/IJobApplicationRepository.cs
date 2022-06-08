@@ -6,4 +6,5 @@ namespace VenturaJobsHR.Domain.Aggregates.JobApplicationAgg.Repositories;
 public interface IJobApplicationRepository : IRepository<JobApplication>
 {
     Task<IList<JobApplication>> GetApplicationsByUserId(string userId);
+    Task<List<JobApplication>> GetApplicationsByJobId(string jobId);
 }

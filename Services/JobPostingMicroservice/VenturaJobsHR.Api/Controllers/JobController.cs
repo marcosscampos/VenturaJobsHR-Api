@@ -2,6 +2,7 @@
 using System.Net;
 using VenturaJobsHR.Api.Common.Responses;
 using VenturaJobsHR.Api.Common.Security;
+using VenturaJobsHR.Application.Records.Applications;
 using VenturaJobsHR.Application.Records.Jobs;
 using VenturaJobsHR.Application.Services.Interfaces;
 using VenturaJobsHR.CrossCutting.Notifications;
@@ -50,7 +51,7 @@ public class JobController : BaseController
     /// <returns></returns>
     [HttpGet("company")]
     [VenturaAuthorize(role: "company")]
-    [ProducesResponseType(typeof(Pagination<GetJobsRecord>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(List<GetJobsRecord>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
@@ -72,7 +73,7 @@ public class JobController : BaseController
     /// <returns></returns>
     [HttpGet("{id}/applications")]
     [VenturaAuthorize(role: "company")]
-    [ProducesResponseType(typeof(Pagination<GetJobsRecord>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(List<ApplicationResponse>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
@@ -80,6 +81,29 @@ public class JobController : BaseController
     public async Task<IActionResult> GetJobApplications([FromRoute] string id)
     {
         var jobs = await _jobService.GetApplicationsByToken(id);
+        return HandleResponse(jobs);
+    }
+    
+    /// <summary>
+    /// Retorna o relatório da vaga 
+    /// </summary>
+    /// <param name="id">id da vaga</param>
+    /// <response code="200">Retorna o relatório em relação a média da vaga</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
+    /// <returns></returns>
+    [HttpGet("{id}/job-report")]
+    [VenturaAuthorize(role: "company")]
+    [ProducesResponseType(typeof(JobReportRecord), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> GetJobApplicationReports([FromRoute] string id)
+    {
+        var jobs = await _jobService.GetJobReport(id);
         return HandleResponse(jobs);
     }
 

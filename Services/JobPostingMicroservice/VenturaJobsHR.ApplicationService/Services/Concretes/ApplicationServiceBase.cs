@@ -29,6 +29,7 @@ public class ApplicationServiceBase
         {
             var criteriaList = new List<JobApplicationCriteriaRecord>();
             var averageSum = new List<double>();
+            var averageWeightList = new List<double>();
 
             foreach (var crit in item.CriteriaList)
             {
@@ -38,11 +39,13 @@ public class ApplicationServiceBase
                 double averageMultiply = Job.GetProfileTypeBy(crit.ProfileType) * jobCriteria.Weight;
 
                 averageSum.Add(averageMultiply);
+                averageWeightList.Add(jobCriteria.Weight);
                 criteriaList.Add(criteria);
             }
 
             double average = averageSum.Sum();
-            double profileAverage = Math.Round(average / 11, 2);
+            double averageWeight = averageWeightList.Sum();
+            double profileAverage = Math.Round(average / averageWeight, 2);
 
             var applicationResponse = new ApplicationResponse(userRecord, item.JobId, criteriaList, profileAverage);
 
@@ -69,6 +72,8 @@ public class ApplicationServiceBase
             var company = new CompanyRecord(job.Company.Id, job.Company.Uid, job.Company.Name);
             var criteriaList = new List<CriteriaRecord>();
             var averageSum = new List<double>();
+            var averageWeightList = new List<double>();
+
 
             foreach (var criteria in job.CriteriaList)
             {
@@ -77,12 +82,14 @@ public class ApplicationServiceBase
 
                 double averageMultiply = Job.GetProfileTypeBy(criteria.Profiletype) * criteria.Weight;
                 averageSum.Add(averageMultiply);
+                averageWeightList.Add(criteria.Weight);
 
                 criteriaList.Add(criteriaRecord);
             }
 
             double average = averageSum.Sum();
-            double profileAverage = Math.Round(average / 11, 2);
+            double averageWeight = averageWeightList.Sum();
+            double profileAverage = Math.Round(average / averageWeight, 2);
 
             var jobRecord = new GetJobsRecord(
                 job.Id,
@@ -112,6 +119,7 @@ public class ApplicationServiceBase
         var company = new CompanyRecord(job.Company.Id, job.Company.Uid, job.Company.Name);
         var criteriaList = new List<CriteriaRecord>();
         var averageSum = new List<double>();
+        var averageWeightList = new List<double>();
 
         foreach (var criteria in job.CriteriaList)
         {
@@ -120,12 +128,13 @@ public class ApplicationServiceBase
 
             double averageMultiply = Job.GetProfileTypeBy(criteria.Profiletype) * criteria.Weight;
             averageSum.Add(averageMultiply);
-
+            averageWeightList.Add(criteria.Weight);
             criteriaList.Add(criteriaRecord);
         }
 
         double average = averageSum.Sum();
-        double profileAverage = Math.Round(average / 11, 2);
+        double averageWeight = averageWeightList.Sum();
+        double profileAverage = Math.Round(average / averageWeight, 2);
 
         var jobRecord = new GetJobsRecord(
             job.Id,

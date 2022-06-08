@@ -199,14 +199,14 @@ public class JobController : BaseController
     /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
     /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
-    [HttpPut("{id}")]
+    [HttpPut("cancel")]
     [VenturaAuthorize(role: "company")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
-    public async Task<IActionResult> CancelJobPosting([FromRoute] string id)
+    public async Task<IActionResult> CancelJobPosting(string id)
     {
         await _jobService.CancelJobPosting(id);
 

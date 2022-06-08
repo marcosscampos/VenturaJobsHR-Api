@@ -6,6 +6,7 @@ public static class Endpoints
 {
     public const string JobEndpoint = "v1/jobs";
     public const string UserEndpoint = "v1/users";
+    public const string ApplicationEndpoint = "v1/jobApplications";
 
     public static string JobEndpointWithQuery(SearchJobsQuery query)
     {

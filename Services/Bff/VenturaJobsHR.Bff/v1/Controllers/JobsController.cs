@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using VenturaJobsHR.Bff.Application.Records.Applications;
 using VenturaJobsHR.Bff.Application.Records.Job;
+using VenturaJobsHR.Bff.Application.Records.User;
 using VenturaJobsHR.Bff.Common;
 using VenturaJobsHR.Bff.CrossCutting.Enums;
 using VenturaJobsHR.Bff.CrossCutting.Http.Extensions;
@@ -28,34 +30,97 @@ public class JobsController : ControllerBase
     /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
     /// <returns></returns>
     [HttpGet]
-    [ProducesResponseType(typeof(Pagination<Job>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(Pagination<GetJobsRecord>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> GetByCriteria([FromQuery] SearchJobsQuery query)
         => Ok(await _httpClient.GetAsync<object>(Endpoints.JobEndpointWithQuery(query)));
 
     /// <summary>
+    /// Retorna as vagas que a empresa cadastrou
+    /// </summary>
+    /// <response code="200">Retorna as vagas</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <returns></returns>
+    [HttpGet("company")]
+    [ProducesResponseType(typeof(List<GetJobsRecord>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    public async Task<IActionResult> GetJobsByCompany()
+        => Ok(await _httpClient.GetAsync<object>(string.Concat(Endpoints.JobEndpoint, "/company")));
+
+    /// <summary>
     /// Cria uma vaga
     /// </summary>
     /// <response code="201">Vaga criada com sucesso</response>
-    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
     /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> CreateJob(CreateJobRecord command)
         => Ok(await _httpClient.PostAsync(Endpoints.JobEndpoint, command));
 
     /// <summary>
+    /// Retorna os candidatos que aplicaram a vaga e a média
+    /// </summary>
+    /// <param name="id">id da vaga</param>
+    /// <response code="200">Retorna os candidatos</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
+    /// <returns></returns>
+    [HttpGet("{id}/job-applications")]
+    [ProducesResponseType(typeof(List<ApplicationResponse>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> GetJobApplications([FromRoute] string id)
+        => Ok(await _httpClient.GetAsync<object>(string.Concat(Endpoints.JobEndpoint, $"/{id}/job-applications")));
+
+    /// <summary>
+    /// Retorna o relatório da vaga 
+    /// </summary>
+    /// <param name="id">id da vaga</param>
+    /// <response code="200">Retorna o relatório em relação a média da vaga</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
+    /// <returns></returns>
+    [HttpGet("{id}/job-report")]
+    [ProducesResponseType(typeof(JobReportRecord), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> GetJobApplicationReports([FromRoute] string id)
+        => Ok(await _httpClient.GetAsync<object>(string.Concat(Endpoints.JobEndpoint, $"/{id}/job-report")));
+    
+    
+    /// <summary>
     /// Busca uma vaga pelo id
     /// </summary>
     /// <response code="200">Retorna a vaga</response>
-    /// <response code="404">Não foi encontrada nenhuma informação com essa identificação no banco de dados</response>
-    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(Job), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(GetJobsRecord), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetById([FromRoute] string id)
         => Ok(await _httpClient.GetAsync<Job>(string.Concat(Endpoints.JobEndpoint, $"/{id}")));
 
@@ -63,13 +128,17 @@ public class JobsController : ControllerBase
     /// Atuliza uma ou mais vagas
     /// </summary>
     /// <response code="200">Vaga atualizada com sucesso</response>
-    /// <response code="404">Não foi encontrada nenhuma informação com essa identificação no banco de dados</response>
-    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
     [HttpPut]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> UpdateJob(UpdateJobRecord command)
         => Ok(await _httpClient.PutAsync(Endpoints.JobEndpoint, command));
 
@@ -77,25 +146,34 @@ public class JobsController : ControllerBase
     /// Desativa/arquiva uma vaga (deleção lógica)
     /// </summary>
     /// <response code="200">Vaga arquivada com sucesso</response>
-    /// <response code="404">Não foi encontrada nenhuma informação com essa identificação no banco de dados</response>
-    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
     /// <returns></returns>
     [HttpPut("active")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> LogicalJobRemove(ActiveJobRecord job)
         => Ok(await _httpClient.PutAsync(string.Concat(Endpoints.JobEndpoint, "/active"), job));
 
     /// <summary>
-    /// Remove uma vaga (Deleção física)
+    /// Cancelar a publicação de uma vaga
     /// </summary>
-    /// <response code="200">Vaga deletada com sucesso</response>
-    /// <response code="400">Quando alguma informação enviada para a API não satisfazer o que o mesmo está esperando</response>
+    /// <param name="id">id da vaga</param>
+    /// <response code="200">Vaga cancelada com sucesso</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
-    [HttpDelete("{id}")]
+    [HttpPut("cancel")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
-    public async Task<IActionResult> DeleteJob([FromRoute] string id)
-        => Ok(await _httpClient.RemoveAsync<HandleResponse>(string.Concat(Endpoints.JobEndpoint, $"/{id}")));
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> CancelJobPosting([FromRoute] string id)
+        => Ok(await _httpClient.PutAsync(string.Concat(Endpoints.JobEndpoint), id));
 }

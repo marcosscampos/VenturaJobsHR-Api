@@ -19,9 +19,9 @@ public class UsersController : ControllerBase
     public UsersController(IHttpClientFactory httpClientFactory) => _httpClient = httpClientFactory.GetClient(HttpClientKeysEnum.Users);
 
     /// <summary>
-    /// Retorna todos os usuários da base
+    /// Retorna os usuários do tipo empresa
     /// </summary>
-    /// <response code="200">Retorna todos os usuários da base de dados</response>
+    /// <response code="200">Retorna todos os usuários do tipo empresa que consta na base de dados</response>
     /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
     /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
     /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>

@@ -71,24 +71,22 @@ public class JobService : ApplicationServiceBase, IJobService
             throw new NotFoundException($"Job not found with id #{id}");
 
         var applications = await _jobApplicationRepository.GetApplicationsByJobId(job.Id);
+        
+        var jobAverage =
+            job.CriteriaList.Sum(criteria => Job.GetProfileTypeBy(criteria.Profiletype) * criteria.Weight) /
+            (double)job.CriteriaList.Sum(x => x.Weight);
 
-        var jobAverage = job.CriteriaList
-            .Select(criteria => Job.GetProfileTypeBy(criteria.Profiletype) * criteria.Weight)
-            .Select(averageMultiply => (double)averageMultiply).ToList().Sum();
-
-        var jobProfileAverage = Math.Round(jobAverage / 11, 2);
+        var jobProfileAverage = Math.Round(jobAverage, 2);
 
         var users = await _userRepository.GetUsersByIdList(applications.Select(x => x.UserId).ToList());
 
         var userValueList = (from app in applications
             let user = users.FirstOrDefault(x => x.Id == app.UserId)
-            let averageSum =
-                (from criteria in app.CriteriaList
-                    let jobCriteria = job.CriteriaList.FirstOrDefault(x => x.Id == criteria.CriteriaId)
-                    select Job.GetProfileTypeBy(criteria.ProfileType) * jobCriteria.Weight)
-                .Select(averageMultiply => (double)averageMultiply).ToList()
-            let average = averageSum.Sum()
-            let profileAverage = Math.Round(average / 11, 2)
+            let average = app.CriteriaList.Sum(x =>
+                              Job.GetProfileTypeBy(x.ProfileType) *
+                              job.CriteriaList.FirstOrDefault(p => p.Id == x.CriteriaId)!.Weight) /
+                          (double)job.CriteriaList.Sum(x => x.Weight)
+            let profileAverage = Math.Round(average, 2)
             select new UserValueRecord(user.Name, profileAverage)).ToList();
 
         var jobConsolidated = new JobReportRecord(jobProfileAverage, userValueList);

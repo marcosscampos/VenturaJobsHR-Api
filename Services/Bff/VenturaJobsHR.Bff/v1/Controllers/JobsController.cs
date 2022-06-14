@@ -175,5 +175,5 @@ public class JobsController : BaseController
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> CancelJobPosting(string id)
-        => ReturnObjectResult(await _httpClient.PutAsync(string.Concat(Endpoints.JobEndpoint), id));
+        => ReturnObjectResult(await _httpClient.PutAsync(string.Concat(Endpoints.JobEndpoint, "/cancel"), id));
 }

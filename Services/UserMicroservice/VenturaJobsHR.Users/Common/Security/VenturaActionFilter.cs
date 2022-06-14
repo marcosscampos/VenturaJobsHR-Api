@@ -26,7 +26,7 @@ public class VenturaActionFilter : IAsyncAuthorizationFilter
         var user = await _userRepository.GetUserByFireBaseToken(uid.Value);
         var userType = User.GetUserTypeBy(user.UserType);
         
-        if (!roles.Contains(userType))
+        if (roles.All(role => !userType.Equals(role)))
         {
             throw new ForbiddenException("Role is not match with this endpoint or is invalid.");
         }

@@ -71,7 +71,7 @@ public class UsersController : BaseController
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetUserByToken()
-        => ReturnObjectResult(await _httpClient.GetAsync<User>(Endpoints.UserEndpoint));
+        => ReturnObjectResult(await _httpClient.GetAsync<User>(string.Concat(Endpoints.UserEndpoint, "/user-token")));
 
     /// <summary>
     /// Cria um usuário

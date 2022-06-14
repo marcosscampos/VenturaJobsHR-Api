@@ -24,8 +24,9 @@ public class VenturaActionFilter : IAsyncAuthorizationFilter
             throw new NotFoundException("UID not found.");
 
         var user = await _userRepository.GetUserByFireBaseToken(uid.Value);
-
-        if (!roles.Any(role => User.GetUserTypeBy(user.UserType).Equals(role)))
+        var userType = User.GetUserTypeBy(user.UserType);
+        
+        if (roles.All(role => !userType.Equals(role)))
         {
             throw new ForbiddenException("Role is not match with this endpoint or is invalid.");
         }

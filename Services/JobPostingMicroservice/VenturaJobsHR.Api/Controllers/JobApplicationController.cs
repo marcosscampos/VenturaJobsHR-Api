@@ -12,6 +12,7 @@ namespace VenturaJobsHR.Api.Controllers;
 
 [ApiVersion("1.0")]
 [Route("/v{version:apiVersion}/jobApplications")]
+[VenturaAuthorize(role: "applicant")]
 [ApiController]
 public class JobApplicationController : BaseController
 {
@@ -30,7 +31,6 @@ public class JobApplicationController : BaseController
     /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
     /// <returns></returns>
     [HttpPost]
-    [VenturaAuthorize(role: "applicant")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
@@ -51,7 +51,6 @@ public class JobApplicationController : BaseController
     /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
     [HttpGet]
-    [VenturaAuthorize(role: "applicant")]
     [ProducesResponseType(typeof(List<GetApplicationJobsRecord>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]

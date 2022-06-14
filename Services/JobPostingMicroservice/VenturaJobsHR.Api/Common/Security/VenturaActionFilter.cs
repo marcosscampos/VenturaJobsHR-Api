@@ -30,7 +30,7 @@ public class VenturaActionFilter : IAsyncAuthorizationFilter
 
         var user = await _userRepository.GetUserByFirebaseId(uid.Value);
 
-        if (roles.Any(role => !User.GetUserTypeBy(user.UserType).Equals(role) || !role.Equals("allowAnonymous")))
+        if (!roles.Any(role => User.GetUserTypeBy(user.UserType).Equals(role)))
         {
             throw new ForbiddenException("Role is not match with this endpoint or is invalid.");
         }

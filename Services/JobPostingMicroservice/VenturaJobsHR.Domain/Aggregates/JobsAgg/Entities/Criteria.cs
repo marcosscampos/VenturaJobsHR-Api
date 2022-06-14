@@ -34,7 +34,7 @@ public class Criteria
             Weight = weight;
     }
 
-    public string Id { get; set; }
+    public string? Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public ProfileTypeEnum Profiletype { get; set; }

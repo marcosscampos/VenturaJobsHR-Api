@@ -40,7 +40,8 @@ public class UsersController : ControllerBase
     /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
     [HttpGet("user-token")]
-    [VenturaAuthorize(role: "company, applicant")]
+    // [VenturaAuthorize(role: "company, applicant")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company, applicant")]
     [ProducesResponseType(typeof(User), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]

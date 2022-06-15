@@ -53,6 +53,7 @@ public class CreateJobValidator : BaseValidator<CreateJobCommand>
 
             job.RuleFor(x => x.Name).NotEmpty().WithState(x => AddCommandErrorObject(EntityError.InvalidJobName, x.GetReference()));
             job.RuleFor(x => x.Description).NotEmpty().WithState(x => AddCommandErrorObject(EntityError.InvalidJobDescription, x.GetReference()));
+            job.RuleFor(x => x.DeadLine).Must(x => x.Date < DateTime.Now).WithState(x => AddCommandErrorObject(EntityError.DeadLineLessDateNow, x.GetReference()));
             job.RuleFor(x => x.DeadLine).Must(x => x != DateTime.MinValue).WithState(x => AddCommandErrorObject(EntityError.InvalidDeadLine, x.GetReference()));
             job.RuleFor(x => x.DeadLine).Must(x => x.Date <= DateTime.Now.AddDays(30)).WithState(x => AddCommandErrorObject(EntityError.JobDeadLineGreaterThan30Days, x.GetReference()));
         });

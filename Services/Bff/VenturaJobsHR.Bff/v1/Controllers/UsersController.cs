@@ -34,7 +34,7 @@ public class UsersController : BaseController
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetAllAsync() 
-        => ReturnObjectResult(await _httpClient.GetAsync<List<User>>(Endpoints.UserEndpoint));
+        => ReturnObjectResult(await _httpClient.GetAsync<List<User>>(Endpoints.UserEndpoint), false);
 
     /// <summary>
     /// Retorna um usuário pelo id do mesmo
@@ -53,7 +53,7 @@ public class UsersController : BaseController
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetByIdAsync([FromRoute] string id) 
-        => ReturnObjectResult(await _httpClient.GetAsync<User>(string.Concat(Endpoints.UserEndpoint, $"/{id}")));
+        => ReturnObjectResult(await _httpClient.GetAsync<User>(string.Concat(Endpoints.UserEndpoint, $"/{id}")), false);
 
     /// <summary>
     /// Retorna o usuário baseado no user_id que contém no token retornado no frontend
@@ -71,7 +71,7 @@ public class UsersController : BaseController
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetUserByToken()
-        => ReturnObjectResult(await _httpClient.GetAsync<User>(string.Concat(Endpoints.UserEndpoint, "/user-token")));
+        => ReturnObjectResult(await _httpClient.GetAsync<User>(string.Concat(Endpoints.UserEndpoint, "/user-token")), false);
 
     /// <summary>
     /// Cria um usuário
@@ -88,7 +88,7 @@ public class UsersController : BaseController
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserRecord user)
-        => ReturnObjectResult(await _httpClient.PostAsync(Endpoints.UserEndpoint, user));
+        => ReturnObjectResult(await _httpClient.PostAsync(Endpoints.UserEndpoint, user), true);
 
     /// <summary>
     /// Atualiza um usuário
@@ -107,7 +107,7 @@ public class UsersController : BaseController
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> UpdateUserAsync([FromBody] UpdateUserRecord user)
-        => ReturnObjectResult(await _httpClient.PutAsync(Endpoints.UserEndpoint, user));
+        => ReturnObjectResult(await _httpClient.PutAsync(Endpoints.UserEndpoint, user), false);
 
     /// <summary>
     /// Ativa ou desativa o usuário da base (Soft delete)
@@ -126,5 +126,5 @@ public class UsersController : BaseController
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> ActiveUserAsync([FromBody] ActiveUserRecord user)
-        => ReturnObjectResult(await _httpClient.PutAsync(string.Concat(Endpoints.UserEndpoint, "/active"), user));
+        => ReturnObjectResult(await _httpClient.PutAsync(string.Concat(Endpoints.UserEndpoint, "/active"), user), false);
 }

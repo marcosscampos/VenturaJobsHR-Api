@@ -35,7 +35,7 @@ public class JobApplicationController : BaseController
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> CreateJobApplication([FromBody] CreateJobApplicationRecord application)
-        => ReturnObjectResult(await _httpClient.PostAsync(Endpoints.ApplicationEndpoint, application));
+        => ReturnObjectResult(await _httpClient.PostAsync(Endpoints.ApplicationEndpoint, application), true);
 
     /// <summary>
     /// Retorna as vagas que o candidato se candidatou
@@ -53,5 +53,5 @@ public class JobApplicationController : BaseController
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetApplications()
-        => ReturnObjectResult(await _httpClient.GetAsync<List<GetApplicationJobsRecord>>(Endpoints.ApplicationEndpoint));
+        => ReturnObjectResult(await _httpClient.GetAsync<List<GetApplicationJobsRecord>>(Endpoints.ApplicationEndpoint), false);
 }

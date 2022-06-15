@@ -77,7 +77,7 @@ public static class HttpClientExtensions
             case HttpStatusCode.Created:
                 response.StatusCode = HttpStatusCode.Created;
                 response.EnsureSuccessStatusCode();
-                return await response.Content.ToResponseTypeAsync<CreatedResponse<object>>();
+                return await response.Content.ToResponseTypeAsync<object>();
 
             default:
                 response.StatusCode = HttpStatusCode.BadRequest;

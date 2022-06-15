@@ -7,7 +7,7 @@ namespace VenturaJobsHR.Bff.v1.Controllers;
 [ApiController]
 public class BaseController : ControllerBase
 {
-    protected IActionResult ReturnObjectResult(object result)
+    protected IActionResult ReturnObjectResult(object result, bool isCreated)
     {
         switch (result)
         {
@@ -27,11 +27,13 @@ public class BaseController : ControllerBase
                 Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return StatusCode(StatusCodes.Status401Unauthorized, result);
 
-            case CreatedResponse<object>:
-                Response.StatusCode = (int)HttpStatusCode.Created;
-                return StatusCode(StatusCodes.Status201Created, result);
-            
             default:
+                if (isCreated)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.Created;
+                    return StatusCode(StatusCodes.Status201Created, result);
+                }
+                
                 Response.StatusCode = (int)HttpStatusCode.OK;
                 return StatusCode(StatusCodes.Status200OK, result);
         }

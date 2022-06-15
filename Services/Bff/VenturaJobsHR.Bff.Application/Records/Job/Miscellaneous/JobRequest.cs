@@ -14,5 +14,5 @@ public class JobRequest
     public OccupationAreaEnum OccupationArea { get; set; }
     public IList<CriteriaRequest> CriteriaList { get; set; }
     public JobStatusEnum Status { get; set; }
-    public DateTime FinalDate { get; set; }
+    public DateTime DeadLine { get; set; }
 }

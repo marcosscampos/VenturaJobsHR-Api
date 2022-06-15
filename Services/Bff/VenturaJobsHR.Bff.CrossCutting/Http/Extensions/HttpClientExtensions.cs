@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using VenturaJobsHR.Bff.CrossCutting.Http.Responses;
+using VenturaJobsHR.Bff.CrossCutting.Http.Responses.Handler;
 
 namespace VenturaJobsHR.Bff.CrossCutting.Http.Extensions;
 
@@ -54,8 +55,8 @@ public static class HttpClientExtensions
         {
             case HttpStatusCode.BadRequest:
                 response.StatusCode = HttpStatusCode.BadRequest;
-                return await response.Content.ToResponseTypeAsync<BadRequestResponse>();
-
+                return await response.Content.ToResponseTypeAsync<HandleResponse>();
+            
             case HttpStatusCode.NotFound:
                 response.StatusCode = HttpStatusCode.NotFound;
                 return await response.Content.ToResponseTypeAsync<NotFoundResponse>();

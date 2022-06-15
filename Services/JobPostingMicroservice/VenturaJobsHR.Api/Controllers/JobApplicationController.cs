@@ -38,7 +38,7 @@ public class JobApplicationController : BaseController
     public async Task<IActionResult> CreateJobApplication([FromBody] CreateJobApplicationCommand application)
     {
         await _service.ApplyToJob(application);
-        return HandleResponse();
+        return HandleResponse(true);
     }
 
     /// <summary>
@@ -60,6 +60,6 @@ public class JobApplicationController : BaseController
     {
         var job = await _service.GetApplicationsFromApplicant();
 
-        return HandleResponse(job);
+        return HandleResponse(false, job);
     }
 }

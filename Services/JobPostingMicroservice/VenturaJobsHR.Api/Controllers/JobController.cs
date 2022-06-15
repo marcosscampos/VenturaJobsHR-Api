@@ -33,7 +33,7 @@ public class JobController : BaseController
     public async Task<IActionResult> GetByCriteria([FromQuery] SearchJobsQuery query)
     {
         var job = await _jobService.GetAllJobsByCriteriaAndPaged(query);
-        return HandleResponse(job);
+        return HandleResponse(false, job);
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ public class JobController : BaseController
     public async Task<IActionResult> GetJobsByCompany()
     {
         var jobs = await _jobService.GetJobsByToken();
-        return HandleResponse(jobs);
+        return HandleResponse(false, jobs);
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ public class JobController : BaseController
     public async Task<IActionResult> GetJobApplications([FromRoute] string id)
     {
         var jobs = await _jobService.GetApplicationsByToken(id);
-        return HandleResponse(jobs);
+        return HandleResponse(false, jobs);
     }
     
     /// <summary>
@@ -99,7 +99,7 @@ public class JobController : BaseController
     public async Task<IActionResult> GetJobApplicationReports([FromRoute] string id)
     {
         var jobs = await _jobService.GetJobReport(id);
-        return HandleResponse(jobs);
+        return HandleResponse(false, jobs);
     }
 
     /// <summary>
@@ -119,7 +119,7 @@ public class JobController : BaseController
     public async Task<IActionResult> CreateJob(CreateJobCommand command)
     {
         await _jobService.CreateJob(command);
-        return HandleResponse();
+        return HandleResponse(true);
     }
 
     /// <summary>
@@ -142,7 +142,7 @@ public class JobController : BaseController
     {
         var job = await _jobService.GetById(id);
 
-        return HandleResponse(job);
+        return HandleResponse(false, job);
     }
 
     /// <summary>
@@ -165,7 +165,7 @@ public class JobController : BaseController
     {
         await _jobService.UpdateJob(command);
 
-        return HandleResponse();
+        return HandleResponse(false);
     }
 
     /// <summary>
@@ -186,7 +186,7 @@ public class JobController : BaseController
     {
         await _jobService.LogicalDeleteJob(job);
 
-        return HandleResponse();
+        return HandleResponse(false);
     }
 
     /// <summary>
@@ -210,6 +210,6 @@ public class JobController : BaseController
     {
         await _jobService.CancelJobPosting(id);
 
-        return HandleResponse();
+        return HandleResponse(false);
     }
 }

@@ -2,9 +2,10 @@
 
 public class NotificationResponse
 {
-    public string Code { get; set; }
-    public string Reference { get; set; }
-    public List<NotificationResponseItem> Notifications { get; set; }
+    // public string Code { get; set; }
+    // public string Reference { get; set; }
+    public IDictionary<string, string> Notifications { get; set; }
+    // public List<NotificationResponseItem> Notifications { get; set; }
 }
 
 public class NotificationResponseItem

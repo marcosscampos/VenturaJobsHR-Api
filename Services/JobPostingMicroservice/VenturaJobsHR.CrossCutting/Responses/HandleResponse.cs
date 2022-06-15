@@ -1,10 +1,10 @@
-﻿using VenturaJobsHR.CrossCutting.Notifications;
+﻿using System.Text.Json.Serialization;
 
 namespace VenturaJobsHR.CrossCutting.Responses;
 
 public class HandleResponse
 {
-    public List<NotificationResponse> Errors { get; set; }
-    public List<NotificationResponse> Success { get; set; }
-    public object Data { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public int? StatusCode { get; set; }
+    public IDictionary<string, string> Errors { get; set; }
 }

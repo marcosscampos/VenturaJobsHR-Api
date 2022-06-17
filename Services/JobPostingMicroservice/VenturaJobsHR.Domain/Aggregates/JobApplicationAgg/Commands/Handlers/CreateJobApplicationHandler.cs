@@ -49,7 +49,7 @@ public class CreateJobApplicationHandler : BaseJobApplicationHandler, IRequestHa
 
         foreach(var item in applicationRequest.CriteriaList)
         {
-            application.AddCriteria(new JobCriteria(item.CriteriaId, item.ProfileType));
+            application.AddCriteria(new JobCriteria(item.CriteriaId, item.Answer));
         }
 
         return application;

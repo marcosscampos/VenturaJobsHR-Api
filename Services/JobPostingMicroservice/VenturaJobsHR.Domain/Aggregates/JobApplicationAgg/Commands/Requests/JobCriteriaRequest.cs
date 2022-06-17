@@ -7,10 +7,10 @@ namespace VenturaJobsHR.Domain.Aggregates.JobApplicationAgg.Commands.Requests;
 public class JobCriteriaRequest
 {
     public string CriteriaId { get; set; }
-    public ProfileTypeEnum ProfileType { get; set; }
+    public ProfileTypeEnum Answer { get; set; }
 
     public string GetReference()
-        => $"CRITERIA-#{CriteriaId}#{ProfileType}";
+        => $"CRITERIA-#{CriteriaId}#{Answer}";
 }
 
 public class CreateJobCriteriaValidator : BaseValidator<JobCriteriaRequest>

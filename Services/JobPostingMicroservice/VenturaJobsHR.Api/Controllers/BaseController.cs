@@ -30,7 +30,7 @@ public class BaseController : ControllerBase
         }
 
         if (isCreated)
-            return Created("", "Processed");
+            return Created("", null);
 
         return Ok(response);
     }

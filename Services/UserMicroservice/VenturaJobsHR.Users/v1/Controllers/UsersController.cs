@@ -94,7 +94,7 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserRecord user)
     {
         await _userService.CreateUserAsync(user);
-        return Created("", "Processed");
+        return Created("", null);
     }
 
     /// <summary>
@@ -117,7 +117,7 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> UpdateUserAsync([FromBody] UpdateUserRecord user)
     {
         await _userService.UpdateUserAsync(user);
-        return Ok("Processed");
+        return Ok();
     }
 
     /// <summary>
@@ -140,6 +140,6 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> ActiveUserAsync([FromBody] ActiveUserRecord user)
     {
         await _userService.ActivateUserAsync(user);
-        return Ok("Processed");
+        return Ok();
     }
 }

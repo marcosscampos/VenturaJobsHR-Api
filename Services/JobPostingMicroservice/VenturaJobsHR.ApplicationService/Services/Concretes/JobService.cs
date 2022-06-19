@@ -107,15 +107,23 @@ public class JobService : ApplicationServiceBase, IJobService
             await CreateJob(new CreateJobCommand() { JobList = jobsToCreate });
     }
 
-    public async Task CancelJobPosting(string id)
+    public async Task CloseJobPosting(string id)
     {
         var jobToCancel = await _jobRepository.GetByIdAsync(id);
         if (jobToCancel is null)
             throw new NotFoundException($"Job not found with id #{id}");
 
-        jobToCancel.Status = JobStatusEnum.Canceled;
+        jobToCancel.Status = JobStatusEnum.Closed;
 
         await _jobRepository.UpdateAsync(jobToCancel);
+    }
+
+    public async Task UpdateDeadLineJobPosting(UpdateDeadLineCommand command)
+    {
+        if (!ObjectId.TryParse(command.Id, out _))
+            throw new InvalidEntityIdProvidedException("Try with a valid ID.");
+
+        await _mediator.Send(command);
     }
 
     public async Task<Pagination<GetJobsRecord>> GetAllJobsByCriteriaAndPaged(SearchJobsQuery query)
@@ -134,7 +142,7 @@ public class JobService : ApplicationServiceBase, IJobService
             await _jobRepository.UpdateRangeAsync(jobsToExpire);
 
         var recordList = CreateList(jobs.Data)
-            .Where(x => x.Status != JobStatusEnum.Expired && x.Status != JobStatusEnum.Canceled).ToList();
+            .Where(x => x.Status != JobStatusEnum.Expired && x.Status != JobStatusEnum.Closed).ToList();
 
         var newJobList = new Pagination<GetJobsRecord>
         {

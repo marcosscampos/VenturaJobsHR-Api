@@ -148,7 +148,7 @@ public class JobController : BaseController
     /// <summary>
     /// Atualiza uma ou mais vagas
     /// </summary>
-    /// <response code="200">Vaga atualizada com sucesso</response>
+    /// <response code="204">Vaga atualizada com sucesso</response>
     /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
     /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
     /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
@@ -156,7 +156,7 @@ public class JobController : BaseController
     /// <returns></returns>
     [HttpPut]
     [VenturaAuthorize(role: "company")]
-    [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.NoContent)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
@@ -171,14 +171,14 @@ public class JobController : BaseController
     /// <summary>
     /// Desativa/arquiva uma vaga (deleção lógica)
     /// </summary>
-    /// <response code="200">Vaga arquivada com sucesso</response>
+    /// <response code="204">Vaga arquivada com sucesso</response>
     /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
     /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
     /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
     /// <returns></returns>
     [HttpPut("active")]
     [VenturaAuthorize(role: "company")]
-    [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.NoContent)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
@@ -190,25 +190,48 @@ public class JobController : BaseController
     }
 
     /// <summary>
-    /// Cancelar a publicação de uma vaga
+    /// Fechar uma vaga
     /// </summary>
     /// <param name="id">id da vaga</param>
-    /// <response code="200">Vaga cancelada com sucesso</response>
+    /// <response code="204">Vaga fechada com sucesso</response>
     /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
     /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
     /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
     /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
-    [HttpPut("cancel")]
+    [HttpPut("close")]
     [VenturaAuthorize(role: "company")]
-    [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.NoContent)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
-    public async Task<IActionResult> CancelJobPosting(string id)
+    public async Task<IActionResult> CloseJobPosting(string id)
     {
-        await _jobService.CancelJobPosting(id);
+        await _jobService.CloseJobPosting(id);
+
+        return HandleResponse(false);
+    }
+    
+    /// <summary>
+    /// Atualizar a data limite de uma vaga
+    /// </summary>
+    /// <response code="204">Data limite atualizada com sucesso</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
+    /// <returns></returns>
+    [HttpPatch("renew")]
+    [VenturaAuthorize(role: "company")]
+    [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.NoContent)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> UpdateDeadLine([FromBody] UpdateDeadLineCommand command)
+    {
+        await _jobService.UpdateDeadLineJobPosting(command);
 
         return HandleResponse(false);
     }

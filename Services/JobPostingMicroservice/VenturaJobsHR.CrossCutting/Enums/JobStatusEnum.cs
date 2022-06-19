@@ -4,5 +4,5 @@ public enum JobStatusEnum
 {
     Published = 1,
     Expired = 2,
-    Canceled = 3
+    Closed = 3
 }

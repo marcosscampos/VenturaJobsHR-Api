@@ -28,4 +28,5 @@
   "JobApplicationCriteriaNotNull": "Resposta aos critérios é obrigatório.",
   "CompanyInvalidId": "Id da empresa deve ser preenchido",
   "CompanyInvalidFirebaseId": "FirebaseId(UID) da empresa deve ser preenchido",
+  "JobIdInvalid": "Id da vaga deve ser preenchida."
 }

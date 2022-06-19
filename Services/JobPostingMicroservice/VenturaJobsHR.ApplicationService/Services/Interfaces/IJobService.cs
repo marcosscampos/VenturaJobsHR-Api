@@ -17,6 +17,7 @@ public interface IJobService
     Task<JobReportRecord> GetJobReport(string id);
     Task UpdateJob(UpdateJobCommand command);
     Task LogicalDeleteJob(ActiveJobRecord job);
-    Task CancelJobPosting(string id);
+    Task CloseJobPosting(string id);
+    Task UpdateDeadLineJobPosting(UpdateDeadLineCommand command);
     Task<Pagination<GetJobsRecord>> GetAllJobsByCriteriaAndPaged(SearchJobsQuery query);
 }

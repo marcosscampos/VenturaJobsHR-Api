@@ -168,12 +168,30 @@ public class JobsController : BaseController
     /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
     /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
-    [HttpPut("cancel")]
+    [HttpPut("close")]
     [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
-    public async Task<IActionResult> CancelJobPosting(string id)
-        => ReturnObjectResult(await _httpClient.PutAsync(string.Concat(Endpoints.JobEndpoint, "/cancel"), id), false);
+    public async Task<IActionResult> CloseJobPosting(string id)
+        => ReturnObjectResult(await _httpClient.PutAsync(string.Concat(Endpoints.JobEndpoint, "/close"), id), false);
+    
+    /// <summary>
+    /// Atualizar a data limite de uma vaga
+    /// </summary>
+    /// <response code="204">Data limite atualizada com sucesso</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
+    /// <returns></returns>
+    [HttpPatch("renew")]
+    [ProducesResponseType(typeof(HandleResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> UpdateDeadLine([FromBody] UpdateDeadLineRecord command)
+        => ReturnObjectResult(await _httpClient.PatchAsync(string.Concat(Endpoints.JobEndpoint, "/renew"), command), false);
 }

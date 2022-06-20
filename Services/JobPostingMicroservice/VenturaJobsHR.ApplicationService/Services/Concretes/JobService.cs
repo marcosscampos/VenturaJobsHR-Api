@@ -107,15 +107,15 @@ public class JobService : ApplicationServiceBase, IJobService
             await CreateJob(new CreateJobCommand() { JobList = jobsToCreate });
     }
 
-    public async Task CloseJobPosting(string id)
+    public async Task CloseJobPosting(CloseJobRecord jobRecord)
     {
-        var jobToCancel = await _jobRepository.GetByIdAsync(id);
-        if (jobToCancel is null)
-            throw new NotFoundException($"Job not found with id #{id}");
+        var jobToClose = await _jobRepository.GetByIdAsync(jobRecord.Id);
+        if (jobToClose is null)
+            throw new NotFoundException($"Job not found with id #{jobRecord.Id}");
 
-        jobToCancel.Status = JobStatusEnum.Closed;
+        jobToClose.Status = JobStatusEnum.Closed;
 
-        await _jobRepository.UpdateAsync(jobToCancel);
+        await _jobRepository.UpdateAsync(jobToClose);
     }
 
     public async Task UpdateDeadLineJobPosting(UpdateDeadLineCommand command)

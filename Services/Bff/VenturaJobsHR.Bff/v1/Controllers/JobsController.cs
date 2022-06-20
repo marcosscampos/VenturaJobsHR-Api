@@ -174,7 +174,7 @@ public class JobsController : BaseController
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
-    public async Task<IActionResult> CloseJobPosting(string id)
+    public async Task<IActionResult> CloseJobPosting([FromBody] CloseJobRecord id)
         => ReturnObjectResult(await _httpClient.PutAsync(string.Concat(Endpoints.JobEndpoint, "/close"), id), false);
     
     /// <summary>

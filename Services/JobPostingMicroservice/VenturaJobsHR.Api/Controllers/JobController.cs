@@ -182,7 +182,7 @@ public class JobController : BaseController
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
-    public async Task<IActionResult> LogicalJobRemove(ActiveJobRecord job)
+    public async Task<IActionResult> LogicalJobRemove([FromBody] ActiveJobRecord job)
     {
         await _jobService.LogicalDeleteJob(job);
 
@@ -206,7 +206,7 @@ public class JobController : BaseController
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
-    public async Task<IActionResult> CloseJobPosting(string id)
+    public async Task<IActionResult> CloseJobPosting([FromBody] CloseJobRecord id)
     {
         await _jobService.CloseJobPosting(id);
 

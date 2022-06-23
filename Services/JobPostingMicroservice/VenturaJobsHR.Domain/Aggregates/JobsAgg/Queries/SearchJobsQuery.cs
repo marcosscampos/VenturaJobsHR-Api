@@ -46,7 +46,7 @@ public class SearchJobsQuery : BaseListQuery<Job>, IRequest<Pagination<Job>>
         if (Uid is not null)
             filter &= new DirectSpecification<Job>(x => x.Company.Uid == Uid);
 
-        if(JobsId.Count > 0)
+        if(JobsId is not null && JobsId.Count > 0)
             filter &= new DirectSpecification<Job>(x => JobsId.Contains(x.Id));
 
         return filter.IsSatisfiedBy();

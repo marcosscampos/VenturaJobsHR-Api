@@ -20,7 +20,7 @@ public interface IJobService
     Task CloseJobPosting(CloseJobRecord jobRecord);
     Task UpdateDeadLineJobPosting(UpdateDeadLineCommand command);
     Task<Pagination<GetJobsRecord>> GetAllJobsByCriteriaAndPaged(SearchJobsQuery query);
-    Task<bool> CanApplyToJob(string jobId);
+    Task<bool?> CanApplyToJob(string jobId);
     Task<int> NumberOfJobsCreatedToday();
     Task<int> NumberOfJobsCreated();
 }

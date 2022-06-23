@@ -98,7 +98,7 @@ public class JobController : BaseController
     /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
     [HttpGet("{jobId}/can-apply")]
-    [VenturaAuthorize(role: "applicant")]
+    [VenturaAuthorize(role: "applicant, company")]
     [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]

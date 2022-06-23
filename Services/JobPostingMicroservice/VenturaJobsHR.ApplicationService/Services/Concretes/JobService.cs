@@ -211,7 +211,7 @@ public class JobService : ApplicationServiceBase, IJobService
         return applicationList;
     }
     
-    public async Task<bool> CanApplyToJob(string jobId)
+    public async Task<bool?> CanApplyToJob(string jobId)
     {
         var appList = new List<JobApplication>();
         
@@ -223,6 +223,9 @@ public class JobService : ApplicationServiceBase, IJobService
         var user = await _userRepository.GetUserByFirebaseId(userId.Value);
         if (user is null)
             throw new NotFoundException($"User not found with ID #{user.Id}.");
+
+        if (user.UserType == UserTypeEnum.Company)
+            return null;
         
         var applications = await _jobApplicationRepository.GetApplicationsByUserId(user.Id);
 

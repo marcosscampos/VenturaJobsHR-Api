@@ -35,6 +35,38 @@ public class JobController : BaseController
         var job = await _jobService.GetAllJobsByCriteriaAndPaged(query);
         return HandleResponse(false, job);
     }
+    
+    /// <summary>
+    /// Número de vagas criadas hoje
+    /// </summary>
+    /// <response code="200">Retorna as quantidade</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <returns></returns>
+    [HttpGet("created-today")]
+    [VenturaAuthorize(role: "company")]
+    [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> GetJobsCreatedToday()
+    {
+        var job = await _jobService.NumberOfJobsCreatedToday();
+        return HandleResponse(false, job);
+    }
+    
+    /// <summary>
+    /// Número de vagas criadas até hoje
+    /// </summary>
+    /// <response code="200">Retorna a quantidade</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <returns></returns>
+    [HttpGet("jobs-created")]
+    [VenturaAuthorize(role: "company")]
+    [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> GetJobsCreated()
+    {
+        var job = await _jobService.NumberOfJobsCreated();
+        return HandleResponse(false, job);
+    }
 
     /// <summary>
     /// Retorna as vagas que a empresa cadastrou
@@ -54,6 +86,28 @@ public class JobController : BaseController
     {
         var jobs = await _jobService.GetJobsByToken(query);
         return HandleResponse(false, jobs);
+    }
+    
+    /// <summary>
+    /// Verifica se o usuário já se candidatou a vaga
+    /// </summary>
+    /// <response code="200">Retorna as vagas</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
+    /// <returns></returns>
+    [HttpGet("{jobId}/can-apply")]
+    [VenturaAuthorize(role: "applicant")]
+    [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> AlreadyApplied([FromRoute] string jobId)
+    {
+        var alreadyApplied = await _jobService.CanApplyToJob(jobId);
+        return HandleResponse(false, alreadyApplied);
     }
 
     /// <summary>

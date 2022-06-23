@@ -13,6 +13,7 @@ using VenturaJobsHR.Common.Extensions;
 using VenturaJobsHR.CrossCutting.Enums;
 using VenturaJobsHR.CrossCutting.Notifications;
 using VenturaJobsHR.CrossCutting.Pagination;
+using VenturaJobsHR.Domain.Aggregates.JobApplicationAgg.Entities;
 using VenturaJobsHR.Domain.Aggregates.JobApplicationAgg.Repositories;
 using VenturaJobsHR.Domain.Aggregates.JobsAgg.Commands;
 using VenturaJobsHR.Domain.Aggregates.JobsAgg.Entities;
@@ -208,5 +209,49 @@ public class JobService : ApplicationServiceBase, IJobService
         var applicationList = CreateJobApplicationList(applications.ToList(), job, user);
 
         return applicationList;
+    }
+    
+    public async Task<bool> CanApplyToJob(string jobId)
+    {
+        var appList = new List<JobApplication>();
+        
+        var userId = _httpContext.HttpContext.User.FindFirst("user_id");
+
+        if (userId is null)
+            throw new ForbiddenException("Token has expired or is invalid.");
+
+        var user = await _userRepository.GetUserByFirebaseId(userId.Value);
+        if (user is null)
+            throw new NotFoundException($"User not found with ID #{user.Id}.");
+        
+        var applications = await _jobApplicationRepository.GetApplicationsByUserId(user.Id);
+
+        appList.AddRange(applications.Where(x => x.JobId == jobId));
+
+        return appList.Count == 0;
+    }
+
+    public async Task<int> NumberOfJobsCreatedToday()
+    {
+        var userId = _httpContext.HttpContext.User.FindFirst("user_id");
+
+        if (userId is null)
+            throw new ForbiddenException("Token has expired or is invalid.");
+
+        var jobs = await _jobRepository.GetJobsByFirebaseToken(userId.Value);
+
+        return jobs.Count(x => x.CreationDate.Date >= new DateTimeWithZone().LocalTime);
+    }
+
+    public async Task<int> NumberOfJobsCreated()
+    {
+        var userId = _httpContext.HttpContext.User.FindFirst("user_id");
+
+        if (userId is null)
+            throw new ForbiddenException("Token has expired or is invalid.");
+
+        var jobs = await _jobRepository.GetJobsByFirebaseToken(userId.Value);
+
+        return jobs.Count;
     }
 }

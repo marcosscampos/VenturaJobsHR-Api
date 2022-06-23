@@ -34,6 +34,49 @@ public class JobsController : BaseController
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> GetByCriteria([FromQuery] SearchJobsQuery query)
         => ReturnObjectResult(await _httpClient.GetAsync<object>(Endpoints.JobEndpointWithQuery(query)), false);
+        
+    /// <summary>
+    /// Número de vagas criadas hoje
+    /// </summary>
+    /// <response code="200">Retorna as quantidade</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <returns></returns>
+    [HttpGet("created-today")]
+    [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> GetJobsCreatedToday()
+        => ReturnObjectResult(await _httpClient.GetAsync<object>(Endpoints.JobEndpoint + "/created-today"), false);
+
+    /// <summary>
+    /// Número de vagas criadas até hoje
+    /// </summary>
+    /// <response code="200">Retorna a quantidade</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <returns></returns>
+    [HttpGet("jobs-created")]
+    [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> GetJobsCreated()
+        => ReturnObjectResult(await _httpClient.GetAsync<object>(Endpoints.JobEndpoint + "/jobs-created"), false);
+
+    /// <summary>
+    /// Verifica se o usuário já se candidatou a vaga
+    /// </summary>
+    /// <response code="200">Retorna as vagas</response>
+    /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
+    /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
+    /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
+    /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
+    /// <returns></returns>
+    [HttpGet("{jobId}/can-apply")]
+    [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> AlreadyApplied([FromRoute] string jobId)
+        => ReturnObjectResult(await _httpClient.GetAsync<object>(Endpoints.JobEndpoint + $"/{jobId}/can-apply"), false);
+
 
     /// <summary>
     /// Retorna as vagas que a empresa cadastrou

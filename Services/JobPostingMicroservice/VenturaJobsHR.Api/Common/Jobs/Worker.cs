@@ -1,5 +1,4 @@
-﻿using System.Timers;
-using Coravel.Invocable;
+﻿using Coravel.Invocable;
 using Microsoft.Extensions.Options;
 using VenturaJobsHR.Common.Extensions;
 using VenturaJobsHR.CrossCutting.Enums;

@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using System.Linq.Expressions;
+using Newtonsoft.Json;
 using VenturaJobsHR.CrossCutting.Enums;
 using VenturaJobsHR.CrossCutting.Pagination;
 using VenturaJobsHR.Domain.Aggregates.Common.Commands;
@@ -22,6 +23,9 @@ public class SearchJobsQuery : BaseListQuery<Job>, IRequest<Pagination<Job>>
     public decimal Salary { get; set; }
     public DateTime DeadLine { get; set; }
     public int OccupationArea { get; set; }
+    
+    [JsonIgnore]
+    public string? Uid { get; set; }
 
     public Expression<Func<Job, bool>> BuildFilter()
     {
@@ -35,6 +39,9 @@ public class SearchJobsQuery : BaseListQuery<Job>, IRequest<Pagination<Job>>
 
         if (OccupationArea > 0)
             filter &= new DirectSpecification<Job>(x => x.OccupationArea == Job.GetOccupationAreaBy(OccupationArea));
+
+        if (Uid is not null)
+            filter &= new DirectSpecification<Job>(x => x.Company.Uid == Uid);
 
         return filter.IsSatisfiedBy();
     }

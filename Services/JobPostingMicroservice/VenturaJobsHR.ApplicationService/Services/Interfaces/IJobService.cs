@@ -12,7 +12,7 @@ public interface IJobService
 {
     Task CreateJob(CreateJobCommand command);
     Task<GetJobsRecord> GetById(string id);
-    Task<IList<GetJobsRecord>> GetJobsByToken();
+    Task<Pagination<GetJobsRecord>> GetJobsByToken(SearchJobsQuery query);
     Task<IList<ApplicationResponse>> GetApplicationsByToken(string id);
     Task<JobReportRecord> GetJobReport(string id);
     Task UpdateJob(UpdateJobCommand command);

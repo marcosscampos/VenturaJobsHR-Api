@@ -46,13 +46,13 @@ public class JobController : BaseController
     /// <returns></returns>
     [HttpGet("company")]
     [VenturaAuthorize(role: "company")]
-    [ProducesResponseType(typeof(List<GetJobsRecord>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(Pagination<GetJobsRecord>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
-    public async Task<IActionResult> GetJobsByCompany()
+    public async Task<IActionResult> GetJobsByCompany([FromQuery] SearchJobsQuery query)
     {
-        var jobs = await _jobService.GetJobsByToken();
+        var jobs = await _jobService.GetJobsByToken(query);
         return HandleResponse(false, jobs);
     }
 

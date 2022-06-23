@@ -154,6 +154,26 @@ public class JobService : ApplicationServiceBase, IJobService
 
         return newJobList;
     }
+    
+    public async Task<Pagination<GetJobsRecord>> GetJobsByToken(SearchJobsQuery query)
+    {
+        var userId = _httpContext.HttpContext.User.FindFirst("user_id");
+
+        if (userId is null)
+            throw new ForbiddenException("Token has expired or is invalid.");
+
+        query.Uid = userId.Value;
+        var jobs = await _jobRepository.GetJobsByFirebaseTokenAndPaged(query.BuildFilter(), query.Pagination);
+        var jobList = CreateList(jobs.Data);
+        
+        return new Pagination<GetJobsRecord>
+        {
+            Data = jobList,
+            CurrentPage = jobs.CurrentPage,
+            PageSize = jobs.PageSize,
+            Total = jobs.Total
+        };
+    }
 
     public async Task LogicalDeleteJob(ActiveJobRecord job)
     {
@@ -168,19 +188,6 @@ public class JobService : ApplicationServiceBase, IJobService
         jobToDelete.Active = job.Active;
 
         await _jobRepository.UpdateAsync(jobToDelete);
-    }
-
-    public async Task<IList<GetJobsRecord>> GetJobsByToken()
-    {
-        var userId = _httpContext.HttpContext.User.FindFirst("user_id");
-
-        if (userId is null)
-            throw new ForbiddenException("Token has expired or is invalid.");
-
-        var jobs = await _jobRepository.GetJobsByFirebaseToken(userId.Value);
-        var jobList = CreateList(jobs.ToList());
-
-        return jobList;
     }
 
     public async Task<IList<ApplicationResponse>> GetApplicationsByToken(string id)

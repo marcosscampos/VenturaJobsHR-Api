@@ -32,7 +32,7 @@ public class ApplicationServiceBase
                               job.CriteriaList.FirstOrDefault(p => p.Id == x.CriteriaId)!.Weight) /
                           (double)job.CriteriaList.Sum(x => x.Weight)
             let profileAverage = Math.Round(average, 2)
-            select new ApplicationResponse(userRecord, item.JobId, criteriaList, profileAverage)).ToList();
+            select new ApplicationResponse(userRecord, item.JobId, item.CreatedAt, criteriaList, profileAverage)).ToList();
     }
 
     protected static List<GetApplicationJobsRecord> CreateApplicationJobsList(IEnumerable<Job> jobs) =>

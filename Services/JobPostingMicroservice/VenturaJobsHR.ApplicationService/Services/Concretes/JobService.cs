@@ -203,10 +203,10 @@ public class JobService : ApplicationServiceBase, IJobService
         if (user is null)
             throw new NotFoundException($"User not found with ID #{user.Id}.");
 
-        var applications = await _jobApplicationRepository.GetApplicationsByUserId(user.Id);
-
         var job = await _jobRepository.GetByIdAsync(id);
-        var applicationList = CreateJobApplicationList(applications.ToList(), job, user);
+        var applications = await _jobApplicationRepository.GetApplicationsByJobId(job.Id);
+        
+        var applicationList = CreateJobApplicationList(applications.ToList(), job, _userRepository);
 
         return applicationList;
     }

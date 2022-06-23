@@ -8,6 +8,7 @@ using VenturaJobsHR.CrossCutting.Notifications;
 using VenturaJobsHR.Domain.Aggregates.JobApplicationAgg.Entities;
 using VenturaJobsHR.Domain.Aggregates.JobsAgg.Entities;
 using VenturaJobsHR.Domain.Aggregates.UserAgg.Entities;
+using VenturaJobsHR.Domain.Aggregates.UserAgg.Repositories;
 
 namespace VenturaJobsHR.Application.Services.Concretes;
 
@@ -21,17 +22,19 @@ public class ApplicationServiceBase
     }
 
     protected static List<ApplicationResponse> CreateJobApplicationList(IEnumerable<JobApplication> jobApplications,
-        Job job, User user)
+        Job job, IUserRepository user)
     {
-        var userRecord = new UserRecord(user.Name, user.Phone, user.Email, user.UserType, user.Active);
-
         return (from item in jobApplications
-            let criteriaList = item.CriteriaList.Select(x => new JobApplicationCriteriaRecord(job.CriteriaList.FirstOrDefault(p => p.Id == x.CriteriaId).Name, x.Answer)).ToList()
+            let criteriaList = item.CriteriaList.Select(x =>
+                new JobApplicationCriteriaRecord(job.CriteriaList.FirstOrDefault(p => p.Id == x.CriteriaId).Name,
+                    x.Answer)).ToList()
             let average = item.CriteriaList.Sum(x =>
                               Job.GetProfileTypeBy(x.Answer) *
                               job.CriteriaList.FirstOrDefault(p => p.Id == x.CriteriaId)!.Weight) /
                           (double)job.CriteriaList.Sum(x => x.Weight)
             let profileAverage = Math.Round(average, 2)
+            let userRepo = user.GetByIdAsync(item.UserId)
+            let userRecord = new UserRecord(userRepo.Result.Name, userRepo.Result.Phone, userRepo.Result.Email, userRepo.Result.UserType, userRepo.Result.Active)
             select new ApplicationResponse(userRecord, item.JobId, item.CreatedAt, criteriaList, profileAverage)).ToList();
     }
 

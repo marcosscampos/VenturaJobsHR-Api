@@ -11,5 +11,6 @@ public record GetApplicationJobsRecord(
     SalaryRecord Salary,
     LocationRecord Location,
     JobStatusEnum Status,
+    OccupationAreaEnum OccupationArea,
     DateTime DeadLine
 );

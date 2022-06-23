@@ -27,6 +27,9 @@ public class SearchJobsQuery : BaseListQuery<Job>, IRequest<Pagination<Job>>
     [JsonIgnore]
     public string? Uid { get; set; }
 
+    [JsonIgnore]
+    public List<string>? JobsId { get; set; }
+
     public Expression<Func<Job, bool>> BuildFilter()
     {
         Specification<Job> filter = new DirectSpecification<Job>(x => x.CreationDate > DateTime.MinValue);
@@ -42,6 +45,9 @@ public class SearchJobsQuery : BaseListQuery<Job>, IRequest<Pagination<Job>>
 
         if (Uid is not null)
             filter &= new DirectSpecification<Job>(x => x.Company.Uid == Uid);
+
+        if(JobsId.Count > 0)
+            filter &= new DirectSpecification<Job>(x => JobsId.Contains(x.Id));
 
         return filter.IsSatisfiedBy();
     }

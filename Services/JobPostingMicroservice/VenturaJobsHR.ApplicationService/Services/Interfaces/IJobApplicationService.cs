@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using VenturaJobsHR.Application.Records.Jobs;
+using VenturaJobsHR.CrossCutting.Pagination;
 using VenturaJobsHR.Domain.Aggregates.JobApplicationAgg.Commands;
+using VenturaJobsHR.Domain.Aggregates.JobsAgg.Queries;
 
 namespace VenturaJobsHR.Application.Services.Interfaces;
 
 public interface IJobApplicationService
 {
-    Task<IList<GetApplicationJobsRecord>> GetApplicationsFromApplicant();
+    Task<Pagination<GetApplicationJobsRecord>> GetApplicationsFromApplicant(SearchJobsQuery query);
 
     Task ApplyToJob(CreateJobApplicationCommand job);
 }

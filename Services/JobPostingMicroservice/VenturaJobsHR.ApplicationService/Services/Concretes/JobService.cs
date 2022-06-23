@@ -163,7 +163,7 @@ public class JobService : ApplicationServiceBase, IJobService
             throw new ForbiddenException("Token has expired or is invalid.");
 
         query.Uid = userId.Value;
-        var jobs = await _jobRepository.GetJobsByFirebaseTokenAndPaged(query.BuildFilter(), query.Pagination);
+        var jobs = await _jobRepository.GetJobsPaged(query.BuildFilter(), query.Pagination);
         var jobList = CreateList(jobs.Data);
         
         return new Pagination<GetJobsRecord>

@@ -5,8 +5,10 @@ using VenturaJobsHR.Api.Common.Security;
 using VenturaJobsHR.Application.Records.Jobs;
 using VenturaJobsHR.Application.Services.Interfaces;
 using VenturaJobsHR.CrossCutting.Notifications;
+using VenturaJobsHR.CrossCutting.Pagination;
 using VenturaJobsHR.CrossCutting.Responses;
 using VenturaJobsHR.Domain.Aggregates.JobApplicationAgg.Commands;
+using VenturaJobsHR.Domain.Aggregates.JobsAgg.Queries;
 
 namespace VenturaJobsHR.Api.Controllers;
 
@@ -51,14 +53,14 @@ public class JobApplicationController : BaseController
     /// <response code="404">Caso não tenha encontrado o usuário na base de dados</response>
     /// <returns></returns>
     [HttpGet]
-    [ProducesResponseType(typeof(List<GetApplicationJobsRecord>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(Pagination<GetApplicationJobsRecord>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
     [ProducesResponseType(typeof(NotFoundResponse), (int)HttpStatusCode.NotFound)]
-    public async Task<IActionResult> GetApplications()
+    public async Task<IActionResult> GetApplications([FromQuery] SearchJobsQuery query)
     {
-        var job = await _service.GetApplicationsFromApplicant();
+        var job = await _service.GetApplicationsFromApplicant(query);
 
         return HandleResponse(false, job);
     }

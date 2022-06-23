@@ -46,6 +46,7 @@ public class ApplicationServiceBase
                 salary, 
                 location, 
                 job.Status,
+                job.OccupationArea,
                 job.DeadLine)).ToList();
 
     protected static List<GetJobsRecord> CreateList(List<Job> jobs)

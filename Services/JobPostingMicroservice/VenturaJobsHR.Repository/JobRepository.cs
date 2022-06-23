@@ -19,7 +19,7 @@ public class JobRepository : Repository<Job>, IJobRepository
     public async Task<IList<Job>> GetJobsByFirebaseToken(string userId)
         => await Collection.Find(x => x.Company.Uid == userId).ToListAsync();
     
-    public async Task<Pagination<Job>> GetJobsByFirebaseTokenAndPaged(Expression<Func<Job, bool>> filter, Page pagination)
+    public async Task<Pagination<Job>> GetJobsPaged(Expression<Func<Job, bool>> filter, Page pagination)
     {
         var dataResponse = await Collection.Find(filter).Skip(pagination.StartIndex).Limit(pagination.Length)
             .ToListAsync();

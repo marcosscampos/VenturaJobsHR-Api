@@ -83,7 +83,7 @@ public class JobService : ApplicationServiceBase, IJobService
         var userValueList = (from app in applications
             let user = users.FirstOrDefault(x => x.Id == app.UserId)
             let average = app.CriteriaList.Sum(x =>
-                              Job.GetProfileTypeBy(x.ProfileType) *
+                              Job.GetProfileTypeBy(x.Answer) *
                               job.CriteriaList.FirstOrDefault(p => p.Id == x.CriteriaId)!.Weight) /
                           (double)job.CriteriaList.Sum(x => x.Weight)
             let profileAverage = Math.Round(average, 2)

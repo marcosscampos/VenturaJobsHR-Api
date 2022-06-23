@@ -2,4 +2,4 @@
 
 namespace VenturaJobsHR.Bff.Application.Records.Applications;
 
-public record JobCriteriaRecord(string CriteriaId, ProfileTypeEnum ProfileType);
+public record JobCriteriaRecord(string CriteriaId, ProfileTypeEnum Answer);

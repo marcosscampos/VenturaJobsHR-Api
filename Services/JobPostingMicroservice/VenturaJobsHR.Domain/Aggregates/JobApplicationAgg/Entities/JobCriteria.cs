@@ -4,10 +4,10 @@ namespace VenturaJobsHR.Domain.Aggregates.JobApplicationAgg.Entities;
 
 public class JobCriteria
 {
-    public JobCriteria(string criteriaId, ProfileTypeEnum profileType)
+    public JobCriteria(string criteriaId, ProfileTypeEnum answer)
     {
         CriteriaId = criteriaId;
-        ProfileType = profileType;
+        Answer = answer;
     }
 
     public JobCriteria()
@@ -16,5 +16,5 @@ public class JobCriteria
     }
 
     public string CriteriaId { get; set; }
-    public ProfileTypeEnum ProfileType { get; set; }
+    public ProfileTypeEnum Answer { get; set; }
 }

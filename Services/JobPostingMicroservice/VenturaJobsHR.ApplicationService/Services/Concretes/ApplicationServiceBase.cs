@@ -26,9 +26,9 @@ public class ApplicationServiceBase
         var userRecord = new UserRecord(user.Name, user.Phone, user.Email, user.UserType, user.Active);
 
         return (from item in jobApplications
-            let criteriaList = item.CriteriaList.Select(x => new JobApplicationCriteriaRecord(job.CriteriaList.FirstOrDefault(p => p.Id == x.CriteriaId).Name, x.ProfileType)).ToList()
+            let criteriaList = item.CriteriaList.Select(x => new JobApplicationCriteriaRecord(job.CriteriaList.FirstOrDefault(p => p.Id == x.CriteriaId).Name, x.Answer)).ToList()
             let average = item.CriteriaList.Sum(x =>
-                              Job.GetProfileTypeBy(x.ProfileType) *
+                              Job.GetProfileTypeBy(x.Answer) *
                               job.CriteriaList.FirstOrDefault(p => p.Id == x.CriteriaId)!.Weight) /
                           (double)job.CriteriaList.Sum(x => x.Weight)
             let profileAverage = Math.Round(average, 2)

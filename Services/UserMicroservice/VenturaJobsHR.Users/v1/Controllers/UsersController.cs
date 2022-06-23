@@ -34,6 +34,7 @@ public class UsersController : ControllerBase
     /// Retorna o usuário baseado no user_id que contém no token retornado no frontend
     /// </summary>
     /// <response code="200">Retorna o usuário</response>
+    /// <response code="204">Caso não exista usuário na base de dados</response>
     /// <response code="400">Houve uma falha na requisição. Alguma informação não está de acordo com o que devia ser enviado para a API</response>
     /// <response code="401">Caso o token esteja incorreto ou faltando alguma informação importante</response>
     /// <response code="403">Caso seu acesso não seja permitido nesse endpoint</response>
@@ -43,6 +44,7 @@ public class UsersController : ControllerBase
     [VenturaAuthorize(role: "company, applicant")]
     // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "company, applicant")]
     [ProducesResponseType(typeof(User), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(EmptyResult), (int)HttpStatusCode.NoContent)]
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]

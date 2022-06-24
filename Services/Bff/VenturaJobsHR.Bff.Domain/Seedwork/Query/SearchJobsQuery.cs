@@ -6,5 +6,6 @@ namespace VenturaJobsHR.Bff.Domain.Seedwork.Query;
 public class SearchJobsQuery : BaseListQuery<Pagination<Job>>
 {
     public decimal Salary { get; set; }
-    public DateTime FinalDate { get; set; }
+    public DateTime DeadLine { get; set; }
+    public int OccupationArea { get; set; }
 }

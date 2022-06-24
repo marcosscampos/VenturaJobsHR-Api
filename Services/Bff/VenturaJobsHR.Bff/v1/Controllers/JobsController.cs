@@ -91,8 +91,8 @@ public class JobsController : BaseController
     [ProducesResponseType(typeof(BadRequestResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UnauthorizedResponse), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(ForbiddenResponse), (int)HttpStatusCode.Forbidden)]
-    public async Task<IActionResult> GetJobsByCompany()
-        => ReturnObjectResult(await _httpClient.GetAsync<object>(string.Concat(Endpoints.JobEndpoint, "/company")), false);
+    public async Task<IActionResult> GetJobsByCompany([FromQuery] SearchJobsQuery query)
+        => ReturnObjectResult(await _httpClient.GetAsync<object>(Endpoints.JobCompanyEndpointWithQuery(query)), false);
 
     /// <summary>
     /// Cria uma vaga

@@ -39,7 +39,7 @@ public class Worker : IInvocable
 
             foreach (var job in jobs)
             {
-                if (job.DeadLine < new DateTimeWithZone(DateTime.Now).LocalTime.AddDays(-1))
+                if (job.DeadLine <= new DateTimeWithZone(DateTime.Now).LocalTime.AddDays(-1))
                 {
                     var body = await _userRepository.ReturnTemplateEmailAsync();
 
@@ -48,7 +48,7 @@ public class Worker : IInvocable
                     EmailExtensions.SendEmail(_configurations.Value, new List<string> { user.Email }, body,
                         $"A vaga {job.Name} irá expirar!");
                 }
-                else if (job.DeadLine < new DateTimeWithZone(DateTime.Now).LocalTime && job.Status == JobStatusEnum.Published)
+                else if (job.DeadLine <= new DateTimeWithZone(DateTime.Now).LocalTime && job.Status == JobStatusEnum.Published)
                 {
                     _logger.LogInformation($"Vaga ID #{job.Id} expirada. Atualizando o status...");
                     job.Status = JobStatusEnum.Expired;

@@ -35,7 +35,7 @@ public class ApplicationServiceBase
             let profileAverage = Math.Round(average, 2)
             let userRepo = user.GetByIdAsync(item.UserId)
             let userRecord = new UserRecord(userRepo.Result.Name, userRepo.Result.Phone, userRepo.Result.Email, userRepo.Result.UserType, userRepo.Result.Active)
-            select new ApplicationResponse(userRecord, item.JobId, item.CreatedAt, criteriaList, profileAverage)).ToList();
+            select new ApplicationResponse(userRecord, item.JobId, criteriaList, profileAverage)).ToList();
     }
 
     protected static List<GetApplicationJobsRecord> CreateApplicationJobsList(IEnumerable<Job> jobs) =>

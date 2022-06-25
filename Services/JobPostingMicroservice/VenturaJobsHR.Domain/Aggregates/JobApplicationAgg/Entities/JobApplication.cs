@@ -12,14 +12,12 @@ public class JobApplication
         UserId = userId;
         JobId = jobId;
         CriteriaList = new List<JobCriteria>();
-        CreatedAt = new DateTimeWithZone(DateTime.Now).LocalTime;
         Id = id;
     }
 
     public string Id { get; set; }
     public string UserId { get; set; }
     public string JobId { get; set; }
-    public DateTime CreatedAt { get; set; }
     public List<JobCriteria> CriteriaList { get; set; }
 
     public static ProfileTypeEnum GetProfileTypeBy(int pt) => pt switch
